@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
 import com.ipsakti.sahayak.ui.theme.*
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun UploadScreen(
     onNavigateBack: () -> Unit

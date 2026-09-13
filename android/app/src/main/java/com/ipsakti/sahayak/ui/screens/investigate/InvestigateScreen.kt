@@ -41,6 +41,7 @@ private val SAMPLE_PROMPTS = listOf(
     "What are the Access & Benefit Sharing (ABS) mandates for exporting biological specimens from Western Ghats?"
 )
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun InvestigateScreen(
     onInvestigationCompleted: (String) -> Unit,

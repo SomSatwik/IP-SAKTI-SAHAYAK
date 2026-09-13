@@ -19,6 +19,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ipsakti.sahayak.ui.components.*
 import com.ipsakti.sahayak.ui.theme.*
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ResultScreen(
     investigationId: String,

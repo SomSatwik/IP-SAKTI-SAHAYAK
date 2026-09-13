@@ -50,7 +50,13 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) { innerPadding ->
-                    NavGraph(navController = navController)
+                    androidx.compose.foundation.layout.Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(innerPadding)
+                    ) {
+                        NavGraph(navController = navController)
+                    }
                 }
             }
         }
