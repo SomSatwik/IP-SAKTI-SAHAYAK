@@ -6,12 +6,14 @@ plugins {
 
 android {
     namespace = "com.ipsakti.sahayak"
-    compileSdk = 34
+    compileSdk {
+        version = release(36)
+    }
 
     defaultConfig {
         applicationId = "com.ipsakti.sahayak"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
 
