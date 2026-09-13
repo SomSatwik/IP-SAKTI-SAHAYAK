@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_navy">#0F172A</color>
+    <color name="secondary_blue">#1E40AF</color>
+    <color name="accent_gold">#D97706</color>
+    <color name="background_light">#F8FAFC</color>
+    <color name="surface_card">#FFFFFF</color>
+    <color name="text_primary">#0F172A</color>
+    <color name="text_secondary">#475569</color>
+    <color name="risk_high">#DC2626</color>
+    <color name="risk_medium">#D97706</color>
+    <color name="risk_low">#16A34A</color>
+</resources>

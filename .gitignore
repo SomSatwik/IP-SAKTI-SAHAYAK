@@ -21,6 +21,14 @@ env/
 data/index/
 *.faiss
 
+# Android
+android/local.properties
+android/.gradle/
+android/app/build/
+android/build/
+*.apk
+*.aab
+
 # Node
 node_modules/
 frontend/node_modules/
