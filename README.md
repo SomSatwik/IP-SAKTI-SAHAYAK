@@ -23,70 +23,127 @@ This is NOT a generic chatbot. It is a **grounded IP intelligence workspace** th
 ## Architecture
 
 ```
-Frontend (React + Tailwind)
-    ↓
-FastAPI Backend
-    ↓
-Python AI/RAG Pipeline
-    ↓
+Native Android App (Kotlin + Jetpack Compose)
+         ↓  REST API
+FastAPI Backend (Python)
+         ↓
+IP-SAKTI RAG Pipeline
+         ↓
 FAISS Vector Store + Groq LLM
-    ↓
+         ↓
 Grounded Response with Citations
+```
+
+## Repository Structure
+
+```
+IP-SAKTI-SAHAYAK/
+├── android/                    # Native Android Studio project
+│   ├── app/
+│   │   ├── build.gradle.kts
+│   │   └── src/main/
+│   │       ├── AndroidManifest.xml
+│   │       └── java/com/ipsakti/sahayak/
+│   │           ├── MainActivity.kt
+│   │           ├── IpSaktiApplication.kt
+│   │           ├── data/
+│   │           │   ├── api/        # Retrofit API service
+│   │           │   ├── model/      # Data classes
+│   │           │   └── repository/ # Repository layer
+│   │           └── ui/
+│   │               ├── theme/      # Material 3 theme
+│   │               ├── navigation/ # Compose navigation
+│   │               ├── components/ # Reusable components
+│   │               └── screens/    # All app screens
+│   ├── build.gradle.kts
+│   ├── settings.gradle.kts
+│   └── gradle/
+│
+├── backend/                    # FastAPI + Python Pipeline
+│   ├── main.py
+│   ├── models.py
+│   ├── demo_data.py
+│   ├── requirements.txt
+│   ├── pipeline/               # Extracted RAG modules
+│   │   ├── config.py
+│   │   ├── document_loader.py
+│   │   ├── text_cleaner.py
+│   │   ├── chunker.py
+│   │   ├── embeddings.py
+│   │   ├── vector_store.py
+│   │   ├── retriever.py
+│   │   ├── prompts.py
+│   │   ├── llm.py
+│   │   ├── rag_pipeline.py
+│   │   └── ingestion.py
+│   └── services/
+│
+├── ps45.py                     # Original Colab notebook (reference)
+├── .env.example
+├── .gitignore
+└── README.md
 ```
 
 ## Quick Start
 
-### Prerequisites
-
-- Python 3.9+
-- Node.js 18+
-- Groq API Key ([console.groq.com](https://console.groq.com))
-
-### 1. Environment Setup
+### 1. Clone
 
 ```bash
-# Copy environment template
-cp .env.example .env
-
-# Add your Groq API key to .env
-# GROQ_API_KEY=your_key_here
+git clone https://github.com/SomSatwik/IP-SAKTI-SAHAYAK.git
+cd IP-SAKTI-SAHAYAK
 ```
 
-### 2. Backend
+### 2. Backend Setup
 
 ```bash
 cd backend
 pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
+
+# Create .env in the project root
+cp ../.env.example ../.env
+# Edit .env and add: GROQ_API_KEY=your_key_here
+
+# Start the FastAPI server
+cd ..
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 3. Frontend
+The backend starts in **demo mode** if no API key or vector index is present. All demo endpoints work immediately.
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### 3. Android Setup
 
-Open [http://localhost:5173](http://localhost:5173)
+1. Open `android/` directory in **Android Studio**
+2. Wait for Gradle sync to complete
+3. Start the backend server (step 2)
+4. Run the app on emulator or physical device
 
-## Features
+**For Android Emulator:** The app automatically connects to `http://10.0.2.2:8000/` (maps to host localhost).
 
-| Feature | Status |
-|---------|--------|
-| Grounded IP Query | ✅ |
-| Evidence & Citations | ✅ |
-| Safe Abstention | ✅ |
-| Confidence Scoring | ✅ |
-| Evidence Graph | ✅ |
-| Compliance Roadmap | ✅ |
-| Investigation Workspace | ✅ |
-| Document Upload | ✅ |
-| Knowledge Base | ✅ |
-| Demo Mode | ✅ |
-| Multilingual (English) | ✅ |
-| Hindi / Odia | 🔜 |
-| Voice Input | 🔜 |
+**For Physical Device:** Go to Settings in the app → change backend URL to `http://<your-computer-ip>:8000/`
+
+### 4. Demo Flow
+
+1. Open app → Home screen with dashboard
+2. Tap **"Load Demo"** → see a complete pre-loaded investigation
+3. Or tap **"Investigate"** → enter your own IP case
+4. View the structured investigation report
+5. Navigate to **Evidence Graph** → interactive visualization
+6. Navigate to **Compliance Roadmap** → actionable steps
+7. Tap any evidence card → see exact authoritative passage
+
+## App Screens
+
+| Screen | Description |
+|--------|-------------|
+| **Home** | Executive dashboard with metrics, quick actions |
+| **Investigate** | Multi-domain IP analysis input with mode selection |
+| **Report** | Structured investigation with confidence, risks, evidence |
+| **Evidence Detail** | Full source verification and supporting passage |
+| **Evidence Graph** | Interactive canvas with zoom, pan, tap-to-inspect |
+| **Compliance Roadmap** | Timeline with priority badges and status |
+| **Saved** | Investigation history archive |
+| **Upload** | Document ingestion pipeline visualization |
+| **Settings** | Backend URL config, connection test, system info |
 
 ## API Endpoints
 
@@ -107,18 +164,30 @@ Open [http://localhost:5173](http://localhost:5173)
 | GET | `/api/dashboard/stats` | Dashboard statistics |
 | GET | `/api/demo/investigation` | Demo investigation |
 
-## Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GROQ_API_KEY` | Yes | Groq API key for LLM |
-
 ## Technology Stack
 
-- **Frontend**: React, Vite, Tailwind CSS, React Router, react-force-graph-2d
-- **Backend**: FastAPI, Pydantic, Uvicorn
-- **AI/RAG**: LangChain, FAISS, BGE-M3 (BAAI), Groq LLM
-- **Documents**: PyPDF, Legal-aware chunking
+| Layer | Technology |
+|-------|-----------|
+| **Android** | Kotlin, Jetpack Compose, Material 3, Navigation Compose |
+| **Networking** | Retrofit 2, OkHttp, Gson |
+| **Architecture** | ViewModel, Coroutines, StateFlow |
+| **Backend** | FastAPI, Pydantic, Uvicorn |
+| **AI/RAG** | LangChain, FAISS, BGE-M3 (BAAI), Groq LLM |
+| **Documents** | PyPDF, Legal-aware chunking |
+
+## Security
+
+- ⚠️ **Never commit `.env`** — it is in `.gitignore`
+- ⚠️ **Never put API keys in the Android app** — the Groq key belongs ONLY on the backend
+- ⚠️ **Rotate any exposed keys** immediately at [console.groq.com](https://console.groq.com)
+
+## Environment Variables
+
+| Variable | Location | Required | Description |
+|----------|----------|----------|-------------|
+| `GROQ_API_KEY` | Backend `.env` | Yes | Groq API key for LLM |
+
+The Android application contains **zero secrets**. It communicates only with the backend API.
 
 ## Team
 
