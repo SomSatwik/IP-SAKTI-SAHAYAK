@@ -37,6 +37,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onOpenUpload = {
                     navController.navigate(Screen.DocumentUpload.route)
+                },
+                onOpenChat = {
+                    navController.navigate(Screen.Chat.route)
                 }
             )
         }
@@ -128,6 +131,31 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.DocumentUpload.route) {
             UploadScreen(
                 onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.Chat.route) {
+            com.ipsakti.sahayak.ui.screens.chat.ChatScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToFeature = { targetScreen, payload ->
+                    when (targetScreen) {
+                        "investigate" -> {
+                            navController.navigate(Screen.Investigate.route)
+                        }
+                        "upload" -> {
+                            navController.navigate(Screen.DocumentUpload.route)
+                        }
+                        "roadmap" -> {
+                            navController.navigate(Screen.ComplianceRoadmap.createRoute("demo_ayurvedic_01"))
+                        }
+                        "graph" -> {
+                            navController.navigate(Screen.EvidenceGraph.createRoute("demo_ayurvedic_01"))
+                        }
+                        "evidence" -> {
+                            navController.navigate(Screen.EvidenceList.route)
+                        }
+                    }
+                }
             )
         }
     }

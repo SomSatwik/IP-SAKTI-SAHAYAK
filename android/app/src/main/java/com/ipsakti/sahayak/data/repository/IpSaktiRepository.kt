@@ -240,6 +240,75 @@ class IpSaktiRepository {
         }
     }
 
+    suspend fun sendChatMessage(
+        message: String,
+        history: List<ChatMessage> = emptyList(),
+        language: String = LanguageManager.getLanguage()
+    ): Result<ChatResponse> = withContext(Dispatchers.IO) {
+        try {
+            val response = apiService.sendChatMessage(
+                ChatMessageRequest(message = message, history = history, language = language)
+            )
+            if (response.isSuccessful && response.body() != null) {
+                Result.success(response.body()!!)
+            } else {
+                Result.success(getFallbackChatResponse(message, language))
+            }
+        } catch (e: Exception) {
+            Result.success(getFallbackChatResponse(message, language))
+        }
+    }
+
+    fun getFallbackChatResponse(message: String, language: String): ChatResponse {
+        val mLower = message.lowercase()
+        val lang = language.lowercase().trim()
+
+        val actions = mutableListOf<SuggestedAction>()
+        if (mLower.contains("patent") || mLower.contains("synergy") || mLower.contains("ashwagandha") || mLower.contains("plant") || mLower.contains("herb") || mLower.contains("पौधा") || mLower.contains("ଉଦ୍ଭିଦ")) {
+            val label = when (lang) {
+                "hi", "hindi" -> "🔍 धारा 3(p) विश्लेषण चलाएं"
+                "or", "odia" -> "🔍 ଧାରା 3(p) ବିଶ୍ଳେଷଣ କରନ୍ତୁ"
+                else -> "🔍 Run Section 3(p) Analysis"
+            }
+            actions.add(SuggestedAction(label = label, targetScreen = "investigate", payload = message))
+        }
+
+        if (mLower.contains("upload") || mLower.contains("pdf") || mLower.contains("document") || mLower.contains("दस्तावेज़") || mLower.contains("ଦସ୍ତାବିଜ୍")) {
+            val label = when (lang) {
+                "hi", "hindi" -> "📄 दस्तावेज़ अपलोड करें"
+                "or", "odia" -> "📄 ଦସ୍ତାବିଜ୍ ଅପଲୋଡ୍ କରନ୍ତୁ"
+                else -> "📄 Upload Formulation PDF"
+            }
+            actions.add(SuggestedAction(label = label, targetScreen = "upload"))
+        }
+
+        val roadmapLabel = when (lang) {
+            "hi", "hindi" -> "🗺️ अनुपालन रोडमैप देखें"
+            "or", "odia" -> "🗺️ ଅନୁପାଳନ ରୋଡମ୍ୟାପ୍ ଦେଖନ୍ତୁ"
+            else -> "🗺️ View Compliance Roadmap"
+        }
+        actions.add(SuggestedAction(label = roadmapLabel, targetScreen = "roadmap"))
+
+        val graphLabel = when (lang) {
+            "hi", "hindi" -> "🌐 साक्ष्य ग्राफ एक्सप्लोर करें"
+            "or", "odia" -> "🌐 ପ୍ରମାଣ ଗ୍ରାଫ୍ ଦେଖନ୍ତୁ"
+            else -> "🌐 Explore Evidence Graph"
+        }
+        actions.add(SuggestedAction(label = graphLabel, targetScreen = "graph"))
+
+        val reply = when (lang) {
+            "hi", "hindi" -> "🌿 **आयुर्शक्ति सहायक मार्गदर्शन:**\n\nपारंपरिक औषधीय पौधों और आयुर्वेदिक नुस्खों के लिए भारतीय पेटेंट अधिनियम की धारा 3(p) के तहत वैज्ञानिक रूप से सिद्ध सहक्रियात्मक प्रभाव (synergy) आवश्यक है। साथ ही, राष्ट्रीय जैव विविधता प्राधिकरण (NBA) से पूर्व अनुमति (फॉर्म 3) अनिवार्य है।\n\n💡 **अनुशंसित ऐप सुविधाएं:**\nनीचे दिए गए एक्शन बटनों पर टैप करके जांच शुरू करें या रोडमैप देखें!"
+            "or", "odia" -> "🌿 **ଆୟୁରଶକ୍ତି ସହାୟକ ପରାମର୍ଶ:**\n\nପାରମ୍ପରିକ ଔଷଧୀୟ ଉଦ୍ଭିଦ ପାଇଁ ଭାରତୀୟ ପେଟେଣ୍ଟ ଆଇନର ଧାରା 3(p) ଅଧୀନରେ ନୂତନ ସିନର୍ଜିଷ୍ଟିକ୍ ପ୍ରଭାବ ପ୍ରମାଣିତ କରିବା ବାଧ୍ୟତାମୂଳକ। ଜୈବ ବିବିଧତା ଅଧିନିୟମ ଅଧୀନରେ NBA ଅନୁମୋଦନ ମଧ୍ୟ ଆବଶ୍ୟକ।\n\n💡 **ପରାମର୍ଶିତ ଆପ୍ ବୈଶିଷ୍ଟ୍ୟ:**\nତଳେ ଥିବା ବଟନ୍ ଚୟନ କରି ଅନୁସନ୍ଧାନ କରନ୍ତୁ ବା ରୋଡମ୍ୟାପ୍ ଦେଖନ୍ତୁ!"
+            else -> "🌿 **AyurSakti Intelligence Guidance:**\n\nFor Ayurvedic formulations and medicinal plants, Section 3(p) of the Patents Act bars patenting traditional knowledge unless synergistic therapeutic efficacy or a novel extraction mechanism is documented. Prior NBA approval (Form 3) under the Biodiversity Act is legally mandatory.\n\n💡 **Recommended App Actions:**\nTap the action buttons below to test Section 3(p) compliance in the Investigation Workspace or view step-by-step statutory filings!"
+        }
+
+        return ChatResponse(
+            reply = reply,
+            suggestedActions = actions.take(3),
+            references = listOf("Indian Patents Act Sec 3(p)", "Biological Diversity Act Sec 6", "Drugs & Cosmetics Rule 158B")
+        )
+    }
+
     fun getFallbackDocuments(): List<DocumentInfo> {
         return listOf(
             DocumentInfo(

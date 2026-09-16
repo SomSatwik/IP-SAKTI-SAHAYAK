@@ -215,6 +215,41 @@ object LanguageManager {
             "en" to "INDEXED KNOWLEDGE BASE DOCUMENTS",
             "hi" to "इंडेक्स किए गए कानूनी दस्तावेज़",
             "or" to "ଇଣ୍ଡେକ୍ସ ହୋଇଥିବା ଆଇନଗତ ଦସ୍ତାବିଜ୍"
+        ),
+        "nav_chat" to mapOf(
+            "en" to "AyurBot",
+            "hi" to "आयुर्शक्ति",
+            "or" to "ଆୟୁରବଟ୍"
+        ),
+        "chat_title" to mapOf(
+            "en" to "AyurSakti Intelligence Guide",
+            "hi" to "आयुर्शक्ति आसूचना गाइड",
+            "or" to "ଆୟୁରଶକ୍ତି ଗୁପ୍ତଚର ଗାଇଡ୍"
+        ),
+        "chat_subtitle" to mapOf(
+            "en" to "Ayurvedic Doubt Clearing & App Navigator",
+            "hi" to "आयुर्वेदिक शंका समाधान और ऐप मार्गदर्शक",
+            "or" to "ଆୟୁର୍ବେଦିକ ସନ୍ଦେହ ନିବାରଣ ଏବଂ ଆପ୍ ମାର୍ଗଦର୍ଶକ"
+        ),
+        "chat_placeholder" to mapOf(
+            "en" to "Ask your Ayurvedic or patent doubt...",
+            "hi" to "अपना आयुर्वेदिक या पेटेंट प्रश्न पूछें...",
+            "or" to "ଆପଣଙ୍କ ଆୟୁର୍ବେଦିକ କିମ୍ବା ପେଟେଣ୍ଟ ପ୍ରଶ୍ନ ପଚାରନ୍ତୁ..."
+        ),
+        "chat_card_title" to mapOf(
+            "en" to "AyurSakti AI Assistant",
+            "hi" to "आयुर्शक्ति एआई सहायक",
+            "or" to "ଆୟୁରଶକ୍ତି AI ସହାୟକ"
+        ),
+        "chat_card_desc" to mapOf(
+            "en" to "Clear doubts about Ayurvedic herbs, Section 3(p), TKDL, and discover app features.",
+            "hi" to "आयुर्वेदिक जड़ी-बूटियों, धारा 3(p), टीकेडीएल और ऐप सुविधाओं के बारे में शंकाएं दूर करें।",
+            "or" to "ଆୟୁର୍ବେଦିକ ଉଦ୍ଭିଦ, ଧାରା 3(p), TKDL ଏବଂ ଆପ୍ ବୈଶିଷ୍ଟ୍ୟ ବିଷୟରେ ସନ୍ଦେହ ଦୂର କରନ୍ତୁ।"
+        ),
+        "ask_ayursakti" to mapOf(
+            "en" to "Ask AyurSakti",
+            "hi" to "आयुर्शक्ति से पूछें",
+            "or" to "ଆୟୁରଶକ୍ତିକୁ ପଚାରନ୍ତୁ"
         )
     )
 

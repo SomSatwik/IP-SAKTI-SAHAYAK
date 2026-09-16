@@ -127,3 +127,29 @@ data class HealthResponse(
     @SerializedName("version") val version: String = "1.0.0",
     @SerializedName("pipeline_ready") val pipelineReady: Boolean = false
 )
+
+data class SuggestedAction(
+    @SerializedName("label") val label: String = "",
+    @SerializedName("target_screen") val targetScreen: String = "",
+    @SerializedName("payload") val payload: String? = null
+)
+
+data class ChatMessage(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("sender") val sender: String = "assistant", // "user" or "assistant"
+    @SerializedName("text") val text: String = "",
+    @SerializedName("timestamp") val timestamp: String = "",
+    @SerializedName("actions") val actions: List<SuggestedAction> = emptyList()
+)
+
+data class ChatMessageRequest(
+    @SerializedName("message") val message: String,
+    @SerializedName("history") val history: List<ChatMessage> = emptyList(),
+    @SerializedName("language") val language: String = "en"
+)
+
+data class ChatResponse(
+    @SerializedName("reply") val reply: String = "",
+    @SerializedName("suggested_actions") val suggestedActions: List<SuggestedAction> = emptyList(),
+    @SerializedName("references") val references: List<String> = emptyList()
+)

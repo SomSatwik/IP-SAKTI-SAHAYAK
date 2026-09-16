@@ -46,4 +46,7 @@ interface IpSaktiApiService {
 
     @GET("api/documents")
     suspend fun getDocuments(): Response<List<DocumentInfo>>
+
+    @POST("api/chat")
+    suspend fun sendChatMessage(@Body request: ChatMessageRequest): Response<ChatResponse>
 }

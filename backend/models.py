@@ -106,3 +106,25 @@ class HealthResponse(BaseModel):
     mode: str
     version: str
     pipeline_ready: bool
+
+class SuggestedAction(BaseModel):
+    label: str
+    target_screen: str  # "investigate", "upload", "roadmap", "graph", "evidence"
+    payload: Optional[str] = None
+
+class ChatMessage(BaseModel):
+    id: str
+    sender: str  # "user" or "assistant"
+    text: str
+    timestamp: str
+    actions: List[SuggestedAction] = []
+
+class ChatMessageRequest(BaseModel):
+    message: str
+    history: List[ChatMessage] = []
+    language: str = "en"
+
+class ChatResponse(BaseModel):
+    reply: str
+    suggested_actions: List[SuggestedAction] = []
+    references: List[str] = []

@@ -30,6 +30,8 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     }
 
     object DocumentUpload : Screen("document_upload", "Ingest Document")
+
+    object Chat : Screen("chat", "AyurBot", Icons.Default.AutoAwesome)
 }
 
 val bottomNavItems = listOf(

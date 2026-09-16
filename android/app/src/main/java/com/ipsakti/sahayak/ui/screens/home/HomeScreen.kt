@@ -29,6 +29,7 @@ fun HomeScreen(
     onOpenInvestigation: (String) -> Unit,
     onLoadDemoCase: () -> Unit,
     onOpenUpload: () -> Unit,
+    onOpenChat: () -> Unit = {},
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -41,6 +42,13 @@ fun HomeScreen(
                 subtitle = com.ipsakti.sahayak.data.manager.LanguageManager.getString("app_tagline"),
                 isOnline = uiState.isOnline,
                 actions = {
+                    IconButton(onClick = onOpenChat) {
+                        Icon(
+                            imageVector = Icons.Default.Chat,
+                            contentDescription = "AyurSakti Assistant",
+                            tint = Color.White
+                        )
+                    }
                     IconButton(onClick = onOpenUpload) {
                         Icon(
                             imageVector = Icons.Default.UploadFile,
@@ -136,6 +144,85 @@ fun HomeScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                             }
+                        }
+                    }
+                }
+            }
+
+            // AyurSakti Chatbot / Doubt Clearing Assistant Card
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = CardBackground),
+                    border = BorderStroke(1.dp, CardBorder)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .size(44.dp)
+                                .clip(CircleShape)
+                                .background(RoyalBlue800.copy(alpha = 0.12f)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Chat,
+                                contentDescription = null,
+                                tint = RoyalBlue800,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(14.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("chat_card_title"),
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = Navy900
+                                    )
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Surface(
+                                    shape = RoundedCornerShape(4.dp),
+                                    color = Gold600.copy(alpha = 0.2f)
+                                ) {
+                                    Text(
+                                        text = "AI GUIDE",
+                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                        style = MaterialTheme.typography.labelSmall.copy(
+                                            color = Gold800,
+                                            fontWeight = FontWeight.Bold,
+                                            fontSize = 9.sp
+                                        )
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("chat_card_desc"),
+                                style = MaterialTheme.typography.bodySmall.copy(color = Slate500, fontSize = 11.sp)
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        IconButton(
+                            onClick = onOpenChat,
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clip(CircleShape)
+                                .background(RoyalBlue800)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowForward,
+                                contentDescription = "Open Chat",
+                                tint = Color.White,
+                                modifier = Modifier.size(16.dp)
+                            )
                         }
                     }
                 }

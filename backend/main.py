@@ -12,7 +12,8 @@ from .models import (
     QueryRequest, QueryResponse, InvestigationSummary, 
     InvestigationDetail, EvidenceGraphResponse, 
     ComplianceRoadmapResponse, DocumentUploadResponse,
-    HealthResponse, DashboardStats, DocumentInfo
+    HealthResponse, DashboardStats, DocumentInfo,
+    ChatMessageRequest, ChatResponse
 )
 
 from .demo_data import (
@@ -21,6 +22,7 @@ from .demo_data import (
 )
 from .services.query_service import query_service
 from .services.investigation_service import investigation_service
+from .services.chat_service import chat_service
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +145,14 @@ async def analyze_case(request: QueryRequest):
 @app.post("/api/deep-analysis", response_model=InvestigationDetail)
 async def deep_analysis(request: QueryRequest):
     return await analyze_case(request)
+
+@app.post("/api/chat", response_model=ChatResponse)
+async def chat_endpoint(request: ChatMessageRequest):
+    return chat_service.get_chat_response(request)
+
+@app.post("/api/ayurveda/chat", response_model=ChatResponse)
+async def ayurveda_chat_endpoint(request: ChatMessageRequest):
+    return chat_service.get_chat_response(request)
 
 @app.post("/api/documents/upload", response_model=DocumentUploadResponse)
 async def upload_document(file: UploadFile = File(...)):
