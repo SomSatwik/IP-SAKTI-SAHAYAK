@@ -48,6 +48,7 @@ fun ChatScreen(
     }
 
     Scaffold(
+        modifier = Modifier.imePadding(),
         topBar = {
             IpTopAppBar(
                 title = LanguageManager.getString("chat_title"),
