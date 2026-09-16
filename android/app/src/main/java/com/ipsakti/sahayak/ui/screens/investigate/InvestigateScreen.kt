@@ -88,7 +88,7 @@ fun InvestigateScreen(
                             FilterChip(
                                 selected = uiState.isDeepAnalysis,
                                 onClick = { viewModel.setMode(true) },
-                                label = { Text("Deep Analysis (Graph + Roadmap)") },
+                                label = { Text(com.ipsakti.sahayak.data.manager.LanguageManager.getString("deep_analysis")) },
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Default.AutoAwesome,
@@ -106,7 +106,7 @@ fun InvestigateScreen(
                             FilterChip(
                                 selected = !uiState.isDeepAnalysis,
                                 onClick = { viewModel.setMode(false) },
-                                label = { Text("Quick Grounded Answer") },
+                                label = { Text(com.ipsakti.sahayak.data.manager.LanguageManager.getString("quick_answer")) },
                                 modifier = Modifier.weight(1f),
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = RoyalBlue800,
@@ -121,7 +121,7 @@ fun InvestigateScreen(
             // Domain Multi-Select Section
             item {
                 Text(
-                    text = "TARGET IP & REGULATORY DOMAINS",
+                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("target_domains"),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold,
                         color = Slate500,
@@ -147,7 +147,7 @@ fun InvestigateScreen(
             // Case Description Input Area
             item {
                 Text(
-                    text = "DESCRIBE YOUR CASE OR INNOVATION",
+                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("describe_case"),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold,
                         color = Slate500,
@@ -275,7 +275,7 @@ fun InvestigateScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (uiState.isLoading) "Processing Investigation..." else "Run Grounded IP Analysis",
+                        text = if (uiState.isLoading) com.ipsakti.sahayak.data.manager.LanguageManager.getString("analyzing") else com.ipsakti.sahayak.data.manager.LanguageManager.getString("run_analysis"),
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = Color.White,
                             fontWeight = FontWeight.Bold

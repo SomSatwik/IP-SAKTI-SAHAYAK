@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class QueryRequest(
     @SerializedName("question") val question: String,
-    @SerializedName("mode") val mode: String = "quick"
+    @SerializedName("mode") val mode: String = "quick",
+    @SerializedName("language") val language: String = "en"
 )
 
 data class SourceItem(
@@ -103,7 +104,21 @@ data class DashboardStats(
 data class DocumentUploadResponse(
     @SerializedName("status") val status: String = "",
     @SerializedName("message") val message: String = "",
-    @SerializedName("document_id") val documentId: String = ""
+    @SerializedName("document_id") val documentId: String = "",
+    @SerializedName("filename") val filename: String? = null,
+    @SerializedName("size") val size: Long? = null,
+    @SerializedName("pages") val pages: Int? = null,
+    @SerializedName("chunks") val chunks: Int? = null
+)
+
+data class DocumentInfo(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("filename") val filename: String = "",
+    @SerializedName("upload_date") val uploadDate: String = "",
+    @SerializedName("status") val status: String = "Indexed",
+    @SerializedName("size") val size: Long = 0L,
+    @SerializedName("pages") val pages: Int = 0,
+    @SerializedName("chunks") val chunks: Int = 0
 )
 
 data class HealthResponse(

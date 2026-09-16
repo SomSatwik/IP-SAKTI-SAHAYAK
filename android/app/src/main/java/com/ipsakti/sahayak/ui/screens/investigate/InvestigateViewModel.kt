@@ -71,7 +71,8 @@ class InvestigateViewModel(
             )
 
             val mode = if (_uiState.value.isDeepAnalysis) "deep" else "quick"
-            val result = repository.analyzeCase(query, mode = mode)
+            val lang = com.ipsakti.sahayak.data.manager.LanguageManager.getLanguage()
+            val result = repository.analyzeCase(query, mode = mode, language = lang)
 
             result.onSuccess { detail ->
                 _uiState.value = _uiState.value.copy(

@@ -19,6 +19,7 @@ env/
 
 # Vector store / data
 data/index/
+data/raw/*
 *.faiss
 
 # Android

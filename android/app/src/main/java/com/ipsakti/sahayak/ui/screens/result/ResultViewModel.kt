@@ -25,7 +25,8 @@ class ResultViewModel(
     fun loadInvestigation(id: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true, errorMessage = null)
-            val result = repository.getInvestigationDetail(id)
+            val lang = com.ipsakti.sahayak.data.manager.LanguageManager.getLanguage()
+            val result = repository.getInvestigationDetail(id, language = lang)
             result.onSuccess { detail ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,

@@ -32,12 +32,13 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val currentLang by com.ipsakti.sahayak.data.manager.LanguageManager.currentLanguage.collectAsState()
 
     Scaffold(
         topBar = {
             IpTopAppBar(
-                title = "IP-SAKTI SAHAYAK",
-                subtitle = "Indian IP Intelligence & Compliance Workspace",
+                title = com.ipsakti.sahayak.data.manager.LanguageManager.getString("app_name"),
+                subtitle = com.ipsakti.sahayak.data.manager.LanguageManager.getString("app_tagline"),
                 isOnline = uiState.isOnline,
                 actions = {
                     IconButton(onClick = onOpenUpload) {
@@ -112,7 +113,7 @@ fun HomeScreen(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "Investigate",
+                                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("start_investigation"),
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -131,7 +132,7 @@ fun HomeScreen(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "Load Demo",
+                                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("load_demo"),
                                     fontWeight = FontWeight.Bold
                                 )
                             }

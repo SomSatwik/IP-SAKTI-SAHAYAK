@@ -198,7 +198,7 @@ fun ResultScreen(
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
-                                    text = "KEY FINDINGS",
+                                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("key_findings"),
                                     style = MaterialTheme.typography.labelSmall.copy(
                                         fontWeight = FontWeight.Bold,
                                         color = Slate500,
@@ -221,7 +221,7 @@ fun ResultScreen(
                     if (resp.risks.isNotEmpty()) {
                         item {
                             Text(
-                                text = "IDENTIFIED RISKS",
+                                text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("identified_risks"),
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                     color = Slate500,
@@ -238,7 +238,7 @@ fun ResultScreen(
                     if (resp.evidence.isNotEmpty()) {
                         item {
                             Text(
-                                text = "AUTHORITATIVE EVIDENCE (${resp.evidence.size} sources)",
+                                text = "${com.ipsakti.sahayak.data.manager.LanguageManager.getString("authoritative_evidence")} (${resp.evidence.size})",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontWeight = FontWeight.Bold,
                                     color = Slate500,
@@ -272,7 +272,7 @@ fun ResultScreen(
                                     modifier = Modifier.size(18.dp)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Evidence Graph", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(com.ipsakti.sahayak.data.manager.LanguageManager.getString("view_graph"), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                             }
                             Button(
                                 onClick = { onViewRoadmap(investigationId) },
@@ -286,7 +286,7 @@ fun ResultScreen(
                                     modifier = Modifier.size(18.dp)
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Roadmap", fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(com.ipsakti.sahayak.data.manager.LanguageManager.getString("view_roadmap"), fontWeight = FontWeight.Bold, fontSize = 13.sp)
                             }
                         }
                     }
@@ -302,7 +302,7 @@ fun ResultScreen(
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(
-                                        text = "RECOMMENDED ACTIONS",
+                                        text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("recommended_actions"),
                                         style = MaterialTheme.typography.labelSmall.copy(
                                             fontWeight = FontWeight.Bold,
                                             color = Slate500,

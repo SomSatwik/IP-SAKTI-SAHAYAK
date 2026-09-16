@@ -1,6 +1,7 @@
 package com.ipsakti.sahayak.data.api
 
 import com.ipsakti.sahayak.data.model.*
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -37,8 +38,12 @@ interface IpSaktiApiService {
     suspend fun getDashboardStats(): Response<DashboardStats>
 
     @GET("api/demo/investigation")
-    suspend fun getDemoInvestigation(): Response<InvestigationDetail>
+    suspend fun getDemoInvestigation(@Query("lang") lang: String? = null): Response<InvestigationDetail>
 
+    @Multipart
     @POST("api/documents/upload")
-    suspend fun uploadDocument(): Response<DocumentUploadResponse>
+    suspend fun uploadDocumentFile(@Part file: MultipartBody.Part): Response<DocumentUploadResponse>
+
+    @GET("api/documents")
+    suspend fun getDocuments(): Response<List<DocumentInfo>>
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "doc_06267ffa",
+    "filename": "Test_Ayurveda_Patent_Act.pdf",
+    "upload_date": "2026-09-16 09:45",
+    "status": "Indexed",
+    "size": 44,
+    "pages": 1,
+    "chunks": 3
+  },
+  {
+    "id": "doc_stat_001",
+    "filename": "Indian_Patents_Act_1970.pdf",
+    "upload_date": "2026-09-01 10:00",
+    "status": "Indexed",
+    "size": 2450000,
+    "pages": 182,
+    "chunks": 420
+  },
+  {
+    "id": "doc_stat_002",
+    "filename": "Biological_Diversity_Act_2002.pdf",
+    "upload_date": "2026-09-02 14:30",
+    "status": "Indexed",
+    "size": 1120000,
+    "pages": 48,
+    "chunks": 115
+  },
+  {
+    "id": "doc_stat_003",
+    "filename": "TKDL_Prior_Art_Guidelines_2024.pdf",
+    "upload_date": "2026-09-05 09:15",
+    "status": "Indexed",
+    "size": 890000,
+    "pages": 36,
+    "chunks": 84
+  }
+]

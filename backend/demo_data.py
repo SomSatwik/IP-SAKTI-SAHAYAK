@@ -112,16 +112,76 @@ demo_roadmap = ComplianceRoadmapResponse(
     ]
 )
 
-demo_investigation = InvestigationDetail(
-    id=DEMO_INVESTIGATION_ID,
-    query="We developed an Ayurvedic formulation using a traditional medicinal plant. What IP and compliance issues should we investigate?",
-    timestamp=datetime.now(),
-    domain="Patent & Biodiversity",
-    status="Completed",
-    response=demo_query_response,
-    graph=demo_graph,
-    roadmap=demo_roadmap
+demo_query_response_hi = QueryResponse(
+    answer="पारंपरिक औषधीय पौधे का उपयोग करने वाले आयुर्वेदिक फॉर्मूलेशन के संबंध में आपके प्रश्न के आधार पर, भारत में तीन प्राथमिक कानूनी अनुपालन और बौद्धिक संपदा (IP) विचार हैं:\n\nपहला, **जैविक विविधता अधिनियम, 2002** के तहत, भारत से प्राप्त जैविक संसाधनों पर आधारित किसी भी आविष्कार के लिए विश्व में कहीं भी बौद्धिक संपदा अधिकार (जैसे पेटेंट) आवेदन करने से पहले राष्ट्रीय जैव विविधता प्राधिकरण (NBA) से पूर्व अनुमति प्राप्त करना अनिवार्य है (धारा 6)।\n\nदूसरा, **भारतीय पेटेंट अधिनियम, 1970** की धारा 3(p) स्पष्ट रूप से पारंपरिक ज्ञान या ज्ञात घटकों के ज्ञात गुणों के मात्र संचय के पेटेंट पर रोक लगाती है। पेटेंट प्राप्त करने के लिए, आपको पारंपरिक प्रथाओं से परे पर्याप्त सहक्रियात्मक प्रभाव (synergistic effect) या एक नई निष्कर्षण प्रक्रिया सिद्ध करनी होगी।\n\nतीसरा, आपको **पहुंच और लाभ साझाकरण (ABS)** दिशानिर्देशों का पालन करना होगा, जिसका अर्थ है कि आपको स्थानीय समुदायों के साथ वाणिज्यिक लाभ साझा करने की आवश्यकता होगी।\n\nपेटेंट आवेदन करने से पहले, पूर्व कला आपत्तियों से बचने के लिए पारंपरिक ज्ञान डिजिटल लाइब्रेरी (TKDL) में पौधे की जांच करने की सिफारिश की जाती है।",
+    confidence=0.87,
+    evidence=demo_evidence,
+    domains=["पेटेंट कानून", "पारंपरिक ज्ञान", "जैव विविधता / ABS", "आयुर्वेद नियामक"],
+    risks=[
+        "उच्च जोखिम: धारा 3(p) के तहत पेटेंट खारिज होने का जोखिम (TKDL पूर्व कला)",
+        "उच्च जोखिम: आईपी आवेदन से पूर्व NBA अनुमति न लेने पर दंडात्मक कार्रवाई",
+        "मध्यम जोखिम: वाणिज्यिकीकरण पर लाभ साझाकरण (ABS) की देयता"
+    ],
+    actions=[
+        "आईपी आवेदन की पूर्व स्वीकृति के लिए NBA को फॉर्म 3 जमा करें",
+        "TKDL और पेटेंट डेटाबेस में विस्तृत पूर्व कला खोज करें",
+        "धारा 3(p) आपत्तियों को दूर करने के लिए फॉर्मूलेशन के सहक्रियात्मक प्रभाव का वैज्ञानिक दस्तावेज तैयार करें"
+    ],
+    citations=demo_citations,
+    abstained=False,
+    disclaimer="यह जानकारी एआई द्वारा शोध सहायता के लिए उत्पन्न की गई है। यह औपचारिक कानूनी सलाह नहीं है।"
 )
+
+demo_query_response_or = QueryResponse(
+    answer="ପାରମ୍ପରିକ ଔଷଧୀୟ ଉଦ୍ଭିଦ ବ୍ୟବହାର କରି ଏକ ଆୟୁର୍ବେଦିକ ଫର୍ମୁଲେସନ୍ ସମ୍ବନ୍ଧରେ, ଭାରତରେ ତିନୋଟି ପ୍ରମୁଖ ଆଇନଗତ ଅନୁପାଳନ ଏବଂ ବୌଦ୍ଧିକ ସମ୍ପତ୍ତି (IP) ନିୟମାବଳୀ ରହିଛି:\n\nପ୍ରଥମତଃ, **ଜୈବ ବିବିଧତା ଅଧିନିୟମ, 2002** ଅନୁଯାୟୀ, ଭାରତରୁ ପ୍ରାପ୍ତ ଜୈବିକ ଉତ୍ସ ଉପରେ ଆଧାରିତ କୌଣସି ଅନୁସନ୍ଧାନ କିମ୍ବା ଆବିଷ୍କାର ପାଇଁ ପେଟେଣ୍ଟ ଆବେଦନ କରିବା ପୂର୍ବରୁ ଜାତୀୟ ଜୈବ ବିବିଧତା ପ୍ରାଧିକରଣ (NBA) ର ପୂର୍ବ ଅନୁମୋଦନ ବାଧ୍ୟତାମୂଳକ (ଧାରା 6)।\n\nଦ୍ୱିତୀୟତଃ, **ଭାରତୀୟ ପେଟେଣ୍ଟ ଅଧିନିୟମ, 1970** ର ଧାରା 3(p) ଅନୁଯାୟୀ ପାରମ୍ପରିକ ଜ୍ଞାନ ବା ପୂର୍ବରୁ ଜଣାଶୁଣା ଗୁଣଗୁଡ଼ିକର ଏକତ୍ରିକରଣ ପାଇଁ ପେଟେଣ୍ଟ ପ୍ରଦାନ ନିଷିଦ୍ଧ। ପେଟେଣ୍ଟ ହାସଲ କରିବାକୁ ହେଲେ ଆପଣଙ୍କୁ ପାରମ୍ପରିକ ପଦ୍ଧତି ଠାରୁ ଊର୍ଦ୍ଧ୍ୱରେ ଏକ ନୂତନ ସିନର୍ଜିଷ୍ଟିକ୍ ପ୍ରଭାବ କିମ୍ବା ନୂତନ ନିଷ୍କାସନ ପ୍ରଣାଳୀ ପ୍ରମାଣ କରିବାକୁ ହେବ।\n\nତୃତୀୟତଃ, ଆପଣଙ୍କୁ **ପହଞ୍ଚ ଏବଂ ଲାଭ ଭାଗବଣ୍ଟା (ABS)** ନିୟମ ପାଳନ କରିବାକୁ ପଡ଼ିବ, ଯାହା ଅଧୀନରେ ସ୍ଥାନୀୟ ସମ୍ପ୍ରଦାୟ ସହିତ ବାଣିଜ୍ୟିକ ଲାଭ ଅଂଶୀଦାର କରିବାକୁ ହେବ।\n\nପେଟେଣ୍ଟ ଦାଖଲ କରିବା ପୂର୍ବରୁ ପାରମ୍ପରିକ ଜ୍ଞାନ ଡିଜିଟାଲ୍ ଲାଇବ୍ରେରୀ (TKDL) ରେ ଏହି ଉଦ୍ଭିଦର ଯାଞ୍ଚ କରିବାକୁ ଦୃଢ଼ ପରାମର୍ଶ ଦିଆଯାଉଛି।",
+    confidence=0.87,
+    evidence=demo_evidence,
+    domains=["ପେଟେଣ୍ଟ ଆଇନ", "ପାରମ୍ପରିକ ଜ୍ଞାନ", "ଜୈବ ବିବିଧତା / ABS", "ଆୟୁର୍ବେଦ ନିୟାମକ"],
+    risks=[
+        "ଉଚ୍ଚ ବିପଦ: ଧାରା 3(p) ଅଧୀନରେ ପେଟେଣ୍ଟ ପ୍ରତ୍ୟାଖ୍ୟାନ ହେବାର ଆଶଙ୍କା (TKDL ପୂର୍ବ କଳା)",
+        "ଉଚ୍ଚ ବିପଦ: IP ଆବେଦନ ପୂର୍ବରୁ NBA ଅନୁମୋଦନ ନ ପାଇବାର ଦଣ୍ଡବିଧାନ",
+        "ମଧ୍ୟମ ବିପଦ: ବାଣିଜ୍ୟିକ ଉପଯୋଗ ଉପରେ ABS ଦାୟିତ୍ୱ"
+    ],
+    actions=[
+        "IP ଆବେଦନ ଅନୁମୋଦନ ପାଇଁ NBA କୁ ଫର୍ମ 3 ଦାଖଲ କରନ୍ତୁ",
+        "TKDL ଏବଂ ପେଟେଣ୍ଟ ରେଜିଷ୍ଟ୍ରିରେ ପୂର୍ବ କଳା ସର୍ଚ୍ଚ କରନ୍ତୁ",
+        "ଧାରା 3(p) ଆପତ୍ତି ଦୂର କରିବା ପାଇଁ ସିନର୍ଜିଷ୍ଟିକ୍ ପ୍ରଭାବର ପ୍ରମାଣ ପ୍ରସ୍ତୁତ କରନ୍ତୁ"
+    ],
+    citations=demo_citations,
+    abstained=False,
+    disclaimer="ଏହି ସୂଚନା AI ଦ୍ୱାରା ଅନୁସନ୍ଧାନ ସହାୟତା ପାଇଁ ପ୍ରସ୍ତୁତ କରାଯାଇଛି। ଏହା ଆନୁଷ୍ଠାନିକ ଆଇନଗତ ପରାମର୍ଶ ନୁହେଁ।"
+)
+
+def get_demo_query_response(language: str = "en") -> QueryResponse:
+    lang = (language or "en").lower().strip()
+    if lang in ["hi", "hindi"]:
+        return demo_query_response_hi
+    elif lang in ["or", "odia", "oriya"]:
+        return demo_query_response_or
+    return demo_query_response
+
+def get_demo_investigation(language: str = "en", custom_id: str = DEMO_INVESTIGATION_ID) -> InvestigationDetail:
+    resp = get_demo_query_response(language)
+    lang = (language or "en").lower().strip()
+    
+    query_text = "We developed an Ayurvedic formulation using a traditional medicinal plant. What IP and compliance issues should we investigate?"
+    if lang in ["hi", "hindi"]:
+        query_text = "हमने एक पारंपरिक औषधीय पौधे का उपयोग करके एक आयुर्वेदिक फॉर्मूलेशन विकसित किया है। हमें किन बौद्धिक संपदा और अनुपालन मुद्दों की जांच करनी चाहिए?"
+    elif lang in ["or", "odia", "oriya"]:
+        query_text = "ଆମେ ଏକ ପାରମ୍ପରିକ ଔଷଧୀୟ ଉଦ୍ଭିଦ ବ୍ୟବହାର କରି ଏକ ଆୟୁର୍ବେଦିକ ଫର୍ମୁଲେସନ୍ ବିକଶିତ କରିଛୁ। ଆମକୁ କେଉଁ ବୌଦ୍ଧିକ ସମ୍ପତ୍ତି ଏବଂ ଅନୁପାଳନ ସମସ୍ୟାର ତଦନ୍ତ କରିବା ଉଚିତ୍?"
+
+    return InvestigationDetail(
+        id=custom_id,
+        query=query_text,
+        timestamp=datetime.now(),
+        domain="Patent & Biodiversity",
+        status="Completed",
+        response=resp,
+        graph=demo_graph,
+        roadmap=demo_roadmap
+    )
+
+demo_investigation = get_demo_investigation("en")
 
 demo_dashboard_stats = DashboardStats(
     total_investigations=14,

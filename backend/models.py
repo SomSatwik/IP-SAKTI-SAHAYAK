@@ -5,6 +5,7 @@ from datetime import datetime
 class QueryRequest(BaseModel):
     question: str
     mode: str = 'quick'
+    language: str = 'en'
 
 class SourceItem(BaseModel):
     document_name: str
@@ -78,14 +79,20 @@ class InvestigationDetail(InvestigationSummary):
 class DocumentInfo(BaseModel):
     id: str
     filename: str
-    upload_date: datetime
+    upload_date: str
     status: str
     size: int
+    pages: Optional[int] = 0
+    chunks: Optional[int] = 0
 
 class DocumentUploadResponse(BaseModel):
     status: str
     message: str
     document_id: str
+    filename: Optional[str] = None
+    size: Optional[int] = None
+    pages: Optional[int] = None
+    chunks: Optional[int] = None
 
 class DashboardStats(BaseModel):
     total_investigations: int
