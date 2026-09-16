@@ -21,6 +21,7 @@ val RoyalBlue900 = Color(0xFF1E3A8A)
 
 val Gold600 = Color(0xFFD97706)
 val Gold700 = Color(0xFFB45309)
+val Gold800 = Color(0xFF92400E)
 
 val RiskHigh = Color(0xFFDC2626)
 val RiskHighBg = Color(0xFFFEF2F2)
