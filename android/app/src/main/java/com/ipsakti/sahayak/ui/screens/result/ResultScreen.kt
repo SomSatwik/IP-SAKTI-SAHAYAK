@@ -206,7 +206,7 @@ fun ResultScreen(
                                     )
                                 )
                                 Spacer(modifier = Modifier.height(10.dp))
-                                Text(
+                                MarkdownText(
                                     text = resp.answer,
                                     style = MaterialTheme.typography.bodyLarge.copy(
                                         color = Navy900,

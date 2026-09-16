@@ -26,6 +26,7 @@ import com.ipsakti.sahayak.data.manager.LanguageManager
 import com.ipsakti.sahayak.data.model.ChatMessage
 import com.ipsakti.sahayak.data.model.SuggestedAction
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
+import com.ipsakti.sahayak.ui.components.MarkdownText
 import com.ipsakti.sahayak.ui.theme.*
 import kotlinx.coroutines.launch
 
@@ -272,7 +273,7 @@ private fun MessageBubble(
                     border = if (isUser) null else BorderStroke(1.dp, CardBorder)
                 ) {
                     Column(modifier = Modifier.padding(14.dp)) {
-                        Text(
+                        MarkdownText(
                             text = message.text,
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 color = if (isUser) Color.White else Navy900,
