@@ -194,3 +194,67 @@ demo_dashboard_stats = DashboardStats(
         {"type": "alert", "id": "alt_09", "title": "New biodiversity compliance rule detected", "time": "3 days ago"}
     ]
 )
+
+demo_regulation_timelines = {
+    "ev_002": {
+        "source_id": "ev_002",
+        "document_name": "Patents Act, 1970",
+        "section": "Section 3(p)",
+        "versions": [
+            {
+                "version_title": "Original Enactment (1970)",
+                "amendment_act": "The Patents Act, 1970 (Act 39 of 1970)",
+                "effective_date": "1972-04-20",
+                "status": "Historical Provision",
+                "summary": "Original statutory exclusions under Section 3 only covered mere aggregations of properties (Section 3(e)). Traditional knowledge was not explicitly excluded.",
+                "diff_segments": [
+                    {"text": "Section 3. What are not inventions.— The following are not inventions within the meaning of this Act,—\n", "type": "unchanged"},
+                    {"text": "(e) a substance obtained by a mere admixture resulting only in the aggregation of the properties of the components thereof or a process for producing such substance;\n", "type": "unchanged"},
+                    {"text": "[Traditional knowledge not explicitly barred under statutory law]", "type": "removed"}
+                ]
+            },
+            {
+                "version_title": "Patents (Amendment) Act, 2002 & 2005",
+                "amendment_act": "Act 38 of 2002 & Act 15 of 2005",
+                "effective_date": "2005-01-01",
+                "status": "In Force (Current Law)",
+                "summary": "Inserted Section 3(p) as an express statutory bar against patenting traditional knowledge and non-synergistic herbal formulations to prevent biopiracy.",
+                "diff_segments": [
+                    {"text": "Section 3. What are not inventions.— The following are not inventions within the meaning of this Act,—\n", "type": "unchanged"},
+                    {"text": "[Traditional knowledge assessed under general admixture rules]\n", "type": "removed"},
+                    {"text": "(p) an invention which in effect, is traditional knowledge or which is an aggregation or duplication of known properties of traditionally known component or components.", "type": "added"}
+                ]
+            }
+        ]
+    },
+    "ev_001": {
+        "source_id": "ev_001",
+        "document_name": "Biological Diversity Act, 2002",
+        "section": "Section 6(1)",
+        "versions": [
+            {
+                "version_title": "Original Enactment (2002)",
+                "amendment_act": "The Biological Diversity Act, 2002 (Act 18 of 2003)",
+                "effective_date": "2002-10-01",
+                "status": "Historical Provision",
+                "summary": "Strictly prohibited applying for any IPR before obtaining approval from the National Biodiversity Authority.",
+                "diff_segments": [
+                    {"text": "Section 6(1): No person shall apply for any intellectual property right, by whatever name called, in or outside India for any invention based on any research or information on a biological resource obtained from India ", "type": "unchanged"},
+                    {"text": "without obtaining the previous approval of the National Biodiversity Authority before making such application.", "type": "removed"}
+                ]
+            },
+            {
+                "version_title": "Biological Diversity (Amendment) Act, 2023",
+                "amendment_act": "Biological Diversity (Amendment) Act, 2023 (Act 10 of 2023)",
+                "effective_date": "2023-08-03",
+                "status": "In Force (Current Law)",
+                "summary": "Streamlined patent workflow: NBA approval is now mandated before GRANT of patent rather than before filing the initial application.",
+                "diff_segments": [
+                    {"text": "Section 6(1): No person shall apply for any intellectual property right, by whatever name called, in or outside India for any invention based on any research or information on a biological resource obtained from India without obtaining the approval of the National Biodiversity Authority: ", "type": "unchanged"},
+                    {"text": "Provided that in case of patent, the approval of the National Biodiversity Authority shall be obtained before the grant of the patent and not before applying for such patent.", "type": "added"}
+                ]
+            }
+        ]
+    }
+}
+

@@ -19,7 +19,8 @@ import com.ipsakti.sahayak.ui.theme.*
 
 @Composable
 fun EvidenceListScreen(
-    onViewEvidence: (String) -> Unit
+    onViewEvidence: (String) -> Unit,
+    onViewVersionHistory: (String) -> Unit = {}
 ) {
     val repository = remember { IpSaktiRepository() }
     val demoInv = remember { repository.getFallbackDemoInvestigation() }
@@ -81,7 +82,8 @@ fun EvidenceListScreen(
                 items(evidenceItems) { ev ->
                     EvidenceCard(
                         evidence = ev,
-                        onClick = { onViewEvidence(ev.id) }
+                        onClick = { onViewEvidence(ev.id) },
+                        onViewVersionHistory = onViewVersionHistory
                     )
                 }
             }

@@ -15,6 +15,7 @@ import com.ipsakti.sahayak.ui.screens.result.ResultScreen
 import com.ipsakti.sahayak.ui.screens.roadmap.ComplianceRoadmapScreen
 import com.ipsakti.sahayak.ui.screens.saved.SavedScreen
 import com.ipsakti.sahayak.ui.screens.settings.SettingsScreen
+import com.ipsakti.sahayak.ui.screens.timemachine.RegulationTimelineScreen
 import com.ipsakti.sahayak.ui.screens.upload.UploadScreen
 
 @Composable
@@ -58,6 +59,9 @@ fun NavGraph(navController: NavHostController) {
             EvidenceListScreen(
                 onViewEvidence = { evidenceId ->
                     navController.navigate(Screen.EvidenceDetail.createRoute(evidenceId))
+                },
+                onViewVersionHistory = { sourceId ->
+                    navController.navigate(Screen.RegulationTimeline.createRoute(sourceId))
                 }
             )
         }
@@ -91,7 +95,21 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onViewRoadmap = { id ->
                     navController.navigate(Screen.ComplianceRoadmap.createRoute(id))
+                },
+                onViewVersionHistory = { sourceId ->
+                    navController.navigate(Screen.RegulationTimeline.createRoute(sourceId))
                 }
+            )
+        }
+
+        composable(
+            route = Screen.RegulationTimeline.route,
+            arguments = listOf(navArgument("sourceId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val sourceId = backStackEntry.arguments?.getString("sourceId") ?: ""
+            RegulationTimelineScreen(
+                sourceId = sourceId,
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 

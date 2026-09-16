@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import com.ipsakti.sahayak.ui.theme.*
 fun EvidenceCard(
     evidence: EvidenceItem,
     onClick: () -> Unit,
+    onViewVersionHistory: ((String) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     val relPercentage = (evidence.relevanceScore * 100).toInt()
@@ -97,7 +99,37 @@ fun EvidenceCard(
                 maxLines = 3
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            // Time Machine Version History Button
+            if (onViewVersionHistory != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(
+                        onClick = {
+                            val targetId = evidence.id.ifEmpty { evidence.source.documentName }
+                            onViewVersionHistory(targetId)
+                        },
+                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.History,
+                            contentDescription = null,
+                            tint = RoyalBlue800,
+                            modifier = Modifier.size(15.dp)
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = "View version history",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                color = RoyalBlue800,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(4.dp))
+            }
 
             // Button to View Full Supporting Evidence
             Button(

@@ -49,4 +49,7 @@ interface IpSaktiApiService {
 
     @POST("api/chat")
     suspend fun sendChatMessage(@Body request: ChatMessageRequest): Response<ChatResponse>
+
+    @GET("api/timeline/{id}")
+    suspend fun getRegulationTimeline(@Path("id") id: String): Response<RegulationTimeline>
 }

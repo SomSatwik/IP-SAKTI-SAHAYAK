@@ -27,6 +27,7 @@ fun ResultScreen(
     onViewEvidence: (String) -> Unit,
     onViewGraph: (String) -> Unit,
     onViewRoadmap: (String) -> Unit,
+    onViewVersionHistory: (String) -> Unit = {},
     viewModel: ResultViewModel = viewModel()
 ) {
     LaunchedEffect(investigationId) {
@@ -249,7 +250,8 @@ fun ResultScreen(
                         items(resp.evidence) { ev ->
                             EvidenceCard(
                                 evidence = ev,
-                                onClick = { onViewEvidence(ev.id) }
+                                onClick = { onViewEvidence(ev.id) },
+                                onViewVersionHistory = onViewVersionHistory
                             )
                         }
                     }

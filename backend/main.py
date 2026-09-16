@@ -18,7 +18,7 @@ from .models import (
 
 from .demo_data import (
     demo_dashboard_stats, demo_investigation, DEMO_INVESTIGATION_ID,
-    get_demo_investigation, get_demo_query_response
+    get_demo_investigation, get_demo_query_response, demo_regulation_timelines
 )
 from .services.query_service import query_service
 from .services.investigation_service import investigation_service
@@ -280,6 +280,17 @@ async def get_dashboard_stats():
 @app.get("/api/demo/investigation", response_model=InvestigationDetail)
 async def get_demo_investigation_endpoint(lang: str = Query("en", description="Language code: en, hi, or")):
     return get_demo_investigation(language=lang)
+
+@app.get("/api/timeline/{source_id}")
+async def get_regulation_timeline(source_id: str):
+    timeline = demo_regulation_timelines.get(source_id)
+    if not timeline:
+        # Match by document name or id substring if possible
+        for k, v in demo_regulation_timelines.items():
+            if k in source_id.lower() or v["document_name"].lower() in source_id.lower():
+                return v
+        return demo_regulation_timelines.get("ev_002")
+    return timeline
 
 if __name__ == "__main__":
     import uvicorn
