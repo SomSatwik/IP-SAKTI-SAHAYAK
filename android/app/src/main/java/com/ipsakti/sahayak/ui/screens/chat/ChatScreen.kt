@@ -26,6 +26,7 @@ import com.ipsakti.sahayak.data.manager.LanguageManager
 import com.ipsakti.sahayak.data.model.ChatMessage
 import com.ipsakti.sahayak.data.model.SuggestedAction
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
+import com.ipsakti.sahayak.ui.components.LiveBuildingEvidenceGraph
 import com.ipsakti.sahayak.ui.components.MarkdownText
 import com.ipsakti.sahayak.ui.theme.*
 import kotlinx.coroutines.launch
@@ -104,26 +105,8 @@ fun ChatScreen(
                                 )
                             }
                             Spacer(modifier = Modifier.width(8.dp))
-                            Card(
-                                shape = RoundedCornerShape(12.dp),
-                                colors = CardDefaults.cardColors(containerColor = CardBackground),
-                                border = BorderStroke(1.dp, CardBorder)
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    CircularProgressIndicator(
-                                        modifier = Modifier.size(14.dp),
-                                        strokeWidth = 2.dp,
-                                        color = RoyalBlue800
-                                    )
-                                    Spacer(modifier = Modifier.width(8.dp))
-                                    Text(
-                                        text = "AyurSakti is evaluating Indian IP & AYUSH provisions...",
-                                        style = MaterialTheme.typography.bodySmall.copy(color = Slate500)
-                                    )
-                                }
+                            Box(modifier = Modifier.weight(1f)) {
+                                LiveBuildingEvidenceGraph()
                             }
                         }
                     }

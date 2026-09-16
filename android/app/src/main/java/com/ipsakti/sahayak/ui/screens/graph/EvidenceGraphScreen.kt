@@ -25,7 +25,9 @@ import androidx.compose.ui.unit.sp
 import com.ipsakti.sahayak.data.model.EvidenceGraphResponse
 import com.ipsakti.sahayak.data.model.GraphNode
 import com.ipsakti.sahayak.data.repository.IpSaktiRepository
+import com.ipsakti.sahayak.ui.components.GraphCanvas
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
+import com.ipsakti.sahayak.ui.components.getNodeColor
 import com.ipsakti.sahayak.ui.theme.*
 import kotlin.math.cos
 import kotlin.math.sin
@@ -173,143 +175,6 @@ fun EvidenceGraphScreen(
 }
 
 @Composable
-private fun GraphCanvas(
-    graph: EvidenceGraphResponse,
-    onNodeSelected: (GraphNode) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    var scale by remember { mutableFloatStateOf(1f) }
-    var offset by remember { mutableStateOf(Offset.Zero) }
-
-    // Pre-compute node positions in a radial layout
-    val nodePositions = remember(graph.nodes) {
-        val positions = mutableMapOf<String, Offset>()
-        val centerX = 500f
-        val centerY = 500f
-
-        // Group by type for layered layout
-        val byType = graph.nodes.groupBy { it.type }
-        val typeOrder = listOf("query", "domain", "source", "risk", "action")
-
-        var layer = 0
-        typeOrder.forEach { type ->
-            val nodesOfType = byType[type] ?: return@forEach
-            val radius = 120f + layer * 160f
-            nodesOfType.forEachIndexed { index, node ->
-                val angle = (2 * Math.PI * index / nodesOfType.size) - Math.PI / 2
-                val x = centerX + radius * cos(angle).toFloat()
-                val y = centerY + radius * sin(angle).toFloat()
-                positions[node.id] = Offset(x, y)
-            }
-            layer++
-        }
-        positions
-    }
-
-    Canvas(
-        modifier = modifier
-            .pointerInput(Unit) {
-                detectTransformGestures { _, pan, zoom, _ ->
-                    scale = (scale * zoom).coerceIn(0.4f, 3f)
-                    offset += pan
-                }
-            }
-            .pointerInput(Unit) {
-                detectTapGestures { tapOffset ->
-                    // Check if tap hit a node
-                    val adjustedTap = Offset(
-                        (tapOffset.x - offset.x) / scale,
-                        (tapOffset.y - offset.y) / scale
-                    )
-                    graph.nodes.forEach { node ->
-                        val pos = nodePositions[node.id] ?: return@forEach
-                        val dist = (adjustedTap - pos).getDistance()
-                        if (dist < 40f) {
-                            onNodeSelected(node)
-                            return@detectTapGestures
-                        }
-                    }
-                }
-            }
-    ) {
-        drawIntoCanvas { canvas ->
-            canvas.save()
-            canvas.translate(offset.x, offset.y)
-            canvas.scale(scale, scale)
-
-            val nativeCanvas = canvas.nativeCanvas
-
-            // Draw edges
-            graph.edges.forEach { edge ->
-                val from = nodePositions[edge.source] ?: return@forEach
-                val to = nodePositions[edge.target] ?: return@forEach
-                drawLine(
-                    color = Slate300,
-                    start = from,
-                    end = to,
-                    strokeWidth = 2f / scale
-                )
-                // Draw relation label
-                val midX = (from.x + to.x) / 2
-                val midY = (from.y + to.y) / 2
-                nativeCanvas.drawText(
-                    edge.relation,
-                    midX,
-                    midY - 8,
-                    Paint().apply {
-                        color = Slate500.toArgb()
-                        textSize = 22f
-                        textAlign = Paint.Align.CENTER
-                        isAntiAlias = true
-                    }
-                )
-            }
-
-            // Draw nodes
-            graph.nodes.forEach { node ->
-                val pos = nodePositions[node.id] ?: return@forEach
-                val nodeColor = getNodeColor(node.type)
-                val nodeRadius = when (node.type) {
-                    "query" -> 35f
-                    "domain" -> 30f
-                    else -> 25f
-                }
-
-                // Circle fill
-                drawCircle(
-                    color = nodeColor,
-                    radius = nodeRadius,
-                    center = pos
-                )
-                // Circle border
-                drawCircle(
-                    color = nodeColor.copy(alpha = 0.4f),
-                    radius = nodeRadius + 4f,
-                    center = pos,
-                    style = androidx.compose.ui.graphics.drawscope.Stroke(width = 2f)
-                )
-
-                // Label
-                nativeCanvas.drawText(
-                    node.label,
-                    pos.x,
-                    pos.y + nodeRadius + 18f,
-                    Paint().apply {
-                        color = Navy900.toArgb()
-                        textSize = 24f
-                        textAlign = Paint.Align.CENTER
-                        isAntiAlias = true
-                        isFakeBoldText = true
-                    }
-                )
-            }
-
-            canvas.restore()
-        }
-    }
-}
-
-@Composable
 private fun LegendItem(label: String, color: Color) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -323,16 +188,5 @@ private fun LegendItem(label: String, color: Color) {
             text = label,
             style = MaterialTheme.typography.labelSmall.copy(color = Navy800, fontSize = 11.sp)
         )
-    }
-}
-
-private fun getNodeColor(type: String): Color {
-    return when (type) {
-        "query" -> Color(0xFF6366F1)
-        "domain" -> Color(0xFF2563EB)
-        "source" -> Color(0xFF16A34A)
-        "risk" -> Color(0xFFDC2626)
-        "action" -> Color(0xFF7C3AED)
-        else -> Color(0xFF64748B)
     }
 }
