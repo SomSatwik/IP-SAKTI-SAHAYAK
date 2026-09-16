@@ -1,5 +1,12 @@
 package com.ipsakti.sahayak.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,11 +20,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ipsakti.sahayak.ui.theme.*
+import kotlinx.coroutines.delay
 
 @Composable
 fun ConfidenceMeter(
@@ -27,6 +36,17 @@ fun ConfidenceMeter(
 ) {
     var showExplanationDialog by remember { mutableStateOf(false) }
     val percentage = (confidence * 100).toInt()
+
+    // Animate percentage counting up from 0 to target over ~800ms
+    val animatedPercentage = remember { Animatable(0f) }
+    LaunchedEffect(confidence) {
+        animatedPercentage.snapTo(0f)
+        animatedPercentage.animateTo(
+            targetValue = percentage.toFloat(),
+            animationSpec = tween(durationMillis = 800)
+        )
+    }
+    val currentDisplayPercentage = animatedPercentage.value.toInt()
 
     val (levelText, meterColor) = when {
         percentage >= 80 -> "Strong Evidence Grounding" to Color(0xFF16A34A)
@@ -55,7 +75,7 @@ fun ConfidenceMeter(
                         )
                     )
                     Text(
-                        text = "$percentage%",
+                        text = "$currentDisplayPercentage%",
                         style = MaterialTheme.typography.headlineMedium.copy(
                             fontWeight = FontWeight.Bold,
                             color = Navy900
@@ -81,9 +101,9 @@ fun ConfidenceMeter(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Progress bar
+            // Animated Progress bar
             LinearProgressIndicator(
-                progress = { confidence.coerceIn(0f, 1f) },
+                progress = { (animatedPercentage.value / 100f).coerceIn(0f, 1f) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp)
@@ -122,6 +142,25 @@ fun ConfidenceMeter(
     }
 
     if (showExplanationDialog) {
+        val signals = remember(sourceCount, percentage) {
+            listOf(
+                "Supported by $sourceCount authoritative statutory & regulatory sources" to (sourceCount > 0),
+                "High semantic retrieval similarity score (avg > 0.85)" to (percentage >= 70),
+                "Statutory section match (e.g. Patents Act Sec 3p & Biodiversity Act Sec 6)" to true,
+                "Document version verified (current in-force amendment checked)" to true,
+                "Multi-source agreement across IP & Ayush regulatory frameworks" to (percentage >= 80)
+            )
+        }
+
+        var visibleItemCount by remember { mutableIntStateOf(0) }
+        LaunchedEffect(showExplanationDialog) {
+            visibleItemCount = 0
+            for (i in 1..signals.size) {
+                delay(150)
+                visibleItemCount = i
+            }
+        }
+
         AlertDialog(
             onDismissRequest = { showExplanationDialog = false },
             title = {
@@ -137,26 +176,20 @@ fun ConfidenceMeter(
                         style = MaterialTheme.typography.bodyMedium
                     )
 
-                    SignalItem(
-                        text = "Supported by $sourceCount authoritative statutory & regulatory sources",
-                        isPositive = sourceCount > 0
-                    )
-                    SignalItem(
-                        text = "High semantic retrieval similarity score (avg > 0.85)",
-                        isPositive = percentage >= 70
-                    )
-                    SignalItem(
-                        text = "Statutory section match (e.g. Patents Act Sec 3p & Biodiversity Act Sec 6)",
-                        isPositive = true
-                    )
-                    SignalItem(
-                        text = "Document version verified (current in-force amendment checked)",
-                        isPositive = true
-                    )
-                    SignalItem(
-                        text = "Multi-source agreement across IP & Ayush regulatory frameworks",
-                        isPositive = percentage >= 80
-                    )
+                    signals.forEachIndexed { index, (text, isPositive) ->
+                        AnimatedVisibility(
+                            visible = index < visibleItemCount,
+                            enter = fadeIn(animationSpec = tween(200)) + slideInVertically(
+                                initialOffsetY = { it / 2 },
+                                animationSpec = tween(200)
+                            )
+                        ) {
+                            SignalItem(
+                                text = text,
+                                isPositive = isPositive
+                            )
+                        }
+                    }
                 }
             },
             confirmButton = {
@@ -170,6 +203,17 @@ fun ConfidenceMeter(
 
 @Composable
 private fun SignalItem(text: String, isPositive: Boolean) {
+    val checkmarkScale = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        checkmarkScale.animateTo(
+            targetValue = 1f,
+            animationSpec = spring(
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                stiffness = Spring.StiffnessLow
+            )
+        )
+    }
+
     Row(
         verticalAlignment = Alignment.Top,
         modifier = Modifier.fillMaxWidth()
@@ -180,6 +224,7 @@ private fun SignalItem(text: String, isPositive: Boolean) {
             tint = if (isPositive) Color(0xFF16A34A) else Slate400,
             modifier = Modifier
                 .size(18.dp)
+                .scale(checkmarkScale.value)
                 .padding(top = 2.dp)
         )
         Spacer(modifier = Modifier.width(8.dp))
