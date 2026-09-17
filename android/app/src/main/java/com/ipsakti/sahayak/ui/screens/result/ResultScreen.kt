@@ -152,7 +152,8 @@ fun ResultScreen(
                     item {
                         ConfidenceMeter(
                             confidence = resp.confidence,
-                            sourceCount = resp.evidence.size
+                            sourceCount = resp.evidence.size,
+                            citationVerified = resp.citationVerified
                         )
                     }
 

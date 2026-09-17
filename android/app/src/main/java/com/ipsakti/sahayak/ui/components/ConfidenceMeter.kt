@@ -32,6 +32,7 @@ import kotlinx.coroutines.delay
 fun ConfidenceMeter(
     confidence: Float,
     sourceCount: Int = 4,
+    citationVerified: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     var showExplanationDialog by remember { mutableStateOf(false) }
@@ -142,9 +143,10 @@ fun ConfidenceMeter(
     }
 
     if (showExplanationDialog) {
-        val signals = remember(sourceCount, percentage) {
+        val signals = remember(sourceCount, percentage, citationVerified) {
             listOf(
                 "Supported by $sourceCount authoritative statutory & regulatory sources" to (sourceCount > 0),
+                "Citation verified against source text: ${if (citationVerified) "Yes" else "No"}" to citationVerified,
                 "High semantic retrieval similarity score (avg > 0.85)" to (percentage >= 70),
                 "Statutory section match (e.g. Patents Act Sec 3p & Biodiversity Act Sec 6)" to true,
                 "Document version verified (current in-force amendment checked)" to true,
