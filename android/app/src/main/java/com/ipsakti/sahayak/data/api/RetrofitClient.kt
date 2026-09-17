@@ -30,6 +30,9 @@ object RetrofitClient {
 
     fun getBaseUrl(): String = currentBaseUrl
 
+    val apiService: IpSaktiApiService
+        get() = getService()
+
     fun updateBaseUrl(newUrl: String) {
         var formatted = newUrl.trim()
         if (!formatted.endsWith("/")) {

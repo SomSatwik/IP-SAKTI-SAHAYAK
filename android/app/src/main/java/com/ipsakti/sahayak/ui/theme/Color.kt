@@ -13,6 +13,9 @@ val Slate300 = Color(0xFFCBD5E1)
 val Slate400 = Color(0xFF94A3B8)
 val Slate500 = Color(0xFF64748B)
 val Slate600 = Color(0xFF475569)
+val Slate700 = Color(0xFF334155)
+val Slate800 = Color(0xFF1E293B)
+val Slate900 = Color(0xFF0F172A)
 
 val RoyalBlue600 = Color(0xFF2563EB)
 val RoyalBlue700 = Color(0xFF1D4ED8)
@@ -25,10 +28,15 @@ val Gold800 = Color(0xFF92400E)
 
 val RiskHigh = Color(0xFFDC2626)
 val RiskHighBg = Color(0xFFFEF2F2)
+val RiskHighBorder = Color(0xFFFCA5A5)
+
 val RiskMedium = Color(0xFFD97706)
 val RiskMediumBg = Color(0xFFFFFBEB)
+val RiskMediumBorder = Color(0xFFFDE68A)
+
 val RiskLow = Color(0xFF16A34A)
 val RiskLowBg = Color(0xFFF0FDF4)
+val RiskLowBorder = Color(0xFF86EFAC)
 
 val CardBorder = Color(0xFFE2E8F0)
 val CardBackground = Color(0xFFFFFFFF)

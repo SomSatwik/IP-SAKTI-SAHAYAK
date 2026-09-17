@@ -74,15 +74,8 @@ fun PriorArtSearchScreen(
             IpTopAppBar(
                 title = "Prior Art Patent Search",
                 subtitle = "Formulation & Botanical Patentability Clearance",
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back",
-                            tint = Color.White
-                        )
-                    }
-                }
+                canNavigateBack = true,
+                onNavigateBack = onNavigateBack
             )
         },
         containerColor = Slate50
@@ -383,11 +376,31 @@ private fun BotanicalItemRow(bot: BotanicalInfo) {
 
 @Composable
 private fun PatentCardItem(patent: PatentRecord) {
-    val (statusBg, statusTextColor, statusBorder) = when {
-        patent.status.contains("Revoked", ignoreCase = true) -> Triple(RiskHighBg, RiskHigh, RiskHighBorder)
-        patent.status.contains("Granted", ignoreCase = true) -> Triple(RiskLowBg, RiskLow, RiskLowBorder)
-        patent.status.contains("Opposed", ignoreCase = true) -> Triple(RiskHighBg, Color(0xFFC2410C), RiskHighBorder)
-        else -> Triple(RiskMediumBg, RiskMedium, RiskMediumBorder)
+    val statusBg: Color
+    val statusTextColor: Color
+    val statusBorder: Color
+
+    when {
+        patent.status.contains("Revoked", ignoreCase = true) -> {
+            statusBg = RiskHighBg
+            statusTextColor = RiskHigh
+            statusBorder = RiskHighBorder
+        }
+        patent.status.contains("Granted", ignoreCase = true) -> {
+            statusBg = RiskLowBg
+            statusTextColor = RiskLow
+            statusBorder = RiskLowBorder
+        }
+        patent.status.contains("Opposed", ignoreCase = true) -> {
+            statusBg = RiskHighBg
+            statusTextColor = Color(0xFFC2410C)
+            statusBorder = RiskHighBorder
+        }
+        else -> {
+            statusBg = RiskMediumBg
+            statusTextColor = RiskMedium
+            statusBorder = RiskMediumBorder
+        }
     }
 
     Card(

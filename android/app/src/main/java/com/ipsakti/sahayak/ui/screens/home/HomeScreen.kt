@@ -28,6 +28,7 @@ import com.ipsakti.sahayak.data.model.InvestigationSummary
 import com.ipsakti.sahayak.data.model.RegulationUpdate
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
 import com.ipsakti.sahayak.ui.theme.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeScreen(
