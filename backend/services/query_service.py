@@ -117,10 +117,13 @@ class QueryService:
                 for idx, src in enumerate(result["sources"]):
                     if isinstance(src, dict):
                         doc_name = src.get("document_name", f"Authoritative Source {idx+1}")
+                        from ..pipeline.jurisdiction import jurisdiction_detector
+                        detected_jur = jurisdiction_detector.detect(f"{doc_name} {src.get('section', '')} {src.get('authority', '')}")
+                        jur_val = src.get("jurisdiction") or detected_jur["jurisdiction"]
                         source_item = SourceItem(
                             document_name=doc_name,
                             authority=src.get("authority"),
-                            jurisdiction=src.get("jurisdiction", "India"),
+                            jurisdiction=jur_val,
                             section=src.get("section"),
                             page=str(src.get("page", "")),
                             version=src.get("version"),
@@ -146,10 +149,14 @@ class QueryService:
                     metadata = getattr(ev, "metadata", {}) if hasattr(ev, "metadata") else {}
                     doc_name = metadata.get("document_name") or metadata.get("source") or f"Document {idx+1}"
                     
+                    from ..pipeline.jurisdiction import jurisdiction_detector
+                    detected_jur = jurisdiction_detector.detect(f"{doc_name} {metadata.get('section', '')} {metadata.get('authority', '')}")
+                    jur_val = metadata.get("jurisdiction") or detected_jur["jurisdiction"]
+                    
                     source_item = SourceItem(
                         document_name=doc_name,
                         authority=metadata.get("authority", "Statutory Authority"),
-                        jurisdiction=metadata.get("jurisdiction", "India"),
+                        jurisdiction=jur_val,
                         section=metadata.get("section", "General"),
                         page=str(metadata.get("page", "")),
                         version=metadata.get("version"),

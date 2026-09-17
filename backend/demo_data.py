@@ -52,6 +52,17 @@ demo_source_4 = SourceItem(
     content="Benefit sharing obligation applies to persons who access biological resources for commercial utilization or bio-survey and bio-utilization."
 )
 
+demo_source_5 = SourceItem(
+    document_name="WIPO Patent Cooperation Treaty (PCT) Guidelines",
+    authority="World Intellectual Property Organization (WIPO)",
+    jurisdiction="International (WIPO/PCT)",
+    section="Rule 4.10 & Article 8",
+    version="2024",
+    effective_date="2024-05-24",
+    source_url="https://www.wipo.int/pct/en/",
+    content="International patent applications claiming priority on genetic resources or associated traditional knowledge require mandatory declaration of source and country of origin."
+)
+
 demo_evidence = [
     EvidenceItem(
         id="ev_001", title="NBA Approval Requirement", summary="Must obtain prior approval from the National Biodiversity Authority (NBA) before filing any IP application based on Indian biological resources.", source=demo_source_1, relevance_score=0.95
@@ -64,6 +75,9 @@ demo_evidence = [
     ),
     EvidenceItem(
         id="ev_004", title="Access and Benefit Sharing (ABS)", summary="Commercial utilization of the formulation will trigger ABS obligations under the 2014 Guidelines.", source=demo_source_4, relevance_score=0.85
+    ),
+    EvidenceItem(
+        id="ev_005", title="International Patent Filing & WIPO Disclosure", summary="Foreign IP filing via PCT routes triggers international disclosure requirements for genetic resources under WIPO treaties.", source=demo_source_5, relevance_score=0.81
     )
 ]
 

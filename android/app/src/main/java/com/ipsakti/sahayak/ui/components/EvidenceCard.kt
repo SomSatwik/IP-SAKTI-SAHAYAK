@@ -74,19 +74,20 @@ fun EvidenceCard(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            // Metadata Row: Section, Page, Jurisdiction, Version
+            // Metadata Row: Jurisdiction badge, Section, Page
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                evidence.source.jurisdiction?.let { jur ->
+                    JurisdictionBadge(jurisdiction = jur)
+                }
                 evidence.source.section?.let { sec ->
                     MetaBadge(label = "Sec", value = sec)
                 }
                 evidence.source.page?.let { pg ->
                     MetaBadge(label = "Page", value = pg)
-                }
-                evidence.source.jurisdiction?.let { jur ->
-                    MetaBadge(label = "Jurisdiction", value = jur)
                 }
             }
 
@@ -177,3 +178,39 @@ private fun MetaBadge(label: String, value: String) {
         )
     }
 }
+
+@Composable
+private fun JurisdictionBadge(jurisdiction: String) {
+    val isInternational = jurisdiction.contains("International", ignoreCase = true) ||
+            jurisdiction.contains("WIPO", ignoreCase = true) ||
+            jurisdiction.contains("PCT", ignoreCase = true) ||
+            jurisdiction.contains("USPTO", ignoreCase = true) ||
+            jurisdiction.contains("EPO", ignoreCase = true)
+
+    val bgColor = if (isInternational) RoyalBlue800.copy(alpha = 0.10f) else Color(0xFF16A34A).copy(alpha = 0.10f)
+    val textColor = if (isInternational) RoyalBlue800 else Color(0xFF15803D)
+    val borderColor = if (isInternational) RoyalBlue800.copy(alpha = 0.35f) else Color(0xFF16A34A).copy(alpha = 0.35f)
+    val displayText = if (isInternational) {
+        if (jurisdiction.contains("PCT") || jurisdiction.contains("WIPO")) "🌐 International (WIPO/PCT)"
+        else "🌐 $jurisdiction"
+    } else {
+        if (jurisdiction.equals("India", ignoreCase = true)) "🇮🇳 India-Specific" else "🇮🇳 $jurisdiction"
+    }
+
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = bgColor,
+        border = BorderStroke(1.dp, borderColor)
+    ) {
+        Text(
+            text = displayText,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+            style = MaterialTheme.typography.labelSmall.copy(
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Bold,
+                color = textColor
+            )
+        )
+    }
+}
+
