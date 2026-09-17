@@ -27,6 +27,7 @@ import com.ipsakti.sahayak.data.manager.PersonaType
 import com.ipsakti.sahayak.data.model.InvestigationSummary
 import com.ipsakti.sahayak.data.model.RegulationUpdate
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
+import com.ipsakti.sahayak.ui.screens.home.personas.*
 import com.ipsakti.sahayak.ui.theme.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -41,6 +42,7 @@ fun HomeScreen(
     onOpenWizard: () -> Unit = {},
     onOpenExportReadiness: () -> Unit = {},
     onOpenCraft: () -> Unit = {},
+    onOpenChatWithQuery: (String, Boolean) -> Unit = { _, _ -> onOpenChat() },
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -55,6 +57,13 @@ fun HomeScreen(
                 subtitle = com.ipsakti.sahayak.data.manager.LanguageManager.getString("app_tagline"),
                 isOnline = uiState.isOnline,
                 actions = {
+                    IconButton(onClick = onOpenCraft) {
+                        Icon(
+                            imageVector = Icons.Default.Science,
+                            contentDescription = "Formulation Novelty Lab (Infinite Craft)",
+                            tint = Gold600
+                        )
+                    }
                     IconButton(onClick = onOpenChat) {
                         Icon(
                             imageVector = Icons.Default.Chat,
@@ -162,477 +171,43 @@ fun HomeScreen(
                 }
             }
 
-            // Hero / Start Investigation Action Card
+            // Dynamic Persona-Specific Dashboard
             item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Navy900),
-                    border = BorderStroke(1.dp, Navy700)
-                ) {
-                    Column(modifier = Modifier.padding(20.dp)) {
-                        Text(
-                            text = "START NEW IP INVESTIGATION",
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                color = Gold600,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 1.sp
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = "Analyze Patents, TK, Ayurveda & Biodiversity",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(6.dp))
-                        Text(
-                            text = "Ground your IP strategy with authoritative statutory evidence, risk flags & compliance roadmaps.",
-                            style = MaterialTheme.typography.bodyMedium.copy(color = Slate300)
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                            Button(
-                                onClick = onStartInvestigation,
-                                modifier = Modifier.weight(1f),
-                                colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
-                                shape = RoundedCornerShape(8.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("start_investigation"),
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-
-                            OutlinedButton(
-                                onClick = onLoadDemoCase,
-                                modifier = Modifier.weight(1f),
-                                shape = RoundedCornerShape(8.dp),
-                                border = BorderStroke(1.dp, Gold600),
-                                colors = ButtonDefaults.outlinedButtonColors(contentColor = Gold600)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.AutoAwesome,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Text(
-                                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("load_demo"),
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Persona-Tailored Recommended Prompts Chips
-            item {
-                Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "SUGGESTED FOR ${currentPersona.title.uppercase()}",
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = Slate500,
-                                letterSpacing = 1.sp
-                            )
-                        )
-                        Text(
-                            text = currentPersona.focusArea.split(",").firstOrNull() ?: "",
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                color = RoyalBlue800,
-                                fontWeight = FontWeight.Medium,
-                                fontSize = 10.sp
-                            )
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        items(currentPersona.suggestedPrompts) { prompt ->
-                            Surface(
-                                shape = RoundedCornerShape(16.dp),
-                                color = CardBackground,
-                                border = BorderStroke(1.dp, CardBorder),
-                                modifier = Modifier.clickable { onOpenChat() }
-                            ) {
-                                Row(
-                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Search,
-                                        contentDescription = null,
-                                        tint = RoyalBlue800,
-                                        modifier = Modifier.size(14.dp)
-                                    )
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    Text(
-                                        text = prompt,
-                                        style = MaterialTheme.typography.bodySmall.copy(
-                                            color = Navy900,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 12.sp
-                                        )
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // AyurSakti Chatbot / Doubt Clearing Assistant Card
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = CardBackground),
-                    border = BorderStroke(1.dp, CardBorder)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(44.dp)
-                                .clip(CircleShape)
-                                .background(RoyalBlue800.copy(alpha = 0.12f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Chat,
-                                contentDescription = null,
-                                tint = RoyalBlue800,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(14.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("chat_card_title"),
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        color = Navy900
-                                    )
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Surface(
-                                    shape = RoundedCornerShape(4.dp),
-                                    color = Gold600.copy(alpha = 0.2f)
-                                ) {
-                                    Text(
-                                        text = "AI GUIDE",
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                        style = MaterialTheme.typography.labelSmall.copy(
-                                            color = Gold800,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 9.sp
-                                        )
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("chat_card_desc"),
-                                style = MaterialTheme.typography.bodySmall.copy(color = Slate500, fontSize = 11.sp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        IconButton(
-                            onClick = onOpenChat,
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clip(CircleShape)
-                                .background(RoyalBlue800)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.ArrowForward,
-                                contentDescription = "Open Chat",
-                                tint = Color.White,
-                                modifier = Modifier.size(16.dp)
-                            )
-                        }
-                    }
-                }
-            }
-
-            // Prior Art Patent Search Card
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onOpenPriorArt() },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = Slate100),
-                    border = BorderStroke(1.dp, CardBorder)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .background(RoyalBlue800.copy(alpha = 0.12f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Policy,
-                                contentDescription = null,
-                                tint = RoyalBlue800,
-                                modifier = Modifier.size(20.dp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "Prior-Art Patent Search Registry",
-                                style = MaterialTheme.typography.titleSmall.copy(
-                                    fontWeight = FontWeight.Bold,
-                                    color = Navy900
-                                )
-                            )
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = "Screen formulations against granted/revoked patents & TKDL prior art",
-                                style = MaterialTheme.typography.bodySmall.copy(color = Slate600, fontSize = 11.sp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.Default.ArrowForward,
-                            contentDescription = "Search Prior Art",
-                            tint = RoyalBlue800,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
-            }
-
-            // Product Classification Wizard Card
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onOpenWizard() },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = Slate100),
-                    border = BorderStroke(1.dp, CardBorder)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .background(Color(0xFF0D9488).copy(alpha = 0.15f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "🧭", fontSize = 20.sp)
-                        }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = "Product Classification Wizard",
-                                    style = MaterialTheme.typography.titleSmall.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        color = Navy900
-                                    )
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Surface(
-                                    shape = RoundedCornerShape(4.dp),
-                                    color = Color(0xFF0D9488).copy(alpha = 0.15f)
-                                ) {
-                                    Text(
-                                        text = "DECISION TREE",
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                        style = MaterialTheme.typography.labelSmall.copy(
-                                            color = Color(0xFF0D9488),
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 9.sp
-                                        )
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = "5-step interactive tree to route product between AYUSH, FSSAI & CDSCO",
-                                style = MaterialTheme.typography.bodySmall.copy(color = Slate600, fontSize = 11.sp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Open Wizard",
-                            tint = Color(0xFF0D9488),
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
-            }
-
-            // Cross-Border Export Readiness Checklist Card
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onOpenExportReadiness() },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = Slate100),
-                    border = BorderStroke(1.dp, CardBorder)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .background(RoyalBlue800.copy(alpha = 0.12f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "🌐", fontSize = 20.sp)
-                        }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = "Export Readiness Checklist",
-                                    style = MaterialTheme.typography.titleSmall.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        color = Navy900
-                                    )
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Surface(
-                                    shape = RoundedCornerShape(4.dp),
-                                    color = RoyalBlue800.copy(alpha = 0.15f)
-                                ) {
-                                    Text(
-                                        text = "US FDA • EU",
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                        style = MaterialTheme.typography.labelSmall.copy(
-                                            color = RoyalBlue800,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 9.sp
-                                        )
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = "Cross-border heavy metal limits, DSHEA disclaimers & CoPP audit checklist",
-                                style = MaterialTheme.typography.bodySmall.copy(color = Slate600, fontSize = 11.sp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Open Export Checklist",
-                            tint = RoyalBlue800,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
-            }
-
-            // Formulation Novelty Lab ("Infinite Craft" Game) Card
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { onOpenCraft() },
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = Slate100),
-                    border = BorderStroke(1.dp, CardBorder)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(14.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .background(Gold600.copy(alpha = 0.2f)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(text = "⚗️", fontSize = 20.sp)
-                        }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(
-                                    text = "Formulation Novelty Lab",
-                                    style = MaterialTheme.typography.titleSmall.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        color = Navy900
-                                    )
-                                )
-                                Spacer(modifier = Modifier.width(6.dp))
-                                Surface(
-                                    shape = RoundedCornerShape(4.dp),
-                                    color = Gold600.copy(alpha = 0.2f)
-                                ) {
-                                    Text(
-                                        text = "INFINITE CRAFT",
-                                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
-                                        style = MaterialTheme.typography.labelSmall.copy(
-                                            color = Gold800,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 9.sp
-                                        )
-                                    )
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(2.dp))
-                            Text(
-                                text = "Combine traditional botanicals in a crucible to test TKDL novelty & Section 3(e) synergy",
-                                style = MaterialTheme.typography.bodySmall.copy(color = Slate600, fontSize = 11.sp)
-                            )
-                        }
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = "Open Novelty Lab",
-                            tint = Gold800,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
+                when (currentPersona) {
+                    PersonaType.PRACTITIONER -> PractitionerDashboard(
+                        onStartInvestigation = onStartInvestigation,
+                        onOpenInvestigation = onOpenInvestigation,
+                        onOpenChatWithQuery = onOpenChatWithQuery,
+                        onOpenCraft = onOpenCraft,
+                        onOpenWizard = onOpenWizard
+                    )
+                    PersonaType.RESEARCHER -> ResearcherDashboard(
+                        onStartInvestigation = onStartInvestigation,
+                        onOpenInvestigation = onOpenInvestigation,
+                        onOpenChatWithQuery = onOpenChatWithQuery,
+                        onOpenPriorArt = onOpenPriorArt,
+                        onOpenCraft = onOpenCraft
+                    )
+                    PersonaType.AYUSH_STARTUP -> StartupDashboard(
+                        onStartInvestigation = onStartInvestigation,
+                        onOpenInvestigation = onOpenInvestigation,
+                        onOpenChatWithQuery = onOpenChatWithQuery,
+                        onOpenWizard = onOpenWizard,
+                        onOpenPriorArt = onOpenPriorArt,
+                        onOpenExportReadiness = onOpenExportReadiness
+                    )
+                    PersonaType.MSME -> MsmeDashboard(
+                        onStartInvestigation = onStartInvestigation,
+                        onOpenInvestigation = onOpenInvestigation,
+                        onOpenChatWithQuery = onOpenChatWithQuery,
+                        onOpenExportReadiness = onOpenExportReadiness,
+                        onOpenUpload = onOpenUpload
+                    )
+                    PersonaType.CULTIVATOR -> CultivatorDashboard(
+                        onStartInvestigation = onStartInvestigation,
+                        onOpenInvestigation = onOpenInvestigation,
+                        onOpenChatWithQuery = onOpenChatWithQuery
+                    )
                 }
             }
 

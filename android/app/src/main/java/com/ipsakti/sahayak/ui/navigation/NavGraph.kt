@@ -55,6 +55,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onOpenCraft = {
                     navController.navigate(Screen.FormulationCraft.route)
+                },
+                onOpenChatWithQuery = { query, autoSend ->
+                    navController.navigate(Screen.Chat.createRoute(query, autoSend = autoSend))
                 }
             )
         }
@@ -122,6 +125,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onViewVersionHistory = { sourceId ->
                     navController.navigate(Screen.RegulationTimeline.createRoute(sourceId))
+                },
+                onAskAyurBot = { query ->
+                    navController.navigate(Screen.Chat.createRoute(query, autoSend = true))
                 }
             )
         }
@@ -166,7 +172,10 @@ fun NavGraph(navController: NavHostController) {
             val investigationId = backStackEntry.arguments?.getString("investigationId") ?: ""
             ComplianceRoadmapScreen(
                 investigationId = investigationId,
-                onNavigateBack = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() },
+                onAskAyurBot = { query ->
+                    navController.navigate(Screen.Chat.createRoute(query, autoSend = true))
+                }
             )
         }
 
@@ -176,13 +185,41 @@ fun NavGraph(navController: NavHostController) {
             )
         }
 
-        composable(Screen.Chat.route) {
+        composable(
+            route = Screen.Chat.route,
+            arguments = listOf(
+                navArgument("initialQuery") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("autoSend") {
+                    type = NavType.BoolType
+                    defaultValue = false
+                }
+            )
+        ) { backStackEntry ->
+            val rawQuery = backStackEntry.arguments?.getString("initialQuery")
+            val decodedQuery = rawQuery?.let {
+                try {
+                    java.net.URLDecoder.decode(it, "UTF-8")
+                } catch (e: Exception) {
+                    it
+                }
+            }
+            val autoSend = backStackEntry.arguments?.getBoolean("autoSend") ?: false
+
             com.ipsakti.sahayak.ui.screens.chat.ChatScreen(
+                initialQuery = decodedQuery,
+                autoSend = autoSend,
                 onNavigateBack = { navController.popBackStack() },
                 onNavigateToFeature = { targetScreen, payload ->
                     when (targetScreen) {
                         "investigate" -> {
                             navController.navigate(Screen.Investigate.route)
+                        }
+                        "prior_art" -> {
+                            navController.navigate(Screen.PriorArtSearch.route)
                         }
                         "upload" -> {
                             navController.navigate(Screen.DocumentUpload.route)

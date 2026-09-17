@@ -26,13 +26,15 @@ import com.ipsakti.sahayak.data.model.ComplianceReportResponse
 import com.ipsakti.sahayak.data.model.RoadmapStep
 import com.ipsakti.sahayak.data.repository.IpSaktiRepository
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
+import com.ipsakti.sahayak.ui.screens.chat.ChatContextHelper
 import com.ipsakti.sahayak.ui.theme.*
 import kotlinx.coroutines.launch
 
 @Composable
 fun ComplianceRoadmapScreen(
     investigationId: String,
-    onNavigateBack: () -> Unit
+    onNavigateBack: () -> Unit,
+    onAskAyurBot: ((String) -> Unit)? = null
 ) {
     val repository = remember { IpSaktiRepository() }
     val demoInv = remember { repository.getFallbackDemoInvestigation() }
@@ -97,7 +99,8 @@ fun ComplianceRoadmapScreen(
                 RoadmapStepItem(
                     stepNumber = index + 1,
                     step = step,
-                    isLast = index == steps.lastIndex
+                    isLast = index == steps.lastIndex,
+                    onAskAyurBot = onAskAyurBot
                 )
             }
 
@@ -330,7 +333,8 @@ fun ComplianceRoadmapScreen(
 private fun RoadmapStepItem(
     stepNumber: Int,
     step: RoadmapStep,
-    isLast: Boolean
+    isLast: Boolean,
+    onAskAyurBot: ((String) -> Unit)? = null
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -462,6 +466,37 @@ private fun RoadmapStepItem(
                                 fontWeight = FontWeight.Bold
                             )
                         )
+                    }
+
+                    if (onAskAyurBot != null) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        OutlinedButton(
+                            onClick = {
+                                val prompt = ChatContextHelper.forComplianceStep(step.title, step.description)
+                                onAskAyurBot(prompt)
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(6.dp),
+                            border = BorderStroke(1.dp, RoyalBlue800.copy(alpha = 0.4f)),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = RoyalBlue800)
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Default.AutoAwesome,
+                                    contentDescription = null,
+                                    tint = Gold700,
+                                    modifier = Modifier.size(14.dp)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text(
+                                    text = "Ask AyurBot for Step Guidance",
+                                    style = MaterialTheme.typography.labelSmall.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = RoyalBlue800
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }

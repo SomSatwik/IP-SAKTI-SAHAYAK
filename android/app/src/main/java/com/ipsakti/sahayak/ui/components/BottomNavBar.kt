@@ -13,12 +13,16 @@ import com.ipsakti.sahayak.ui.navigation.Screen
 import com.ipsakti.sahayak.ui.navigation.bottomNavItems
 import com.ipsakti.sahayak.ui.theme.*
 
+import com.ipsakti.sahayak.data.manager.PersonaManager
+import com.ipsakti.sahayak.data.manager.PersonaType
+
 @Composable
 fun BottomNavBar(
     currentRoute: String?,
     onNavigate: (String) -> Unit
 ) {
     val currentLang by LanguageManager.currentLanguage.collectAsState()
+    val currentPersona by PersonaManager.currentPersona.collectAsState()
 
     NavigationBar(
         containerColor = Navy900,
@@ -29,8 +33,20 @@ fun BottomNavBar(
             val isSelected = currentRoute == screen.route
             val localizedTitle = when (screen) {
                 Screen.Home -> LanguageManager.getString("nav_home")
-                Screen.Investigate -> LanguageManager.getString("nav_investigate")
-                Screen.EvidenceList -> LanguageManager.getString("nav_evidence")
+                Screen.Investigate -> when (currentPersona) {
+                    PersonaType.PRACTITIONER -> "Formulations"
+                    PersonaType.RESEARCHER -> "Novelty R&D"
+                    PersonaType.AYUSH_STARTUP -> "Fast-Track"
+                    PersonaType.MSME -> "Licensing"
+                    PersonaType.CULTIVATOR -> "Biodiversity"
+                }
+                Screen.EvidenceList -> when (currentPersona) {
+                    PersonaType.PRACTITIONER -> "API Standards"
+                    PersonaType.RESEARCHER -> "Citations"
+                    PersonaType.AYUSH_STARTUP -> "Clearances"
+                    PersonaType.MSME -> "GMP & Rules"
+                    PersonaType.CULTIVATOR -> "ABS Rules"
+                }
                 Screen.Saved -> LanguageManager.getString("nav_saved")
                 Screen.Settings -> LanguageManager.getString("nav_settings")
                 else -> screen.title

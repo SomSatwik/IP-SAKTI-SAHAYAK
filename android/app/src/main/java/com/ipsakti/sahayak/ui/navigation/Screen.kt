@@ -31,7 +31,16 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
 
     object DocumentUpload : Screen("document_upload", "Ingest Document")
 
-    object Chat : Screen("chat", "AyurBot", Icons.Default.AutoAwesome)
+    object Chat : Screen("chat?initialQuery={initialQuery}&autoSend={autoSend}", "AyurBot", Icons.Default.AutoAwesome) {
+        fun createRoute(initialQuery: String? = null, autoSend: Boolean = false): String {
+            return if (initialQuery.isNullOrBlank()) {
+                "chat"
+            } else {
+                val encoded = java.net.URLEncoder.encode(initialQuery, "UTF-8")
+                "chat?initialQuery=$encoded&autoSend=$autoSend"
+            }
+        }
+    }
 
     object RegulationTimeline : Screen("timeline/{sourceId}", "Regulation Time Machine") {
         fun createRoute(sourceId: String) = "timeline/$sourceId"

@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ipsakti.sahayak.data.manager.LanguageManager
 import com.ipsakti.sahayak.data.model.ChatMessage
 import com.ipsakti.sahayak.data.model.SuggestedAction
+import androidx.compose.runtime.saveable.rememberSaveable
 import com.ipsakti.sahayak.ui.components.DomainChip
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
 import com.ipsakti.sahayak.ui.components.LiveBuildingEvidenceGraph
@@ -36,12 +37,27 @@ import kotlinx.coroutines.launch
 fun ChatScreen(
     onNavigateBack: () -> Unit,
     onNavigateToFeature: (targetScreen: String, payload: String?) -> Unit,
+    initialQuery: String? = null,
+    autoSend: Boolean = false,
     viewModel: ChatViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val currentLang by LanguageManager.currentLanguage.collectAsState()
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
+    var hasAutoSent by rememberSaveable { mutableStateOf(false) }
+
+    // Requirement 2: Auto-send context-aware query upon landing
+    LaunchedEffect(initialQuery, autoSend) {
+        if (!initialQuery.isNullOrBlank() && !hasAutoSent) {
+            hasAutoSent = true
+            if (autoSend) {
+                viewModel.sendMessage(customText = initialQuery)
+            } else {
+                viewModel.onInputChanged(initialQuery)
+            }
+        }
+    }
 
     // Scroll to bottom when new messages arrive
     LaunchedEffect(uiState.messages.size, uiState.isLoading) {

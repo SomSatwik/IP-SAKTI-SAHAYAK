@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ipsakti.sahayak.ui.components.*
+import com.ipsakti.sahayak.ui.screens.chat.ChatContextHelper
 import com.ipsakti.sahayak.ui.theme.*
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -28,6 +29,7 @@ fun ResultScreen(
     onViewGraph: (String) -> Unit,
     onViewRoadmap: (String) -> Unit,
     onViewVersionHistory: (String) -> Unit = {},
+    onAskAyurBot: (String) -> Unit = {},
     viewModel: ResultViewModel = viewModel()
 ) {
     LaunchedEffect(investigationId) {
@@ -215,6 +217,29 @@ fun ResultScreen(
                                         lineHeight = 24.sp
                                     )
                                 )
+                                Spacer(modifier = Modifier.height(12.dp))
+                                OutlinedButton(
+                                    onClick = {
+                                        val prompt = ChatContextHelper.forInvestigationResult(inv.query, inv.status, resp.risks.firstOrNull())
+                                        onAskAyurBot(prompt)
+                                    },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(8.dp),
+                                    border = BorderStroke(1.dp, RoyalBlue800.copy(alpha = 0.4f)),
+                                    colors = ButtonDefaults.outlinedButtonColors(contentColor = RoyalBlue800)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.AutoAwesome,
+                                        contentDescription = null,
+                                        tint = Gold700,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "Deep-Dive Findings with AyurBot",
+                                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                                    )
+                                }
                             }
                         }
                     }
@@ -232,7 +257,38 @@ fun ResultScreen(
                             )
                         }
                         items(resp.risks) { risk ->
-                            RiskBadge(riskText = risk)
+                            Column(modifier = Modifier.fillMaxWidth()) {
+                                RiskBadge(riskText = risk)
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.End
+                                ) {
+                                    TextButton(
+                                        onClick = {
+                                            val prompt = ChatContextHelper.forRiskFlag(risk, inv.query)
+                                            onAskAyurBot(prompt)
+                                        },
+                                        contentPadding = PaddingValues(horizontal = 4.dp, vertical = 0.dp)
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.AutoAwesome,
+                                            contentDescription = null,
+                                            tint = RoyalBlue800,
+                                            modifier = Modifier.size(13.dp)
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Text(
+                                            text = "Ask AyurBot how to mitigate this risk",
+                                            style = MaterialTheme.typography.labelSmall.copy(
+                                                color = RoyalBlue800,
+                                                fontWeight = FontWeight.Bold,
+                                                fontSize = 11.sp
+                                            )
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -252,7 +308,15 @@ fun ResultScreen(
                             EvidenceCard(
                                 evidence = ev,
                                 onClick = { onViewEvidence(ev.id) },
-                                onViewVersionHistory = onViewVersionHistory
+                                onViewVersionHistory = onViewVersionHistory,
+                                onAskAyurBot = { selectedEv ->
+                                    val prompt = ChatContextHelper.forEvidence(
+                                        sourceTitle = selectedEv.source.documentName.ifEmpty { selectedEv.title },
+                                        citationRef = selectedEv.source.section ?: selectedEv.id,
+                                        excerpt = selectedEv.summary.ifEmpty { selectedEv.source.content ?: "" }
+                                    )
+                                    onAskAyurBot(prompt)
+                                }
                             )
                         }
                     }

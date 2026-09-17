@@ -143,6 +143,25 @@ class ChatViewModel(
         )
 
         val lang = LanguageManager.getLanguage()
+
+        // Requirement 3: Early check for genuine greetings to bypass LLM/RAG pipeline entirely
+        if (isGenuineGreeting(textToSend)) {
+            val greetingReply = getCannedGreetingResponse(lang)
+            val assistantMessage = ChatMessage(
+                id = "msg_bot_${System.currentTimeMillis()}",
+                sender = "assistant",
+                text = greetingReply.text,
+                timestamp = getCurrentTime(),
+                actions = greetingReply.actions,
+                domain = "AyurBot Intelligence Guide"
+            )
+            _uiState.value = _uiState.value.copy(
+                messages = _uiState.value.messages + assistantMessage,
+                isLoading = false
+            )
+            return
+        }
+
         viewModelScope.launch {
             val result = repository.sendChatMessage(
                 message = textToSend,
@@ -186,4 +205,42 @@ class ChatViewModel(
     private fun getCurrentTime(): String {
         return SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
     }
+
+    private data class GreetingResult(val text: String, val actions: List<SuggestedAction>)
+
+    private fun isGenuineGreeting(query: String): Boolean {
+        // Must match pure greeting token phrases only (case-insensitive, optional leading/trailing punctuation)
+        // Does NOT match queries starting with greeting + real question like "Hi, can you explain Section 3(p)?"
+        val greetingPattern = Regex(
+            "^\\s*(hi|hello|hey|greetings|namaste|namaskar|namaskaram|namaskara|pranam|good\\s+(morning|afternoon|evening)|hola|vanakkam|adaab)\\s*[!.,?]*\\s*$",
+            RegexOption.IGNORE_CASE
+        )
+        return greetingPattern.matches(query.trim())
+    }
+
+    private fun getCannedGreetingResponse(lang: String): GreetingResult {
+        val text = when (lang) {
+            "hi" -> "🙏 **नमस्ते! मैं आयुर्शक्ति सहायक (AyurBot) हूँ।**\n\nमैं आपका व्यक्तिगत आयुष पेटेंट और नियामक खुफिया गाइड हूँ। मैं आपकी निम्नलिखित सहायता कर सकता हूँ:\n\n• **धारा 3(p) एवं 3(e) पेटेंट परीक्षण**: पारंपरिक जड़ी-बूटियों पर पेटेंट बाधाओं की जांच\n• **टीकेडीएल (TKDL) पूर्व कला**: प्राचीन संहिताओं से पूर्व-कला संदर्भ खोजना\n• **आयुष नियम 158B अनुपालन**: क्लासिकल बनाम प्रोप्रायटरी लाइसेंसिंग मार्गदर्शन\n• **राष्ट्रीय जैव विविधता प्राधिकरण (NBA)**: जैविक संसाधनों के उपयोग हेतु ABS अनुमति\n\nआप नीचे दिए गए त्वरित विकल्पों में से चुन सकते हैं या अपना प्रश्न लिख सकते हैं!"
+            "or" -> "🙏 **ନମସ୍କାର! ମୁଁ ଆୟୁରଶକ୍ତି ସହାୟକ (AyurBot)।**\n\nମୁଁ ଆପଣଙ୍କ ବ୍ୟକ୍ତିଗତ ଆୟୁଷ ପେଟେଣ୍ଟ ଏବଂ ନିୟାମକ ଗାଇଡ୍। ମୁଁ ଆପଣଙ୍କୁ ନିମ୍ନଲିଖିତ କ୍ଷେତ୍ରରେ ସାହାଯ୍ୟ କରିପାରିବି:\n\n• ଧାରା 3(p) ପେଟେଣ୍ଟ ବାର୍ ଯାଞ୍ଚ\n• TKDL ପୂର୍ବ କଳା ଅନୁସନ୍ଧାନ\n• ଆୟୁଷ ନିୟମ 158B ଲାଇସେନ୍ସିଂ ସହାୟତା\n• ଜୈବ ବିବିଧତା ବୋର୍ଡ (NBA/SBB) ଅନୁମୋଦନ\n\nଆପଣ କୌଣସି ପ୍ରଶ୍ନ ପଚାରିପାରିବେ!"
+            else -> "🌿 **Hello! I am AyurBot, your AYUSH IP & Regulatory Assistant.**\n\nI can help you navigate the intersection of Ayurvedic traditions and modern Intellectual Property laws:\n\n• **Section 3(p) & 3(e) Patent Triage**: Check traditional knowledge bars vs novel synergistic formulations\n• **TKDL Prior-Art Screening**: Cross-reference classical Samhitas (Charaka, Sushruta, Ashtanga Hridaya)\n• **AYUSH Licensing (Rule 158B)**: Distinguish classical ASU medicines from proprietary formulations\n• **Biodiversity & ABS Compliance**: Navigate State Biodiversity Boards (SBB) and NBA benefit-sharing\n\nSelect a quick action below or type your formulation/regulatory query directly!"
+        }
+
+        val actions = listOf(
+            SuggestedAction(
+                label = if (lang == "hi") "🔍 धारा 3(p) जांच" else "🔍 Test Patentability",
+                targetScreen = "investigate",
+                payload = "Can I patent an Ayurvedic polyherbal formulation?"
+            ),
+            SuggestedAction(
+                label = if (lang == "hi") "📜 पूर्व-कला खोजें" else "📜 Prior-Art Registry",
+                targetScreen = "prior_art"
+            ),
+            SuggestedAction(
+                label = if (lang == "hi") "🗺️ अनुपालन रोडमैप" else "🗺️ Compliance Roadmap",
+                targetScreen = "roadmap"
+            )
+        )
+        return GreetingResult(text, actions)
+    }
 }
+
