@@ -49,6 +49,7 @@ private val SAMPLE_PROMPTS = listOf(
 fun InvestigateScreen(
     onInvestigationCompleted: (String) -> Unit,
     onNavigateToPriorArt: (() -> Unit)? = null,
+    onOpenWizard: (() -> Unit)? = null,
     viewModel: InvestigateViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -70,6 +71,49 @@ fun InvestigateScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
+            // Classification Wizard Shortcut Banner
+            if (onOpenWizard != null) {
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onOpenWizard() },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = CardDefaults.cardColors(containerColor = Slate100),
+                        border = BorderStroke(1.dp, CardBorder)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = "🧭", fontSize = 20.sp)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Product Classification Decision Tree",
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = Navy900
+                                    )
+                                )
+                                Text(
+                                    text = "Determine if formulation routes to AYUSH, FSSAI, or CDSCO",
+                                    style = MaterialTheme.typography.bodySmall.copy(color = Slate600, fontSize = 11.sp)
+                                )
+                            }
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = null,
+                                tint = RoyalBlue800,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
             // Investigation Mode Selector (Quick vs Deep)
             item {
                 Card(

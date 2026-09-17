@@ -38,6 +38,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     }
 
     object PriorArtSearch : Screen("prior_art", "Prior Art Search", Icons.Default.Policy)
+    object ClassificationWizard : Screen("classification_wizard", "Classification Wizard", Icons.Default.AltRoute)
 }
 
 val bottomNavItems = listOf(

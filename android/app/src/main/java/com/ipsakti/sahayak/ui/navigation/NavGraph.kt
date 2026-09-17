@@ -17,6 +17,7 @@ import com.ipsakti.sahayak.ui.screens.saved.SavedScreen
 import com.ipsakti.sahayak.ui.screens.settings.SettingsScreen
 import com.ipsakti.sahayak.ui.screens.timemachine.RegulationTimelineScreen
 import com.ipsakti.sahayak.ui.screens.upload.UploadScreen
+import com.ipsakti.sahayak.ui.screens.wizard.ClassificationWizardScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -44,6 +45,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onOpenPriorArt = {
                     navController.navigate(Screen.PriorArtSearch.route)
+                },
+                onOpenWizard = {
+                    navController.navigate(Screen.ClassificationWizard.route)
                 }
             )
         }
@@ -57,6 +61,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onNavigateToPriorArt = {
                     navController.navigate(Screen.PriorArtSearch.route)
+                },
+                onOpenWizard = {
+                    navController.navigate(Screen.ClassificationWizard.route)
                 }
             )
         }
@@ -81,7 +88,11 @@ fun NavGraph(navController: NavHostController) {
         }
 
         composable(Screen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(
+                onOpenWizard = {
+                    navController.navigate(Screen.ClassificationWizard.route)
+                }
+            )
         }
 
         // Sub-screens
@@ -188,5 +199,15 @@ fun NavGraph(navController: NavHostController) {
                 onNavigateBack = { navController.popBackStack() }
             )
         }
+
+        composable(Screen.ClassificationWizard.route) {
+            ClassificationWizardScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onStartInvestigation = { category, regulator ->
+                    navController.navigate(Screen.Investigate.route)
+                }
+            )
+        }
     }
 }
+

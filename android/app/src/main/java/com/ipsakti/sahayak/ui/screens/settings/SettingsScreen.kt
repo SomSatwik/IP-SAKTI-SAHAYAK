@@ -27,7 +27,9 @@ import com.ipsakti.sahayak.ui.theme.*
 import kotlinx.coroutines.launch
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    onOpenWizard: (() -> Unit)? = null
+) {
     var backendUrl by remember { mutableStateOf(RetrofitClient.getBaseUrl()) }
     var healthStatus by remember { mutableStateOf<HealthResponse?>(null) }
     var isChecking by remember { mutableStateOf(false) }
@@ -266,6 +268,48 @@ fun SettingsScreen() {
                                 )
                             }
                         }
+                    }
+                }
+            }
+
+            // Regulatory Classification Wizard Card
+            if (onOpenWizard != null) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onOpenWizard() },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(containerColor = CardBackground),
+                    border = BorderStroke(1.dp, CardBorder)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "🧭", fontSize = 24.sp)
+                        Spacer(modifier = Modifier.width(14.dp))
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Product Classification Wizard",
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = Navy900
+                                )
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "5-step decision tree routing products between AYUSH, FSSAI & CDSCO",
+                                style = MaterialTheme.typography.bodySmall.copy(color = Slate500, fontSize = 11.sp)
+                            )
+                        }
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = null,
+                            tint = RoyalBlue800,
+                            modifier = Modifier.size(16.dp)
+                        )
                     }
                 }
             }
