@@ -216,3 +216,33 @@ data class RegulationUpdate(
     @SerializedName("issued_date") val issuedDate: String = "",
     @SerializedName("status") val status: String = "In Force"
 )
+
+data class BotanicalHerb(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("canonical_name") val canonicalName: String = "",
+    @SerializedName("sanskrit_name") val sanskritName: String = "",
+    @SerializedName("botanical_name") val botanicalName: String = "",
+    @SerializedName("active_actives") val activeActives: String = "",
+    @SerializedName("classical_category") val classicalCategory: String = "",
+    @SerializedName("emoji") val emoji: String = "🌿"
+)
+
+data class CraftCombineRequest(
+    @SerializedName("ingredients") val ingredients: List<String>
+)
+
+data class CraftCombineResponse(
+    @SerializedName("discovered") val discovered: Boolean = true,
+    @SerializedName("title") val title: String = "",
+    @SerializedName("sanskrit_name") val sanskritName: String? = null,
+    @SerializedName("ingredients") val ingredients: List<String> = emptyList(),
+    @SerializedName("status") val status: String = "",
+    @SerializedName("classical_source") val classicalSource: String? = null,
+    @SerializedName("tkdl_status") val tkdlStatus: String = "",
+    @SerializedName("patentability_risk_pct") val patentabilityRiskPct: Int = 0,
+    @SerializedName("synergy_score_pct") val synergyScorePct: Int = 0,
+    @SerializedName("therapeutic_category") val therapeuticCategory: String = "",
+    @SerializedName("statutory_rationale") val statutoryRationale: String = "",
+    @SerializedName("statutory_requirements") val statutoryRequirements: List<String> = emptyList(),
+    @SerializedName("suggested_queries") val suggestedQueries: List<String> = emptyList()
+)

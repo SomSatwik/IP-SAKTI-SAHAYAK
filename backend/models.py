@@ -176,3 +176,21 @@ class RegulationUpdate(BaseModel):
     source_url: str
     issued_date: str
     status: Optional[str] = "In Force"
+
+class CraftCombineRequest(BaseModel):
+    ingredients: List[str]
+
+class CraftCombineResponse(BaseModel):
+    discovered: bool
+    title: str
+    sanskrit_name: Optional[str] = None
+    ingredients: List[str] = []
+    status: str
+    classical_source: Optional[str] = None
+    tkdl_status: str
+    patentability_risk_pct: int
+    synergy_score_pct: int
+    therapeutic_category: str
+    statutory_rationale: str
+    statutory_requirements: List[str] = []
+    suggested_queries: List[str] = []

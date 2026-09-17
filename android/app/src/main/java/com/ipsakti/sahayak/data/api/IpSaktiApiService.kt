@@ -61,4 +61,10 @@ interface IpSaktiApiService {
 
     @GET("api/regulations/recent")
     suspend fun getRecentRegulations(): Response<List<RegulationUpdate>>
+
+    @GET("api/craft/apothecary")
+    suspend fun getApothecary(): Response<List<BotanicalHerb>>
+
+    @POST("api/craft/combine")
+    suspend fun combineCraft(@Body request: CraftCombineRequest): Response<CraftCombineResponse>
 }

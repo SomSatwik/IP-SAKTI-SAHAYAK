@@ -52,6 +52,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onOpenExportReadiness = {
                     navController.navigate(Screen.ExportReadiness.route)
+                },
+                onOpenCraft = {
+                    navController.navigate(Screen.FormulationCraft.route)
                 }
             )
         }
@@ -216,6 +219,18 @@ fun NavGraph(navController: NavHostController) {
         composable(Screen.ExportReadiness.route) {
             ExportReadinessScreen(
                 onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.FormulationCraft.route) {
+            com.ipsakti.sahayak.ui.screens.craft.FormulationCraftScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onTestInInvestigation = { _ ->
+                    navController.navigate(Screen.Investigate.route)
+                },
+                onConsultAssistant = { _ ->
+                    navController.navigate(Screen.Chat.route)
+                }
             )
         }
     }

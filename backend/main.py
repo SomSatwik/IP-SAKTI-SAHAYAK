@@ -14,7 +14,8 @@ from .models import (
     ComplianceRoadmapResponse, DocumentUploadResponse,
     HealthResponse, DashboardStats, DocumentInfo,
     ChatMessageRequest, ChatResponse,
-    PriorArtSearchRequest, PriorArtSearchResponse
+    PriorArtSearchRequest, PriorArtSearchResponse,
+    CraftCombineRequest, CraftCombineResponse
 )
 
 from .demo_data import (
@@ -25,6 +26,7 @@ from .services.query_service import query_service
 from .services.investigation_service import investigation_service
 from .services.chat_service import chat_service
 from .services.prior_art_service import prior_art_service
+from .services.craft_service import craft_service
 
 logger = logging.getLogger(__name__)
 
@@ -350,6 +352,17 @@ async def view_compliance_report_html(investigation_id: str):
 async def get_recent_regulations(limit: int = 4):
     from .services.regulation_monitor import regulation_monitor
     return regulation_monitor.get_recent_updates(limit)
+
+@app.get("/api/craft/apothecary")
+async def get_craft_apothecary():
+    """Returns available traditional botanicals and ingredients for formulation novelty lab."""
+    return craft_service.get_apothecary_list()
+
+@app.post("/api/craft/combine", response_model=CraftCombineResponse)
+async def combine_craft_ingredients(request: CraftCombineRequest):
+    """Combines botanical ingredients and evaluates TKDL novelty and Section 3(e)/3(p) patentability."""
+    result = craft_service.combine_ingredients(request.ingredients)
+    return CraftCombineResponse(**result)
 
 if __name__ == "__main__":
     import uvicorn
