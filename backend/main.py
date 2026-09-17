@@ -298,6 +298,54 @@ async def get_regulation_timeline(source_id: str):
 async def search_prior_art(request: PriorArtSearchRequest):
     return prior_art_service.search(request.query)
 
+@app.get("/api/compliance/report/{investigation_id}")
+async def get_compliance_report(investigation_id: str):
+    from .services.compliance_engine import compliance_engine
+    from .services.report_generator import report_generator
+    from .demo_data import demo_roadmap, demo_evidence, demo_query_response
+    
+    compliance = compliance_engine.evaluate_compliance(
+        applicant_type="indian_citizen",
+        uses_biological_resource=True,
+        commercial_intent=True,
+        ip_filing_intended=True,
+        resource_details="Ayurvedic Polyherbal Formulation"
+    )
+    
+    steps = [
+        {"title": s.title, "description": s.description, "status": s.status, "duration": s.duration}
+        for s in demo_roadmap.steps
+    ]
+    
+    report_data = {
+        "query": "Ayurvedic formulation using traditional medicinal plant (Patents Act Sec 3p & Biodiversity Act)",
+        "answer": demo_query_response.answer,
+        "confidence": demo_query_response.confidence,
+        "domain": "Ayurveda & Patents",
+        "jurisdiction": "India",
+        "sources": [{"title": e.title, "authority": e.source.authority, "jurisdiction": e.source.jurisdiction, "section": e.source.section, "summary": e.summary} for e in demo_evidence],
+        "roadmap_steps": steps,
+        "mandatory_forms": compliance["mandatory_forms"]
+    }
+    
+    html = report_generator.generate_html_report(report_data)
+    
+    return {
+        "success": True,
+        "investigation_id": investigation_id,
+        "compliance_summary": compliance["compliance_summary"],
+        "mandatory_forms": compliance["mandatory_forms"],
+        "statutory_triggers": compliance["statutory_triggers"],
+        "html_report": html,
+        "view_url": f"/api/compliance/report/{investigation_id}/view"
+    }
+
+@app.get("/api/compliance/report/{investigation_id}/view")
+async def view_compliance_report_html(investigation_id: str):
+    from fastapi.responses import HTMLResponse
+    report = await get_compliance_report(investigation_id)
+    return HTMLResponse(content=report["html_report"], status_code=200)
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)

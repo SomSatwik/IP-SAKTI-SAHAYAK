@@ -192,3 +192,13 @@ data class PriorArtSearchResponse(
     @SerializedName("conclusion_status") val conclusionStatus: String = "",
     @SerializedName("disclaimer") val disclaimer: String = ""
 )
+
+data class ComplianceReportResponse(
+    @SerializedName("success") val success: Boolean = true,
+    @SerializedName("investigation_id") val investigationId: String = "",
+    @SerializedName("compliance_summary") val complianceSummary: List<String> = emptyList(),
+    @SerializedName("mandatory_forms") val mandatoryForms: List<String> = emptyList(),
+    @SerializedName("statutory_triggers") val statutoryTriggers: List<Map<String, String>> = emptyList(),
+    @SerializedName("html_report") val htmlReport: String = "",
+    @SerializedName("view_url") val viewUrl: String = ""
+)

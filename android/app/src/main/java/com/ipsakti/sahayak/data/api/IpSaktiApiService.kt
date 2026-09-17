@@ -55,4 +55,7 @@ interface IpSaktiApiService {
 
     @POST("api/prior-art/search")
     suspend fun searchPriorArt(@Body request: PriorArtSearchRequest): Response<PriorArtSearchResponse>
+
+    @GET("api/compliance/report/{id}")
+    suspend fun getComplianceReport(@Path("id") id: String): Response<ComplianceReportResponse>
 }
