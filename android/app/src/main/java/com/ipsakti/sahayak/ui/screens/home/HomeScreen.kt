@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ipsakti.sahayak.data.manager.PersonaManager
+import com.ipsakti.sahayak.data.manager.PersonaType
 import com.ipsakti.sahayak.data.model.InvestigationSummary
 import com.ipsakti.sahayak.data.model.RegulationUpdate
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
@@ -39,6 +41,8 @@ fun HomeScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val currentLang by com.ipsakti.sahayak.data.manager.LanguageManager.currentLanguage.collectAsState()
+    val currentPersona by PersonaManager.currentPersona.collectAsState()
+    var showPersonaDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -81,6 +85,79 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
+            // Active Persona Banner with Quick Switcher
+            item {
+                Surface(
+                    shape = RoundedCornerShape(10.dp),
+                    color = CardBackground,
+                    border = BorderStroke(1.dp, CardBorder),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { showPersonaDialog = true }
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 14.dp, vertical = 10.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(text = currentPersona.iconEmoji, fontSize = 22.sp)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Text(
+                                        text = currentPersona.title,
+                                        style = MaterialTheme.typography.titleSmall.copy(
+                                            fontWeight = FontWeight.Bold,
+                                            color = Navy900
+                                        )
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Surface(
+                                        shape = RoundedCornerShape(4.dp),
+                                        color = Gold600.copy(alpha = 0.2f)
+                                    ) {
+                                        Text(
+                                            text = "ACTIVE PERSONA",
+                                            modifier = Modifier.padding(horizontal = 5.dp, vertical = 1.dp),
+                                            style = MaterialTheme.typography.labelSmall.copy(
+                                                color = Gold800,
+                                                fontWeight = FontWeight.Bold,
+                                                fontSize = 9.sp
+                                            )
+                                        )
+                                    }
+                                }
+                                Text(
+                                    text = currentPersona.tag,
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        color = Slate500,
+                                        fontSize = 11.sp
+                                    )
+                                )
+                            }
+                        }
+                        TextButton(
+                            onClick = { showPersonaDialog = true },
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                        ) {
+                            Text(
+                                text = "Switch",
+                                style = MaterialTheme.typography.labelMedium.copy(
+                                    color = RoyalBlue800,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+
             // Hero / Start Investigation Action Card
             item {
                 Card(
@@ -148,6 +225,68 @@ fun HomeScreen(
                                     text = com.ipsakti.sahayak.data.manager.LanguageManager.getString("load_demo"),
                                     fontWeight = FontWeight.Bold
                                 )
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Persona-Tailored Recommended Prompts Chips
+            item {
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "SUGGESTED FOR ${currentPersona.title.uppercase()}",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = Slate500,
+                                letterSpacing = 1.sp
+                            )
+                        )
+                        Text(
+                            text = currentPersona.focusArea.split(",").firstOrNull() ?: "",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                color = RoyalBlue800,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 10.sp
+                            )
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(currentPersona.suggestedPrompts) { prompt ->
+                            Surface(
+                                shape = RoundedCornerShape(16.dp),
+                                color = CardBackground,
+                                border = BorderStroke(1.dp, CardBorder),
+                                modifier = Modifier.clickable { onOpenChat() }
+                            ) {
+                                Row(
+                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Search,
+                                        contentDescription = null,
+                                        tint = RoyalBlue800,
+                                        modifier = Modifier.size(14.dp)
+                                    )
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = prompt,
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = Navy900,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 12.sp
+                                        )
+                                    )
+                                }
                             }
                         }
                     }
@@ -456,6 +595,17 @@ fun HomeScreen(
             }
         }
     }
+
+    if (showPersonaDialog) {
+        PersonaSelectionModal(
+            currentPersona = currentPersona,
+            onSelect = {
+                PersonaManager.setPersona(it)
+                showPersonaDialog = false
+            },
+            onDismiss = { showPersonaDialog = false }
+        )
+    }
 }
 
 @Composable
@@ -643,4 +793,92 @@ fun RegulationUpdateCard(update: RegulationUpdate) {
             }
         }
     }
+}
+
+@Composable
+fun PersonaSelectionModal(
+    currentPersona: PersonaType,
+    onSelect: (PersonaType) -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Select Persona Focus Mode",
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Navy900
+                )
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "Adapts statutory checklists, legal terminology, and AI retrieval biasing to your specialized domain.",
+                    style = MaterialTheme.typography.bodySmall.copy(color = Slate600, fontSize = 12.sp)
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                PersonaType.entries.forEach { persona ->
+                    val isSelected = currentPersona == persona
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onSelect(persona) },
+                        shape = RoundedCornerShape(8.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (isSelected) RoyalBlue800.copy(alpha = 0.08f) else Slate50
+                        ),
+                        border = BorderStroke(
+                            if (isSelected) 1.5.dp else 1.dp,
+                            if (isSelected) RoyalBlue800 else CardBorder
+                        )
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = persona.iconEmoji, fontSize = 20.sp)
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = persona.title,
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = if (isSelected) RoyalBlue800 else Navy900,
+                                        fontSize = 13.sp
+                                    )
+                                )
+                                Text(
+                                    text = persona.tag,
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        color = Slate500,
+                                        fontSize = 10.sp
+                                    )
+                                )
+                            }
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.CheckCircle,
+                                    contentDescription = "Selected",
+                                    tint = RoyalBlue800,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Close", color = RoyalBlue800, fontWeight = FontWeight.Bold)
+            }
+        }
+    )
 }

@@ -73,13 +73,24 @@ class QueryService:
         try:
             logger.info(f"Processing query via real pipeline: {request.question} (lang: {request.language})")
             
-            # Format query with language instruction if multilingual requested
+            # Format query with language and persona instruction
             query_str = request.question
             lang = (request.language or "en").lower().strip()
+            persona_p = (request.persona or "startup").lower().strip()
+
+            persona_prompts = {
+                "practitioner": "\n[Persona Focus: Ayurvedic Practitioner — emphasize clinical indications, classical texts, Schedule T GMP, and therapeutic safety.]",
+                "researcher": "\n[Persona Focus: Academic Researcher — emphasize Section 3(p) prior art, synergistic CI index, and chemical characterization.]",
+                "msme": "\n[Persona Focus: MSME Manufacturer — emphasize Form 28 fee waivers, manufacturing licenses, and AYUSH Premium Mark.]",
+                "cultivator": "\n[Persona Focus: Herbal Cultivator — emphasize Biological Diversity Act exemptions, fair Access and Benefit Sharing (ABS), and SBB intimation.]",
+                "startup": "\n[Persona Focus: AYUSH Startup — emphasize Form 18A expedited examination, DPIIT startup schemes, and rapid commercialization.]"
+            }
+            query_str += persona_prompts.get(persona_p, persona_prompts["startup"])
+
             if lang in ["hi", "hindi"]:
-                query_str = f"{request.question}\n\n(Please provide the grounded legal analysis and explanations in Hindi / हिन्दी.)"
+                query_str += "\n\n(Please provide the grounded legal analysis and explanations in Hindi / हिन्दी.)"
             elif lang in ["or", "odia", "oriya"]:
-                query_str = f"{request.question}\n\n(Please provide the grounded legal analysis and explanations in Odia / ଓଡ଼ିଆ.)"
+                query_str += "\n\n(Please provide the grounded legal analysis and explanations in Odia / ଓଡ଼ିଆ.)"
 
             # Duck-typed invocation of the pipeline
             if hasattr(self.pipeline, "run"):
@@ -171,6 +182,22 @@ class QueryService:
                         source=source_item,
                         relevance_score=0.88 - (idx * 0.02)
                     ))
+
+            # Apply Persona Source Biasing
+            persona_bias_keywords = {
+                "practitioner": ["pharmacopoeia", "samhita", "schedule t", "clinical", "therapeutic", "dosage", "drug"],
+                "researcher": ["tkdl", "prior art", "novelty", "3(p)", "synergy", "extraction", "patent"],
+                "startup": ["startup", "expedited", "18a", "patent", "nba", "clearance", "commercial"],
+                "msme": ["msme", "form 28", "subsidy", "licens", "premium mark", "gmp"],
+                "cultivator": ["biodiversity", "abs", "access", "benefit sharing", "sbb", "bmc", "cultivat", "raw material"]
+            }
+            bias_kws = persona_bias_keywords.get(persona_p, [])
+            if bias_kws:
+                for item in evidence_items:
+                    text_blob = f"{item.title} {item.summary} {item.source.document_name} {item.source.section or ''}".lower()
+                    if any(kw in text_blob for kw in bias_kws):
+                        item.relevance_score = min(0.99, item.relevance_score + 0.12)
+                evidence_items.sort(key=lambda x: x.relevance_score, reverse=True)
 
             # Citations
             citations = []

@@ -35,6 +35,7 @@ class ChatService:
                 )
 
                 lang_instruction = multilingual_manager.get_system_prompt_instruction(lang)
+                persona_instruction = self._get_persona_prompt_adjustment(request.persona or "startup")
                 system_prompt = (
                     "You are AyurSakti, the expert Ayurvedic & IP Intelligence Assistant within the IP-SAKTI SAHAYAK mobile app. "
                     "You help users with their Ayurvedic formulations, traditional medicinal plants, Section 3(p) patent exclusions, "
@@ -43,6 +44,7 @@ class ChatService:
                     "(e.g., 'Use our Investigation Workspace to test Section 3(p) compliance', 'View the Compliance Roadmap for step-by-step filings', "
                     "'Check the Evidence Graph for regulatory connections', or 'Upload your formulation monograph in Document Intelligence'). "
                     f"\n\nLanguage Guideline: {lang_instruction}"
+                    f"\n\nPersona Register: {persona_instruction}"
                 )
 
                 messages = [SystemMessage(content=system_prompt)]
@@ -72,6 +74,39 @@ class ChatService:
 
         # 2. Domain Knowledge Base Assistant (Multi-lingual & Offline)
         return self._generate_domain_response(message, lang)
+
+    def _get_persona_prompt_adjustment(self, persona: str) -> str:
+        p = (persona or "startup").lower().strip()
+        if p == "practitioner":
+            return (
+                "User Persona: AYURVEDIC PRACTITIONER / VAIDYA. "
+                "Tone: Clinical, grounded in classical Samhitas (Charaka, Sushruta) and Ayurvedic Pharmacopoeia (API). "
+                "Emphasize patient safety, therapeutic indications, classical terminology (Rasa, Virya, Vipaka), and Schedule T GMP compliance."
+            )
+        elif p == "researcher":
+            return (
+                "User Persona: ACADEMIC / RESEARCHER. "
+                "Tone: Rigorous, scientific, pharmacologically precise. "
+                "Emphasize Section 3(p) prior art exclusions, Combination Index (Chou-Talalay synergy), characterization (HPTLC/HPLC), and clinical trial protocol validity."
+            )
+        elif p == "msme":
+            return (
+                "User Persona: MSME MANUFACTURER. "
+                "Tone: Pragmatic, statutory, cost-sensitive. "
+                "Emphasize 80% patent fee concessions via Form 28, MSME subsidies, State Licensing Authority (SLA) Rule 158B licensing, and AYUSH Standard/Premium Mark quality standards."
+            )
+        elif p == "cultivator":
+            return (
+                "User Persona: HERBAL CULTIVATOR / FPO. "
+                "Tone: Accessible, agricultural, biodiversity-protective. "
+                "Emphasize Biological Diversity Act 2002 exemptions (Normally Traded Commodities), fair Access and Benefit Sharing (ABS) terms, State Biodiversity Board (SBB) intimation, and BMC agreements."
+            )
+        else:
+            return (
+                "User Persona: AYUSH STARTUP / FOUNDER. "
+                "Tone: Strategic, high-velocity, commercialization-focused. "
+                "Emphasize Form 18A expedited patent examination, DPIIT Startup India benefits, seed grants (BIRAC/AYUSH), 90-day fast-track NBA clearance, and IP defensibility."
+            )
 
     def _generate_suggested_actions(self, message: str, lang: str) -> List[SuggestedAction]:
         m_lower = message.lower()

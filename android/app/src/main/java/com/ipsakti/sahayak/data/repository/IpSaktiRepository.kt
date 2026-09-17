@@ -5,6 +5,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import com.ipsakti.sahayak.data.api.RetrofitClient
 import com.ipsakti.sahayak.data.manager.LanguageManager
+import com.ipsakti.sahayak.data.manager.PersonaManager
 import com.ipsakti.sahayak.data.model.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -39,11 +40,12 @@ class IpSaktiRepository {
     suspend fun query(
         question: String,
         mode: String = "quick",
-        language: String = LanguageManager.getLanguage()
+        language: String = LanguageManager.getLanguage(),
+        persona: String = PersonaManager.getPersona().id
     ): Result<QueryResponse> = withContext(Dispatchers.IO) {
         try {
             val response = apiService.query(
-                QueryRequest(question = question, mode = mode, language = language)
+                QueryRequest(question = question, mode = mode, language = language, persona = persona)
             )
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
@@ -59,10 +61,11 @@ class IpSaktiRepository {
     suspend fun analyzeCase(
         question: String,
         mode: String = "deep",
-        language: String = LanguageManager.getLanguage()
+        language: String = LanguageManager.getLanguage(),
+        persona: String = PersonaManager.getPersona().id
     ): Result<InvestigationDetail> = withContext(Dispatchers.IO) {
         try {
-            val request = QueryRequest(question = question, mode = mode, language = language)
+            val request = QueryRequest(question = question, mode = mode, language = language, persona = persona)
             val response = if (mode == "deep") {
                 apiService.deepAnalysis(request)
             } else {
@@ -243,11 +246,17 @@ class IpSaktiRepository {
     suspend fun sendChatMessage(
         message: String,
         history: List<ChatMessage> = emptyList(),
-        language: String = LanguageManager.getLanguage()
+        language: String = LanguageManager.getLanguage(),
+        persona: String = PersonaManager.getPersona().id
     ): Result<ChatResponse> = withContext(Dispatchers.IO) {
         try {
             val response = apiService.sendChatMessage(
-                ChatMessageRequest(message = message, history = history, language = language)
+                ChatMessageRequest(
+                    message = message,
+                    history = history,
+                    language = language,
+                    persona = persona
+                )
             )
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)

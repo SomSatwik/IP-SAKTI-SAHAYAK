@@ -5,7 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class QueryRequest(
     @SerializedName("question") val question: String,
     @SerializedName("mode") val mode: String = "quick",
-    @SerializedName("language") val language: String = "en"
+    @SerializedName("language") val language: String = "en",
+    @SerializedName("persona") val persona: String = "startup"
 )
 
 data class SourceItem(
@@ -149,7 +150,8 @@ data class ChatMessage(
 data class ChatMessageRequest(
     @SerializedName("message") val message: String,
     @SerializedName("history") val history: List<ChatMessage> = emptyList(),
-    @SerializedName("language") val language: String = "en"
+    @SerializedName("language") val language: String = "en",
+    @SerializedName("persona") val persona: String = "startup"
 )
 
 data class ChatResponse(

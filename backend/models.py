@@ -6,6 +6,7 @@ class QueryRequest(BaseModel):
     question: str
     mode: str = 'quick'
     language: str = 'en'
+    persona: Optional[str] = 'startup'
 
 class SourceItem(BaseModel):
     document_name: str
@@ -127,6 +128,7 @@ class ChatMessageRequest(BaseModel):
     message: str
     history: List[ChatMessage] = []
     language: str = "en"
+    persona: Optional[str] = "startup"
 
 class ChatResponse(BaseModel):
     reply: str

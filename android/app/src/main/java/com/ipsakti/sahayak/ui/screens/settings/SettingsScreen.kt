@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ipsakti.sahayak.data.api.RetrofitClient
 import com.ipsakti.sahayak.data.manager.LanguageManager
+import com.ipsakti.sahayak.data.manager.PersonaManager
+import com.ipsakti.sahayak.data.manager.PersonaType
 import com.ipsakti.sahayak.data.model.HealthResponse
 import com.ipsakti.sahayak.data.repository.IpSaktiRepository
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
@@ -32,6 +34,7 @@ fun SettingsScreen() {
     var showSavedMessage by remember { mutableStateOf(false) }
 
     val currentLang by LanguageManager.currentLanguage.collectAsState()
+    val currentPersona by PersonaManager.currentPersona.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val repository = remember { IpSaktiRepository() }
 
@@ -140,6 +143,128 @@ fun SettingsScreen() {
                                 },
                                 style = MaterialTheme.typography.bodyMedium.copy(color = Slate600, fontSize = 11.sp)
                             )
+                        }
+                    }
+                }
+            }
+
+            // User Persona & Focus Mode Configuration
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(10.dp),
+                colors = CardDefaults.cardColors(containerColor = CardBackground),
+                border = BorderStroke(1.dp, CardBorder)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "USER PERSONA & FOCUS MODE",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = Slate500,
+                                letterSpacing = 1.sp
+                            )
+                        )
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = Gold600.copy(alpha = 0.2f)
+                        ) {
+                            Text(
+                                text = "${currentPersona.iconEmoji} ${currentPersona.title}",
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    color = Gold800,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 10.sp
+                                )
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Tailors legal register, statutory checklists, and source biasing to your specific workflow.",
+                        style = MaterialTheme.typography.bodySmall.copy(color = Slate600, fontSize = 11.sp)
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    PersonaType.entries.forEach { persona ->
+                        val isSelected = currentPersona == persona
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp)
+                                .clickable { PersonaManager.setPersona(persona) },
+                            shape = RoundedCornerShape(8.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (isSelected) RoyalBlue800.copy(alpha = 0.08f) else Slate50
+                            ),
+                            border = BorderStroke(
+                                if (isSelected) 1.5.dp else 1.dp,
+                                if (isSelected) RoyalBlue800 else CardBorder
+                            )
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = persona.iconEmoji,
+                                    fontSize = 24.sp
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Text(
+                                            text = persona.title,
+                                            style = MaterialTheme.typography.titleSmall.copy(
+                                                fontWeight = FontWeight.Bold,
+                                                color = if (isSelected) RoyalBlue800 else Navy900
+                                            )
+                                        )
+                                        Spacer(modifier = Modifier.width(6.dp))
+                                        Surface(
+                                            shape = RoundedCornerShape(4.dp),
+                                            color = Slate200
+                                        ) {
+                                            Text(
+                                                text = persona.tag,
+                                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
+                                                style = MaterialTheme.typography.labelSmall.copy(
+                                                    color = Slate600,
+                                                    fontSize = 9.sp,
+                                                    fontWeight = FontWeight.Medium
+                                                )
+                                            )
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Text(
+                                        text = persona.description,
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = Slate500,
+                                            fontSize = 11.sp,
+                                            lineHeight = 15.sp
+                                        )
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                RadioButton(
+                                    selected = isSelected,
+                                    onClick = { PersonaManager.setPersona(persona) },
+                                    colors = RadioButtonDefaults.colors(
+                                        selectedColor = RoyalBlue800,
+                                        unselectedColor = Slate400
+                                    )
+                                )
+                            }
                         }
                     }
                 }
