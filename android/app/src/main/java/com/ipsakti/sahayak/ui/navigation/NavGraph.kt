@@ -17,6 +17,7 @@ import com.ipsakti.sahayak.ui.screens.saved.SavedScreen
 import com.ipsakti.sahayak.ui.screens.settings.SettingsScreen
 import com.ipsakti.sahayak.ui.screens.timemachine.RegulationTimelineScreen
 import com.ipsakti.sahayak.ui.screens.upload.UploadScreen
+import com.ipsakti.sahayak.ui.screens.export.ExportReadinessScreen
 import com.ipsakti.sahayak.ui.screens.wizard.ClassificationWizardScreen
 
 @Composable
@@ -48,6 +49,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onOpenWizard = {
                     navController.navigate(Screen.ClassificationWizard.route)
+                },
+                onOpenExportReadiness = {
+                    navController.navigate(Screen.ExportReadiness.route)
                 }
             )
         }
@@ -206,6 +210,12 @@ fun NavGraph(navController: NavHostController) {
                 onStartInvestigation = { category, regulator ->
                     navController.navigate(Screen.Investigate.route)
                 }
+            )
+        }
+
+        composable(Screen.ExportReadiness.route) {
+            ExportReadinessScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }
