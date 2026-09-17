@@ -13,7 +13,8 @@ from .models import (
     InvestigationDetail, EvidenceGraphResponse, 
     ComplianceRoadmapResponse, DocumentUploadResponse,
     HealthResponse, DashboardStats, DocumentInfo,
-    ChatMessageRequest, ChatResponse
+    ChatMessageRequest, ChatResponse,
+    PriorArtSearchRequest, PriorArtSearchResponse
 )
 
 from .demo_data import (
@@ -23,6 +24,7 @@ from .demo_data import (
 from .services.query_service import query_service
 from .services.investigation_service import investigation_service
 from .services.chat_service import chat_service
+from .services.prior_art_service import prior_art_service
 
 logger = logging.getLogger(__name__)
 
@@ -291,6 +293,10 @@ async def get_regulation_timeline(source_id: str):
                 return v
         return demo_regulation_timelines.get("ev_002")
     return timeline
+
+@app.post("/api/prior-art/search", response_model=PriorArtSearchResponse)
+async def search_prior_art(request: PriorArtSearchRequest):
+    return prior_art_service.search(request.query)
 
 if __name__ == "__main__":
     import uvicorn

@@ -36,6 +36,8 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object RegulationTimeline : Screen("timeline/{sourceId}", "Regulation Time Machine") {
         fun createRoute(sourceId: String) = "timeline/$sourceId"
     }
+
+    object PriorArtSearch : Screen("prior_art", "Prior Art Search", Icons.Default.Policy)
 }
 
 val bottomNavItems = listOf(

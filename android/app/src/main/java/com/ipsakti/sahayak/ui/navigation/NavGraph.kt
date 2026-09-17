@@ -41,6 +41,9 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onOpenChat = {
                     navController.navigate(Screen.Chat.route)
+                },
+                onOpenPriorArt = {
+                    navController.navigate(Screen.PriorArtSearch.route)
                 }
             )
         }
@@ -51,6 +54,9 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(Screen.Result.createRoute(investigationId)) {
                         popUpTo(Screen.Investigate.route) { inclusive = true }
                     }
+                },
+                onNavigateToPriorArt = {
+                    navController.navigate(Screen.PriorArtSearch.route)
                 }
             )
         }
@@ -174,6 +180,12 @@ fun NavGraph(navController: NavHostController) {
                         }
                     }
                 }
+            )
+        }
+
+        composable(Screen.PriorArtSearch.route) {
+            com.ipsakti.sahayak.ui.screens.priorart.PriorArtSearchScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }

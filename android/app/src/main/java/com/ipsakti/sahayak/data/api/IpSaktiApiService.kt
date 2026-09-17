@@ -52,4 +52,7 @@ interface IpSaktiApiService {
 
     @GET("api/timeline/{id}")
     suspend fun getRegulationTimeline(@Path("id") id: String): Response<RegulationTimeline>
+
+    @POST("api/prior-art/search")
+    suspend fun searchPriorArt(@Body request: PriorArtSearchRequest): Response<PriorArtSearchResponse>
 }

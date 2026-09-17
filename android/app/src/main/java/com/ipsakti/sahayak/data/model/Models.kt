@@ -159,3 +159,36 @@ data class ChatResponse(
     @SerializedName("domain") val domain: String? = null,
     @SerializedName("domains") val domains: List<String> = emptyList()
 )
+
+data class PatentRecord(
+    @SerializedName("patent_number") val patentNumber: String = "",
+    @SerializedName("title") val title: String = "",
+    @SerializedName("applicant") val applicant: String = "",
+    @SerializedName("status") val status: String = "Granted",
+    @SerializedName("filing_date") val filingDate: String? = null,
+    @SerializedName("jurisdiction") val jurisdiction: String = "India",
+    @SerializedName("ipc_class") val ipcClass: String? = null,
+    @SerializedName("abstract") val abstract: String? = null
+)
+
+data class BotanicalInfo(
+    @SerializedName("name") val name: String = "",
+    @SerializedName("scientific_name") val scientificName: String = "",
+    @SerializedName("traditional_uses") val traditionalUses: String = "",
+    @SerializedName("classical_texts") val classicalTexts: String = "",
+    @SerializedName("sec_3p_risk") val sec3pRisk: String = ""
+)
+
+data class PriorArtSearchRequest(
+    @SerializedName("query") val query: String
+)
+
+data class PriorArtSearchResponse(
+    @SerializedName("query") val query: String = "",
+    @SerializedName("total_found") val totalFound: Int = 0,
+    @SerializedName("detected_botanicals") val detectedBotanicals: List<BotanicalInfo> = emptyList(),
+    @SerializedName("patents") val patents: List<PatentRecord> = emptyList(),
+    @SerializedName("patentability_barriers") val patentabilityBarriers: List<Map<String, String>> = emptyList(),
+    @SerializedName("conclusion_status") val conclusionStatus: String = "",
+    @SerializedName("disclaimer") val disclaimer: String = ""
+)

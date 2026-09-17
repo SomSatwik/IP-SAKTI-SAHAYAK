@@ -134,3 +134,32 @@ class ChatResponse(BaseModel):
     references: List[str] = []
     domain: Optional[str] = None
     domains: List[str] = []
+
+class PatentRecord(BaseModel):
+    patent_number: str
+    title: str
+    applicant: str
+    status: str
+    filing_date: Optional[str] = None
+    jurisdiction: Optional[str] = "India"
+    ipc_class: Optional[str] = None
+    abstract: Optional[str] = None
+
+class BotanicalInfo(BaseModel):
+    name: str
+    scientific_name: str
+    traditional_uses: str
+    classical_texts: str
+    sec_3p_risk: str
+
+class PriorArtSearchRequest(BaseModel):
+    query: str
+
+class PriorArtSearchResponse(BaseModel):
+    query: str
+    total_found: int
+    detected_botanicals: List[BotanicalInfo] = []
+    patents: List[PatentRecord] = []
+    patentability_barriers: List[Dict[str, str]] = []
+    conclusion_status: str = "Search completed"
+    disclaimer: str = "This patent search is preliminary and for guidance only. It does not constitute formal legal certification."

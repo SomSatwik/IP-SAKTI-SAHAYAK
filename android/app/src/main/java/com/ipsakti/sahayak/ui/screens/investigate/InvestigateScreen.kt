@@ -1,13 +1,16 @@
 package com.ipsakti.sahayak.ui.screens.investigate
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.Policy
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -45,6 +48,7 @@ private val SAMPLE_PROMPTS = listOf(
 @Composable
 fun InvestigateScreen(
     onInvestigationCompleted: (String) -> Unit,
+    onNavigateToPriorArt: (() -> Unit)? = null,
     viewModel: InvestigateViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -281,6 +285,51 @@ fun InvestigateScreen(
                             fontWeight = FontWeight.Bold
                         )
                     )
+                }
+            }
+
+            if (onNavigateToPriorArt != null) {
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onNavigateToPriorArt() },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = CardDefaults.cardColors(containerColor = Slate100),
+                        border = BorderStroke(1.dp, CardBorder)
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(14.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Policy,
+                                contentDescription = null,
+                                tint = RoyalBlue800,
+                                modifier = Modifier.size(24.dp)
+                            )
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Prior-Art Patent Search Registry",
+                                    style = MaterialTheme.typography.titleSmall.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color = Navy900
+                                    )
+                                )
+                                Text(
+                                    text = "Search whether a formulation or herb has existing granted/revoked patents",
+                                    style = MaterialTheme.typography.bodySmall.copy(color = Slate600)
+                                )
+                            }
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                                contentDescription = null,
+                                tint = RoyalBlue800,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
