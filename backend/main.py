@@ -346,6 +346,11 @@ async def view_compliance_report_html(investigation_id: str):
     report = await get_compliance_report(investigation_id)
     return HTMLResponse(content=report["html_report"], status_code=200)
 
+@app.get("/api/regulations/recent")
+async def get_recent_regulations(limit: int = 4):
+    from .services.regulation_monitor import regulation_monitor
+    return regulation_monitor.get_recent_updates(limit)
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)

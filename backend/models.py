@@ -163,3 +163,14 @@ class PriorArtSearchResponse(BaseModel):
     patentability_barriers: List[Dict[str, str]] = []
     conclusion_status: str = "Search completed"
     disclaimer: str = "This patent search is preliminary and for guidance only. It does not constitute formal legal certification."
+
+class RegulationUpdate(BaseModel):
+    id: Optional[str] = None
+    source_name: str
+    title: str
+    notification_number: str
+    category: str
+    summary: str
+    source_url: str
+    issued_date: str
+    status: Optional[str] = "In Force"

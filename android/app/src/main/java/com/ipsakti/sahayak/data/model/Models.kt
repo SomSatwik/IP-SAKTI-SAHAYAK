@@ -202,3 +202,15 @@ data class ComplianceReportResponse(
     @SerializedName("html_report") val htmlReport: String = "",
     @SerializedName("view_url") val viewUrl: String = ""
 )
+
+data class RegulationUpdate(
+    @SerializedName("id") val id: String? = null,
+    @SerializedName("source_name") val sourceName: String = "",
+    @SerializedName("title") val title: String = "",
+    @SerializedName("notification_number") val notificationNumber: String = "",
+    @SerializedName("category") val category: String = "",
+    @SerializedName("summary") val summary: String = "",
+    @SerializedName("source_url") val sourceUrl: String = "",
+    @SerializedName("issued_date") val issuedDate: String = "",
+    @SerializedName("status") val status: String = "In Force"
+)

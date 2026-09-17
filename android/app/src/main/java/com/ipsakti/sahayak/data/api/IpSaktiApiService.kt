@@ -58,4 +58,7 @@ interface IpSaktiApiService {
 
     @GET("api/compliance/report/{id}")
     suspend fun getComplianceReport(@Path("id") id: String): Response<ComplianceReportResponse>
+
+    @GET("api/regulations/recent")
+    suspend fun getRecentRegulations(): Response<List<RegulationUpdate>>
 }

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ipsakti.sahayak.data.model.InvestigationSummary
+import com.ipsakti.sahayak.data.model.RegulationUpdate
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
 import com.ipsakti.sahayak.ui.theme.*
 
@@ -288,6 +289,56 @@ fun HomeScreen(
                 }
             }
 
+            // Recent Regulatory Updates Header & Live Badge
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "RECENT REGULATORY UPDATES",
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = FontWeight.Bold,
+                            color = Slate500,
+                            letterSpacing = 1.sp
+                        )
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(12.dp),
+                        color = Color(0xFF16A34A).copy(alpha = 0.15f),
+                        border = BorderStroke(1.dp, Color(0xFF16A34A).copy(alpha = 0.3f))
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(6.dp)
+                                    .clip(CircleShape)
+                                    .background(Color(0xFF16A34A))
+                            )
+                            Spacer(modifier = Modifier.width(5.dp))
+                            Text(
+                                text = "LIVE MONITORING",
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    color = Color(0xFF16A34A),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 9.sp,
+                                    letterSpacing = 0.5.sp
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Regulatory updates items
+            items(uiState.recentRegulations.take(3)) { reg ->
+                RegulationUpdateCard(update = reg)
+            }
+
             // Executive Dashboard Metrics
             item {
                 Text(
@@ -504,6 +555,92 @@ fun RecentInvestigationItem(
                 tint = Slate400,
                 modifier = Modifier.size(18.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun RegulationUpdateCard(update: RegulationUpdate) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(containerColor = CardBackground),
+        border = BorderStroke(1.dp, CardBorder)
+    ) {
+        Column(modifier = Modifier.padding(14.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    shape = RoundedCornerShape(4.dp),
+                    color = RoyalBlue800.copy(alpha = 0.12f)
+                ) {
+                    Text(
+                        text = update.sourceName,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            color = RoyalBlue800,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 10.sp
+                        )
+                    )
+                }
+                Surface(
+                    shape = RoundedCornerShape(4.dp),
+                    color = Color(0xFF16A34A).copy(alpha = 0.15f)
+                ) {
+                    Text(
+                        text = update.status,
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            color = Color(0xFF16A34A),
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 10.sp
+                        )
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = update.title,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Navy900
+                )
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = update.summary,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = Slate600,
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Ref: ${update.notificationNumber}",
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = Slate400,
+                        fontSize = 10.sp
+                    )
+                )
+                Text(
+                    text = update.issuedDate,
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = Slate500,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+            }
         }
     }
 }

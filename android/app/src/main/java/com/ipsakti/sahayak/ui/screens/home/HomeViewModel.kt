@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ipsakti.sahayak.data.model.DashboardStats
 import com.ipsakti.sahayak.data.model.InvestigationSummary
+import com.ipsakti.sahayak.data.model.RegulationUpdate
 import com.ipsakti.sahayak.data.repository.IpSaktiRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,7 @@ data class HomeUiState(
     val isOnline: Boolean = true,
     val stats: DashboardStats = DashboardStats(),
     val recentInvestigations: List<InvestigationSummary> = emptyList(),
+    val recentRegulations: List<RegulationUpdate> = emptyList(),
     val errorMessage: String? = null
 )
 
@@ -45,11 +47,16 @@ class HomeViewModel(
             val invResult = repository.getInvestigations()
             val investigations = invResult.getOrDefault(emptyList())
 
+            // 4. Recent regulations
+            val regResult = repository.getRecentRegulations()
+            val regulations = regResult.getOrDefault(repository.getFallbackRegulationUpdates())
+
             _uiState.value = _uiState.value.copy(
                 isLoading = false,
                 isOnline = online,
                 stats = stats,
-                recentInvestigations = investigations
+                recentInvestigations = investigations,
+                recentRegulations = regulations
             )
         }
     }
