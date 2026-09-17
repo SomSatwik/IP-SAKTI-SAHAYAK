@@ -302,10 +302,16 @@ class IpSaktiRepository {
             else -> "🌿 **AyurSakti Intelligence Guidance:**\n\nFor Ayurvedic formulations and medicinal plants, Section 3(p) of the Patents Act bars patenting traditional knowledge unless synergistic therapeutic efficacy or a novel extraction mechanism is documented. Prior NBA approval (Form 3) under the Biodiversity Act is legally mandatory.\n\n💡 **Recommended App Actions:**\nTap the action buttons below to test Section 3(p) compliance in the Investigation Workspace or view step-by-step statutory filings!"
         }
 
+        val domain = if (mLower.contains("patent") || mLower.contains("infringement") || mLower.contains("ip")) "IP"
+            else if (mLower.contains("license") || mLower.contains("nba") || mLower.contains("rule") || mLower.contains("regulatory")) "Regulatory"
+            else "Ayurveda"
+
         return ChatResponse(
             reply = reply,
             suggestedActions = actions.take(3),
-            references = listOf("Indian Patents Act Sec 3(p)", "Biological Diversity Act Sec 6", "Drugs & Cosmetics Rule 158B")
+            references = listOf("Indian Patents Act Sec 3(p)", "Biological Diversity Act Sec 6", "Drugs & Cosmetics Rule 158B"),
+            domain = domain,
+            domains = listOf(domain)
         )
     }
 

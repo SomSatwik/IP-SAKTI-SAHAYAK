@@ -34,6 +34,7 @@ class QueryResponse(BaseModel):
     confidence: float
     evidence: List[EvidenceItem] = []
     domains: List[str] = []
+    primary_domain: Optional[str] = None
     risks: List[str] = []
     actions: List[str] = []
     citations: List[CitationItem] = []
@@ -118,6 +119,8 @@ class ChatMessage(BaseModel):
     text: str
     timestamp: str
     actions: List[SuggestedAction] = []
+    domain: Optional[str] = None
+    domains: List[str] = []
 
 class ChatMessageRequest(BaseModel):
     message: str
@@ -128,3 +131,5 @@ class ChatResponse(BaseModel):
     reply: str
     suggested_actions: List[SuggestedAction] = []
     references: List[str] = []
+    domain: Optional[str] = None
+    domains: List[str] = []

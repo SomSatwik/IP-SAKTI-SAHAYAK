@@ -25,6 +25,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ipsakti.sahayak.data.manager.LanguageManager
 import com.ipsakti.sahayak.data.model.ChatMessage
 import com.ipsakti.sahayak.data.model.SuggestedAction
+import com.ipsakti.sahayak.ui.components.DomainChip
 import com.ipsakti.sahayak.ui.components.IpTopAppBar
 import com.ipsakti.sahayak.ui.components.LiveBuildingEvidenceGraph
 import com.ipsakti.sahayak.ui.components.MarkdownText
@@ -244,6 +245,20 @@ private fun MessageBubble(
             }
 
             Column {
+                if (!isUser) {
+                    val domainsList = if (message.domains.isNotEmpty()) message.domains else listOfNotNull(message.domain)
+                    if (domainsList.isNotEmpty()) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                            modifier = Modifier.padding(bottom = 6.dp)
+                        ) {
+                            domainsList.take(3).forEach { d ->
+                                DomainChip(name = d, isSelected = true)
+                            }
+                        }
+                    }
+                }
+
                 Card(
                     shape = RoundedCornerShape(
                         topStart = 14.dp,

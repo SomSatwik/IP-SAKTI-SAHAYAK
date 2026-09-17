@@ -38,6 +38,7 @@ data class QueryResponse(
     @SerializedName("confidence") val confidence: Float = 0f,
     @SerializedName("evidence") val evidence: List<EvidenceItem> = emptyList(),
     @SerializedName("domains") val domains: List<String> = emptyList(),
+    @SerializedName("primary_domain") val primaryDomain: String? = null,
     @SerializedName("risks") val risks: List<String> = emptyList(),
     @SerializedName("actions") val actions: List<String> = emptyList(),
     @SerializedName("citations") val citations: List<CitationItem> = emptyList(),
@@ -139,7 +140,9 @@ data class ChatMessage(
     @SerializedName("sender") val sender: String = "assistant", // "user" or "assistant"
     @SerializedName("text") val text: String = "",
     @SerializedName("timestamp") val timestamp: String = "",
-    @SerializedName("actions") val actions: List<SuggestedAction> = emptyList()
+    @SerializedName("actions") val actions: List<SuggestedAction> = emptyList(),
+    @SerializedName("domain") val domain: String? = null,
+    @SerializedName("domains") val domains: List<String> = emptyList()
 )
 
 data class ChatMessageRequest(
@@ -151,5 +154,7 @@ data class ChatMessageRequest(
 data class ChatResponse(
     @SerializedName("reply") val reply: String = "",
     @SerializedName("suggested_actions") val suggestedActions: List<SuggestedAction> = emptyList(),
-    @SerializedName("references") val references: List<String> = emptyList()
+    @SerializedName("references") val references: List<String> = emptyList(),
+    @SerializedName("domain") val domain: String? = null,
+    @SerializedName("domains") val domains: List<String> = emptyList()
 )

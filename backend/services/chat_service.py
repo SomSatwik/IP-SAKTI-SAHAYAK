@@ -57,10 +57,14 @@ class ChatService:
                 reply_text = ai_resp.content if hasattr(ai_resp, "content") else str(ai_resp)
 
                 actions = self._generate_suggested_actions(message, lang)
+                from ..pipeline.domain_classifier import domain_classifier
+                classification = domain_classifier.classify(message)
                 return ChatResponse(
                     reply=reply_text,
                     suggested_actions=actions,
-                    references=["Indian Patents Act, 1970", "Biological Diversity Act, 2002", "Drugs & Cosmetics Rules, 1945"]
+                    references=["Indian Patents Act, 1970", "Biological Diversity Act, 2002", "Drugs & Cosmetics Rules, 1945"],
+                    domain=classification.get("primary_domain", "Ayurveda"),
+                    domains=classification.get("all_detected", ["Ayurveda"])
                 )
             except Exception as e:
                 logger.warning(f"Live chat LLM failed ({e}), using domain assistant.")
@@ -225,10 +229,14 @@ class ChatService:
                 "Use the action chips below to launch an investigation, view the compliance roadmap, or index regulatory documents!"
             )
 
+        from ..pipeline.domain_classifier import domain_classifier
+        classification = domain_classifier.classify(message)
         return ChatResponse(
             reply=reply,
             suggested_actions=actions,
-            references=["Indian Patents Act, 1970 (Sec 3p)", "Biological Diversity Act, 2002 (Sec 6)", "Drugs & Cosmetics Rules (Rule 158B)"]
+            references=["Indian Patents Act, 1970 (Sec 3p)", "Biological Diversity Act, 2002 (Sec 6)", "Drugs & Cosmetics Rules (Rule 158B)"],
+            domain=classification.get("primary_domain", "Ayurveda"),
+            domains=classification.get("all_detected", ["Ayurveda"])
         )
 
 chat_service = ChatService()

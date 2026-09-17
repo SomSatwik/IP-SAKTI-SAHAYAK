@@ -54,7 +54,21 @@ class QueryService:
 
         if not self.is_ready or not self.pipeline:
             logger.info(f"Using demo response for language '{request.language}'.")
-            return get_demo_query_response(request.language)
+            demo_resp = get_demo_query_response(request.language)
+            from ..pipeline.domain_classifier import domain_classifier
+            classification = domain_classifier.classify(request.question)
+            return QueryResponse(
+                answer=demo_resp.answer,
+                confidence=demo_resp.confidence,
+                evidence=demo_resp.evidence,
+                domains=classification.get("all_detected", ["Ayurveda", "IP"]),
+                primary_domain=classification.get("primary_domain", "Ayurveda"),
+                risks=demo_resp.risks,
+                actions=demo_resp.actions,
+                citations=demo_resp.citations,
+                abstained=demo_resp.abstained,
+                disclaimer=demo_resp.disclaimer
+            )
 
         try:
             logger.info(f"Processing query via real pipeline: {request.question} (lang: {request.language})")
@@ -168,15 +182,11 @@ class QueryService:
             elif evidence_items:
                 confidence = min(0.70 + len(evidence_items) * 0.05, 0.95)
 
-            # Domains detection
-            domains = ["Patent", "Traditional Knowledge", "Biodiversity / ABS"]
-            q_lower = request.question.lower()
-            if "trademark" in q_lower or "brand" in q_lower:
-                domains.append("Trademark")
-            if "copyright" in q_lower or "code" in q_lower or "software" in q_lower:
-                domains.append("Copyright")
-            if "geographical" in q_lower or "gi" in q_lower:
-                domains.append("Geographical Indication")
+            # Domains detection via DomainClassifier
+            from ..pipeline.domain_classifier import domain_classifier
+            classification = domain_classifier.classify(request.question)
+            detected_domains = classification.get("all_detected", ["Ayurveda", "IP"])
+            primary_domain = classification.get("primary_domain", "Ayurveda")
 
             # Risk flags
             risks = [
@@ -201,7 +211,8 @@ class QueryService:
                 answer=answer,
                 confidence=confidence,
                 evidence=evidence_items,
-                domains=domains,
+                domains=detected_domains,
+                primary_domain=primary_domain,
                 risks=risks,
                 actions=actions,
                 citations=citations,

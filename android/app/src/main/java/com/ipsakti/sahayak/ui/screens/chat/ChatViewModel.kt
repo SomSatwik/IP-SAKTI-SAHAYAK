@@ -127,7 +127,9 @@ class ChatViewModel(
                     sender = "assistant",
                     text = response.reply,
                     timestamp = getCurrentTime(),
-                    actions = response.suggestedActions
+                    actions = response.suggestedActions,
+                    domain = response.domain,
+                    domains = response.domains
                 )
                 _uiState.value = _uiState.value.copy(
                     messages = _uiState.value.messages + assistantMessage,
@@ -140,7 +142,9 @@ class ChatViewModel(
                     sender = "assistant",
                     text = fallback.reply,
                     timestamp = getCurrentTime(),
-                    actions = fallback.suggestedActions
+                    actions = fallback.suggestedActions,
+                    domain = fallback.domain,
+                    domains = fallback.domains
                 )
                 _uiState.value = _uiState.value.copy(
                     messages = _uiState.value.messages + assistantMessage,
