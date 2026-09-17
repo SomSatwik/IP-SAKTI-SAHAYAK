@@ -91,6 +91,35 @@ class ChatViewModel(
         )
     }
 
+    fun setLanguage(lang: String) {
+        LanguageManager.setLanguage(lang)
+        if (_uiState.value.messages.size <= 1) {
+            initializeChat()
+        } else {
+            val prompts = when (lang) {
+                "hi" -> listOf(
+                    "क्या मैं अश्वगंधा सिरप का पेटेंट करा सकता हूँ?",
+                    "आयुष नियम 158B लाइसेंसिंग क्या है?",
+                    "धारा 3(p) के तहत सिंड्रोम और सहक्रिया कैसे सिद्ध करें?",
+                    "टीकेडीएल (TKDL) पेटेंट को कैसे रोकता है?"
+                )
+                "or" -> listOf(
+                    "ଅଶ୍ୱଗନ୍ଧା ସିରପ୍ ପାଇଁ ପେଟେଣ୍ଟ ମିଳିପାରିବ କି?",
+                    "ଆୟୁଷ ନିୟମ 158B ଲାଇସେନ୍ସିଂ କ'ଣ?",
+                    "ଧାରା 3(p) ଆପତ୍ତି କିପରି ଦୂର କରିବେ?",
+                    "ଜୈବ ବିବିଧତା NBA ଅନୁମୋଦନ କିପରି ପାଇବେ?"
+                )
+                else -> listOf(
+                    "Can I patent an Ashwagandha + Tulsi formulation?",
+                    "What is Ayush Rule 158B manufacturing license?",
+                    "How to prove synergistic efficacy under Section 3(p)?",
+                    "How does TKDL database prevent biopiracy?"
+                )
+            }
+            _uiState.value = _uiState.value.copy(suggestedPrompts = prompts)
+        }
+    }
+
     fun onInputChanged(newText: String) {
         _uiState.value = _uiState.value.copy(inputText = newText)
     }

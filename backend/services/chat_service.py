@@ -14,7 +14,10 @@ class ChatService:
 
     def get_chat_response(self, request: ChatMessageRequest) -> ChatResponse:
         message = request.message.strip()
-        lang = (request.language or "en").lower().strip()
+        requested_lang = (request.language or "").lower().strip()
+        from ..pipeline.multilingual import multilingual_manager
+        detected_lang = multilingual_manager.detect_language(message)
+        lang = requested_lang if requested_lang in ["hi", "hindi", "or", "odia", "en"] else detected_lang
         
         # 1. Try real LLM if GROQ_API_KEY is present
         load_dotenv(override=True)
@@ -31,6 +34,7 @@ class ChatService:
                     max_tokens=800
                 )
 
+                lang_instruction = multilingual_manager.get_system_prompt_instruction(lang)
                 system_prompt = (
                     "You are AyurSakti, the expert Ayurvedic & IP Intelligence Assistant within the IP-SAKTI SAHAYAK mobile app. "
                     "You help users with their Ayurvedic formulations, traditional medicinal plants, Section 3(p) patent exclusions, "
@@ -38,11 +42,8 @@ class ChatService:
                     "Always provide precise, grounded guidance. At the end of your reply, explicitly recommend relevant features of the IP-SAKTI app "
                     "(e.g., 'Use our Investigation Workspace to test Section 3(p) compliance', 'View the Compliance Roadmap for step-by-step filings', "
                     "'Check the Evidence Graph for regulatory connections', or 'Upload your formulation monograph in Document Intelligence'). "
+                    f"\n\nLanguage Guideline: {lang_instruction}"
                 )
-                if lang in ["hi", "hindi"]:
-                    system_prompt += "Respond entirely in clean, professional Hindi (हिन्दी)."
-                elif lang in ["or", "odia", "oriya"]:
-                    system_prompt += "Respond entirely in clean, professional Odia (ଓଡ଼ିଆ)."
 
                 messages = [SystemMessage(content=system_prompt)]
                 # Add past 4 messages from history

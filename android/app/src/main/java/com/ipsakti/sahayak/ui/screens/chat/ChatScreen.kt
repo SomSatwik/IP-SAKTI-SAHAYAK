@@ -39,6 +39,7 @@ fun ChatScreen(
     viewModel: ChatViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val currentLang by LanguageManager.currentLanguage.collectAsState()
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -167,6 +168,39 @@ fun ChatScreen(
                         .padding(horizontal = 12.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Surface(
+                        shape = RoundedCornerShape(18.dp),
+                        color = if (currentLang == "hi") Gold600.copy(alpha = 0.2f) else Slate200,
+                        border = BorderStroke(1.dp, if (currentLang == "hi") Gold600 else Slate300),
+                        modifier = Modifier
+                            .clickable {
+                                val nextLang = if (currentLang == "hi") "en" else "hi"
+                                viewModel.setLanguage(nextLang)
+                            }
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Language,
+                                contentDescription = "Toggle Language",
+                                tint = if (currentLang == "hi") Gold800 else Slate600,
+                                modifier = Modifier.size(15.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = if (currentLang == "hi") "हिन्दी" else "EN",
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (currentLang == "hi") Gold800 else Slate700,
+                                    fontSize = 11.sp
+                                )
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(6.dp))
+
                     OutlinedTextField(
                         value = uiState.inputText,
                         onValueChange = { viewModel.onInputChanged(it) },
