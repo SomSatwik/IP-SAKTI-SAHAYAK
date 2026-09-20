@@ -167,6 +167,12 @@ class PriorArtService:
                     sec_3p_risk=data["sec_3p_risk"]
                 ))
 
+        # Dynamic discovery via Groq LLM if botanical is not in curated list
+        if not detected:
+            ai_botanical = self._detect_with_groq(query)
+            if ai_botanical:
+                detected.extend(ai_botanical)
+
         # 2. Match patents
         matching_patents: List[PatentRecord] = []
         for p in self.CURATED_PATENTS:
@@ -231,5 +237,50 @@ class PriorArtService:
             disclaimer="This patent search is preliminary and for guidance only. A formal freedom-to-operate (FTO) search by an IP attorney is required before commercialization."
         )
 
+    def _detect_with_groq(self, query: str) -> List[BotanicalInfo]:
+        import os
+        import json
+        from ..pipeline.config import load_environment
+        load_environment()
+        groq_key = os.getenv("GROQ_API_KEY")
+        if not groq_key:
+            return []
+
+        prompt = (
+            f"Analyze the following user query for any medicinal plant, herb, or natural biological ingredients: '{query}'. "
+            "If any plant/herb is present, return a JSON list of objects with fields: "
+            "'name', 'scientific_name', 'traditional_uses', 'classical_texts' (e.g. Charaka Samhita, Sushruta Samhita, Bhavaprakasha), "
+            "and 'sec_3p_risk' (assessment under Indian Patents Act Section 3(p)). "
+            "Return ONLY a valid JSON array of objects. If no plants or biological ingredients are mentioned, return []."
+        )
+
+        try:
+            from langchain_groq import ChatGroq
+            llm = ChatGroq(api_key=groq_key, model=os.getenv("MODEL_NAME", "qwen/qwen3.8-27b"), temperature=0.1, max_tokens=600)
+            res = llm.invoke(prompt)
+            content = res.content.strip()
+            # Extract JSON from code block if present
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+            
+            data = json.loads(content)
+            results = []
+            if isinstance(data, list):
+                for item in data:
+                    if isinstance(item, dict) and "name" in item:
+                        results.append(BotanicalInfo(
+                            name=item.get("name", "Unknown Botanical"),
+                            scientific_name=item.get("scientific_name", "N/A"),
+                            traditional_uses=item.get("traditional_uses", "Traditional Ayurvedic preparation"),
+                            classical_texts=item.get("classical_texts", "Classical Ayurvedic Samhitas"),
+                            sec_3p_risk=item.get("sec_3p_risk", "Section 3(p) prior art objection likely unless novel synergy demonstrated.")
+                        ))
+            return results
+        except Exception:
+            return []
+
 
 prior_art_service = PriorArtService()
+

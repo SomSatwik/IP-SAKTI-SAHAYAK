@@ -33,10 +33,13 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
 
     object Chat : Screen("chat?initialQuery={initialQuery}&autoSend={autoSend}", "AyurBot", Icons.Default.AutoAwesome) {
         fun createRoute(initialQuery: String? = null, autoSend: Boolean = false): String {
-            return if (initialQuery.isNullOrBlank()) {
+            val clean = initialQuery?.trim()?.takeIf {
+                it.isNotEmpty() && !it.equals("{initialQuery}", ignoreCase = true) && !it.equals("{initial query}", ignoreCase = true)
+            }
+            return if (clean == null) {
                 "chat"
             } else {
-                val encoded = java.net.URLEncoder.encode(initialQuery, "UTF-8")
+                val encoded = java.net.URLEncoder.encode(clean, "UTF-8")
                 "chat?initialQuery=$encoded&autoSend=$autoSend"
             }
         }

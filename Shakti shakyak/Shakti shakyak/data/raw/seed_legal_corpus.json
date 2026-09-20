@@ -1,0 +1,77 @@
+[
+  {
+    "metadata": {
+      "title": "The Patents Act, 1970 (India)",
+      "document_type": "Primary Statute",
+      "source_id": "ip_india",
+      "authority": "Controller General of Patents, Designs and Trade Marks",
+      "authority_level": "LEVEL_1",
+      "jurisdiction": "India",
+      "domain": "Patent",
+      "source_url": "https://ipindia.gov.in/writereaddata/Portal/IPOAct/1_31_1_patent-act-1970-11march2015.pdf",
+      "version": "1970 (As Amended 2005)",
+      "effective_date": "1972-04-20"
+    },
+    "text": "CHAPTER II: INVENTIONS NOT PATENTABLE\n\nSection 3: What are not inventions within the meaning of this Act.\nThe following are not inventions within the meaning of this Act,—\n(a) an invention which is frivolous or which claims anything obvious or contrary to well established natural laws;\n(b) an invention the primary or intended use or commercial exploitation of which could be contrary to public order or morality or which causes serious prejudice to human, animal or plant life or health or to the environment;\n(c) the mere discovery of a scientific principle or the formulation of an abstract theory or discovery of any living thing or non-living substance occurring in nature;\n\nSection 3(d): The mere discovery of a new form of a known substance which does not result in the enhancement of the known efficacy of that substance or the mere discovery of any new property or new use for a known substance or of the mere use of a known process, machine or apparatus unless such known process results in a new product or employs at least one new reactant. Explanation.—For the purposes of this clause, salts, esters, ethers, polymorphs, metabolites, pure form, particle size, isomers, mixtures of isomers, complexes, combinations and other derivatives of known substance shall be considered to be the same substance, unless they differ significantly in properties with regard to efficacy.\n\nSection 3(e): A substance obtained by a mere admixture resulting only in the aggregation of the properties of the components thereof or a process for producing such substance.\n\nSection 3(h): A method of agriculture or horticulture;\n\nSection 3(j): Plants and animals in whole or any part thereof other than micro-organisms but including seeds, varieties and species and essentially biological processes for production or propagation of plants and animals;\n\nSection 3(p): An invention which in effect, is traditional knowledge or which is an aggregation or duplication of known properties of traditionally known component or components. Under this provision, traditional medicinal knowledge, including Ayurvedic formulations recorded in classical texts, is completely barred from patenting in India unless a truly inventive synergy is demonstrated beyond known traditional properties.\n\nSection 25: Opposition to the patent.\nSection 25(1)(k): That the invention so far as claimed in any complete specification was anticipated having regard to the knowledge, oral or otherwise, available within any local or indigenous community in India or elsewhere. This constitutes a direct statutory ground for pre-grant and post-grant opposition against patents that misappropriate traditional knowledge."
+  },
+  {
+    "metadata": {
+      "title": "The Biological Diversity Act, 2002 & ABS Regulations",
+      "document_type": "Primary Statute",
+      "source_id": "nba_india",
+      "authority": "National Biodiversity Authority (NBA), Govt of India",
+      "authority_level": "LEVEL_1",
+      "jurisdiction": "India",
+      "domain": "Biodiversity & ABS",
+      "source_url": "https://nbaindia.org/uploaded/pdf/act_rules/act.pdf",
+      "version": "2002 (Amended 2023)",
+      "effective_date": "2003-02-05"
+    },
+    "text": "CHAPTER II: REGULATION OF ACCESS TO BIOLOGICAL DIVERSITY\n\nSection 3: Certain persons not to undertake Biodiversity related activities without approval of National Biodiversity Authority.\n(1) No person who is not a citizen of India, or a citizen of India who is an NRI, or a body corporate, association or organization not incorporated or registered in India or incorporated in India with non-Indian participation in its share capital or management, shall obtain any biological resource occurring in India or knowledge associated thereto for research or for commercial utilisation or for bio-survey and bio-utilisation without previous approval of the National Biodiversity Authority.\n\nSection 4: Transfer of biological resource or knowledge not to be made without approval of National Biodiversity Authority.\nNo person shall, without the previous approval of the National Biodiversity Authority, transfer the results of any research relating to any biological resources occurring in, or obtained from, India, to any person referred to in sub-section (2) of Section 3.\n\nSection 6: Application for intellectual property rights not to be made without approval of National Biodiversity Authority.\n(1) No person shall apply for any intellectual property right, by whatever name called, in or outside India for any invention based on any research or information on a biological resource obtained from India without obtaining the previous approval of the National Biodiversity Authority before making such application.\nProvided that if a person applies for a patent, permission of the National Biodiversity Authority may be obtained after the acceptance of the patent but before the sealing of the patent by the patent authority concerned.\n(2) The National Biodiversity Authority may, while granting the approval under this section, impose benefit sharing fee or royalty or conditions on the commercial utilisation of the intellectual property right.\n\nForm III: Application Form under the Biological Diversity Rules for applying for Intellectual Property Rights (Patents) based on biological resources or associated traditional knowledge."
+  },
+  {
+    "metadata": {
+      "title": "TKDL Guidelines & Traditional Knowledge Protection Protocols",
+      "document_type": "Official Regulatory Guidelines",
+      "source_id": "tkdl_csir",
+      "authority": "CSIR & Ministry of Ayush",
+      "authority_level": "LEVEL_2",
+      "jurisdiction": "India",
+      "domain": "Traditional Knowledge / Ayurveda",
+      "source_url": "https://www.tkdl.res.in/tkdl/langdefault/common/Abouttkdl.asp",
+      "version": "Current Guidelines",
+      "effective_date": "2001-01-01"
+    },
+    "text": "TRADITIONAL KNOWLEDGE DIGITAL LIBRARY (TKDL) OVERVIEW & PRIOR ART DEFENSE:\n\nThe Traditional Knowledge Digital Library (TKDL) is a pioneering Indian digital repository initiated in 2001 by CSIR (Council of Scientific and Industrial Research) and the Ministry of Ayush. It translates and digitizes ancient Sanskrit, Urdu, Persian, Arabic, and Tamil texts into English, French, German, Japanese, and Spanish in international patent classification (IPC) format.\n\nKey Functions in IP Defense:\n1. Non-Disclosure & Prior-Art Access Agreements: TKDL access agreements are established with leading patent offices worldwide, including the European Patent Office (EPO), United States Patent and Trademark Office (USPTO), Japan Patent Office (JPO), Canadian Intellectual Property Office (CIPO), and Indian Patent Office (CGPDTM).\n2. Prevention of Biopiracy: Patent examiners query TKDL prior to granting claims on medicinal plants like Curcuma longa (Turmeric), Azadirachta indica (Neem), Withania somnifera (Ashwagandha), and Basmati rice formulations.\n3. Defeating Novelty and Inventive Step: Where an applicant claims a herbal formulation for a therapeutic use that is already disclosed in classical Ayurvedic texts (e.g. Charaka Samhita, Sushruta Samhita, Ashtanga Hridaya), TKDL references are cited under 35 U.S.C. 102/103 (US) or Article 54/56 EPC (Europe) to reject the claims.\n4. Requirements for Valid Herbal Patents in India: To secure a patent on an Ayurvedic formulation in India, the applicant must overcome Section 3(p) by proving that the specific combination produces a surprising, synergistic therapeutic effect that cannot be attributed to the simple aggregation or duplication of known traditional medicinal properties, alongside mandatory Section 6 NBA clearance."
+  },
+  {
+    "metadata": {
+      "title": "Geographical Indications of Goods Act, 1999 & Plant Varieties Protection Act, 2001",
+      "document_type": "Primary Statute",
+      "source_id": "ip_india",
+      "authority": "Geographical Indications Registry & PPV&FR Authority",
+      "authority_level": "LEVEL_1",
+      "jurisdiction": "India",
+      "domain": "Geographical Indications & Plant Varieties",
+      "source_url": "https://ipindia.gov.in/act-1999.htm",
+      "version": "1999 & 2001",
+      "effective_date": "2003-09-15"
+    },
+    "text": "GEOGRAPHICAL INDICATIONS OF GOODS (REGISTRATION AND PROTECTION) ACT, 1999:\n\nSection 2(1)(e): Geographical Indication in relation to goods, means an indication which identifies such goods as agricultural goods, natural goods or manufactured goods as originating, or manufactured in the territory of a country, or a region or locality in that territory, where a given quality, reputation or other characteristic of such goods is essentially attributable to its geographical origin.\n\nTraditional Ayurvedic GI Registrations: Notable traditional knowledge and natural wellness products registered under the GI Act include Kangra Tea, Darjeeling Tea, Kashmir Saffron, Mysore Sandalwood Oil, and Navara Rice (used in Ayurvedic Panchakarma rejuvenation).\n\nPROTECTION OF PLANT VARIETIES AND FARMERS' RIGHTS ACT, 2001 (PPV&FR ACT):\n\nSection 39: Farmers' Rights: A farmer who has bred or developed a new variety shall be entitled for registration and other rights in like manner as a breeder of a variety under this Act. Crucially, farmers are protected to save, use, sow, resow, exchange, share or sell farm produce including seed of a protected variety, provided they do not sell branded seed in commercial packaging."
+  },
+  {
+    "metadata": {
+      "title": "International IP Treaties: PCT, TRIPS Agreement & Nagoya Protocol",
+      "document_type": "International Treaty",
+      "source_id": "wipo",
+      "authority": "World Intellectual Property Organization & WTO",
+      "authority_level": "LEVEL_3",
+      "jurisdiction": "International",
+      "domain": "International IP & Treaties",
+      "source_url": "https://www.wipo.int/pct/en/texts/articles/atoc.html",
+      "version": "Consolidated Treaties",
+      "effective_date": "1978-01-24"
+    },
+    "text": "PATENT COOPERATION TREATY (PCT) OVERVIEW:\n\nArticle 1 & Article 3: Filing of an International Application. The PCT allows an applicant to seek patent protection for an invention simultaneously in a large number of countries by filing a single 'international' patent application. The international phase comprises international search (ISR) and written opinion by an International Searching Authority (ISA).\n\nArticle 11: International Filing Date and Effects: An international filing date has the effect of a regular national application in each designated State as of the international filing date.\n\nArticle 22 & Article 39: National Phase Entry: The applicant must enter the national phase in designated countries (typically within 30 or 31 months from priority date) by paying national fees and submitting local translations.\n\nWTO TRIPS AGREEMENT (ARTICLE 27 - PATENTABLE SUBJECT MATTER):\n\nArticle 27.1: Patents shall be available for any inventions, whether products or processes, in all fields of technology, provided that they are new, involve an inventive step and are capable of industrial application.\nArticle 27.3(b): Members may exclude from patentability plants and animals other than micro-organisms, and essentially biological processes for the production of plants or animals. However, Members shall provide for the protection of plant varieties either by patents or by an effective sui generis system.\n\nTHE NAGOYA PROTOCOL ON ACCESS AND BENEFIT-SHARING (ABS):\n\nA supplementary agreement to the Convention on Biological Diversity (CBD). Provides a transparent legal framework for the fair and equitable sharing of benefits arising out of the utilization of genetic resources, including traditional knowledge associated with genetic resources, establishing Prior Informed Consent (PIC) and Mutually Agreed Terms (MAT)."
+  }
+]

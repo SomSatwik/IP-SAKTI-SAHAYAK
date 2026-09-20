@@ -43,7 +43,12 @@ fun PriorArtSearchScreen(
     repository: IpSaktiRepository = remember { IpSaktiRepository() },
     initialQuery: String = ""
 ) {
-    var queryText by remember { mutableStateOf(initialQuery.ifEmpty { "Ashwagandha + Curcumin synergistic formulation" }) }
+    val cleanInitial = remember(initialQuery) {
+        initialQuery.trim().takeIf {
+            it.isNotEmpty() && !it.equals("{initialQuery}", ignoreCase = true) && !it.equals("{initial query}", ignoreCase = true)
+        } ?: ""
+    }
+    var queryText by remember { mutableStateOf(cleanInitial.ifEmpty { "Ashwagandha + Curcumin synergistic formulation" }) }
     var isLoading by remember { mutableStateOf(false) }
     var searchResult by remember { mutableStateOf<PriorArtSearchResponse?>(null) }
     val coroutineScope = rememberCoroutineScope()

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-badge">
+        <span class="badge badge-primary">Smart India Hackathon 2026 • PS26045</span>
+    </div>
+    <h1 class="hero-title">IP-SAKTI SAHAYAK</h1>
+    <p class="hero-subtitle">
+        AI-Powered Intellectual Property, Traditional Knowledge & Regulatory Assistant.
+        Grounded in official primary legislation, TKDL databases, and the Biological Diversity Act.
+    </p>
+    <div class="hero-cta-group">
+        <a href="/chat" class="btn btn-primary">⚖️ Launch Research Chat</a>
+        <a href="/prior-art" class="btn btn-secondary">🌿 Prior-Art Discovery</a>
+        <a href="/compliance" class="btn btn-accent">📋 Check ABS Compliance</a>
+    </div>
+</section>
+
+<!-- Core Architectural Features -->
+<section class="features-grid">
+    <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3>Hybrid RAG Retrieval</h3>
+        <p>Weighted fusion of dense multilingual vector search (FAISS) and exact statutory keyword search (BM25) with legal section boosting.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🏛️</div>
+        <h3>Official Authoritative Sources</h3>
+        <p>Prioritizes Primary Level 1 Legislation: The Patents Act 1970, India Code, IP India, Ministry of AYUSH, and National Biodiversity Authority.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🌿</div>
+        <h3>Ayurveda & Traditional Knowledge</h3>
+        <p>Specialized Section 3(p) and Section 3(e) legal barrier analysis to protect classical formulations and defeat illegitimate biopiracy.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Safe Abstention & Grounding</h3>
+        <p>Strict anti-hallucination protocols. System transparently abstains when authoritative evidence is missing, conflicting, or unverified.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3>Multilingual Support</h3>
+        <p>Seamless query and response handling across English, Hindi (हिन्दी), and Odia (ଓଡ଼ିଆ) while strictly preserving statutory terminology.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Calibrated Confidence Scoring</h3>
+        <p>Multi-signal score combining semantic similarity, statutory authority level, corroboration, and citation verification.</p>
+    </div>
+</section>
+{% endblock %}

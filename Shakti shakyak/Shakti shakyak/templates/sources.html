@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Authoritative Source Registry</h1>
+        <p class="page-description">
+            IP-SAKTI SAHAYAK strictly grounds legal and regulatory answers in registered primary and secondary
+            government repositories, official patent offices, and international treaty organizations.
+        </p>
+    </div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Source Authority</th>
+                    <th>Jurisdiction</th>
+                    <th>Regulatory Domain</th>
+                    <th>Authority Level</th>
+                    <th>Official Portal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in sources %}
+                <tr>
+                    <td>
+                        <strong>{{ s.name }}</strong>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{ s.authority }}</div>
+                    </td>
+                    <td><span class="badge badge-accent">{{ s.jurisdiction }}</span></td>
+                    <td>{{ s.domain }}</td>
+                    <td><span class="badge badge-primary">{{ s.authority_level }}</span></td>
+                    <td>
+                        <a href="{{ s.base_url }}" target="_blank" class="btn btn-secondary btn-sm">
+                            Visit Portal &rarr;
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-card" style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 0.75rem; font-size: 1.1rem;">Source Authority Hierarchy (Levels 1–5)</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Answers on the platform are weighted strictly according to statutory hierarchy:
+        </p>
+        <ul style="padding-left: 1.5rem; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8;">
+            <li><strong>LEVEL 1:</strong> Primary Legislation, Official Gazettes, Patent Offices, Central Acts (e.g. The Patents Act 1970, Biological Diversity Act 2002).</li>
+            <li><strong>LEVEL 2:</strong> Official Regulatory Guidelines, TKDL Protocols, AYUSH Pharmacopoeial Standards.</li>
+            <li><strong>LEVEL 3:</strong> Official International Organizations (WIPO Lex, WTO TRIPS, WHO, Nagoya Protocol).</li>
+            <li><strong>LEVEL 4:</strong> Institutional Research & Certified Academic Repositories.</li>
+            <li><strong>LEVEL 5:</strong> Secondary Web Sources (used solely for general corroboration, never for binding legal citations).</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

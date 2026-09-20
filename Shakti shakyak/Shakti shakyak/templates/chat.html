@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <!-- LEFT PANEL: Conversation & Query History -->
+    <aside class="chat-history-sidebar">
+        <div class="history-header">
+            <h3>Recent Queries</h3>
+        </div>
+        <ul id="historyList" class="history-list">
+            <li style="color: var(--text-muted); font-size: 0.8rem;">No prior session inquiries.</li>
+        </ul>
+    </aside>
+
+    <!-- CENTER PANEL: Chat & Grounded Generation Workspace -->
+    <section class="chat-main">
+        <div class="chat-workspace-header">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <h2 style="font-size: 1.1rem;">Statutory Research Workspace</h2>
+                <span class="badge badge-accent">Grounded RAG Active</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">
+                Model: <strong>Groq / llama-3.3-70b-versatile</strong>
+            </div>
+        </div>
+
+        <div id="chatMessages" class="chat-messages">
+            <!-- Welcome greeting -->
+            <div class="message message-assistant">
+                <div class="message-avatar assistant-avatar">⚖️</div>
+                <div class="message-content">
+                    <h3>Welcome to IP-SAKTI SAHAYAK</h3>
+                    <p>I am your specialized AI research assistant for <strong>Indian and International Intellectual Property</strong>, with deep domain expertise in <strong>Ayurveda, Traditional Knowledge (TKDL), and the Biological Diversity Act (ABS)</strong>.</p>
+                    <p style="margin-top: 0.5rem;">Every factual claim is directly cited from verified primary legislation and regulatory publications.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="chat-input-area">
+            <!-- Quick Suggestions -->
+            <div class="query-suggestions" style="margin-bottom: 0.75rem;">
+                <button class="suggestion-chip" data-query="How can an Ayurvedic formulation be protected under Indian IP laws without violating Section 3(p)?">
+                    🌿 Ayurveda & Section 3(p) Bar
+                </button>
+                <button class="suggestion-chip" data-query="What are the legal requirements for obtaining NBA approval under Section 6 of the Biological Diversity Act?">
+                    📋 NBA Form III Clearance
+                </button>
+                <button class="suggestion-chip" data-query="Explain the non-patentability criteria under Section 3(d) of the Indian Patents Act.">
+                    🔬 Section 3(d) Enhanced Efficacy
+                </button>
+                <button class="suggestion-chip" data-query="What is the procedure for international patent filing under the PCT?">
+                    🌐 PCT International Phase
+                </button>
+            </div>
+
+            <form id="chatForm" class="chat-form">
+                <textarea id="chatInput" class="chat-input" placeholder="Ask an intellectual property or regulatory question (e.g. 'Can I patent an Ashwagandha extract in India?')..." rows="2"></textarea>
+                <div class="chat-form-bottom">
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">Press Enter to send, Shift+Enter for new line</span>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <span>Research</span> &rarr;
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- RIGHT PANEL: Evidence, Confidence Meter & Official Source Cards -->
+    <aside class="chat-evidence-sidebar">
+        <div class="evidence-header">
+            <h3>Verified Evidence</h3>
+            <span class="badge badge-primary">Traceability</span>
+        </div>
+
+        <!-- Confidence Meter -->
+        <div class="confidence-card">
+            <div class="confidence-header">
+                <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-secondary);">CONFIDENCE RATING</span>
+                <span id="confidenceValue" class="confidence-value">--%</span>
+            </div>
+            <div class="confidence-progress">
+                <div id="confidenceProgressBar" class="confidence-progress-bar" style="width: 0%;"></div>
+            </div>
+            <div id="confidenceExplanation" class="confidence-explanation">
+                Awaiting query evaluation. Confidence incorporates statutory hierarchy, retrieval precision, and grounding.
+            </div>
+        </div>
+
+        <!-- Verified Source Cards Container -->
+        <div id="sourcesContainer">
+            <p style="color: var(--text-muted); font-size: 0.85rem;">
+                Official primary citations will appear here once an inquiry is processed.
+            </p>
+        </div>
+    </aside>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

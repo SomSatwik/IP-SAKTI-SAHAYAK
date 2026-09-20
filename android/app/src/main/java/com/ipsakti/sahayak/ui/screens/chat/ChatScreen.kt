@@ -48,13 +48,19 @@ fun ChatScreen(
     var hasAutoSent by rememberSaveable { mutableStateOf(false) }
 
     // Requirement 2: Auto-send context-aware query upon landing
-    LaunchedEffect(initialQuery, autoSend) {
-        if (!initialQuery.isNullOrBlank() && !hasAutoSent) {
+    val cleanInitialQuery = remember(initialQuery) {
+        initialQuery?.trim()?.takeIf {
+            it.isNotEmpty() && !it.equals("{initialQuery}", ignoreCase = true) && !it.equals("{initial query}", ignoreCase = true)
+        }
+    }
+
+    LaunchedEffect(cleanInitialQuery, autoSend) {
+        if (!cleanInitialQuery.isNullOrBlank() && !hasAutoSent) {
             hasAutoSent = true
             if (autoSend) {
-                viewModel.sendMessage(customText = initialQuery)
+                viewModel.sendMessage(customText = cleanInitialQuery)
             } else {
-                viewModel.onInputChanged(initialQuery)
+                viewModel.onInputChanged(cleanInitialQuery)
             }
         }
     }

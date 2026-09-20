@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Traditional Knowledge & Herbal Prior-Art Discovery</h1>
+        <p class="page-description">
+            Evaluate Ayurvedic and botanical formulations against classical treatises (Charaka Samhita, Sushruta Samhita),
+            TKDL International Patent Classification (IPC) entries, and Section 3(p) / 3(e) non-patentability statutory bars.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <!-- Input Form -->
+        <div class="form-card">
+            <h3 style="margin-bottom: 1rem; font-size: 1.15rem;">Enter Formulation or Invention Details</h3>
+            <form id="priorArtForm">
+                <div class="form-group">
+                    <label class="form-label" for="formulationDescription">Formulation Description / Herbal Claims</label>
+                    <textarea id="formulationDescription" class="form-control" placeholder="Describe the therapeutic formulation and active botanical ingredients (e.g. 'A synergistic anti-inflammatory composition comprising Withania somnifera (Ashwagandha) and Curcuma longa (Turmeric) extract for arthritis treatment')..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    🔍 Run Prior-Art & Section 3(p) Scan
+                </button>
+            </form>
+
+            <div style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);">
+                <strong>Note:</strong> Under Indian patent law, patenting a known property of an Ayurvedic herb is explicitly barred under Section 3(p). To succeed, applicants must demonstrate a surprising synergistic effect (beyond Section 3(e) mere admixture).
+            </div>
+        </div>
+
+        <!-- Output Container -->
+        <div id="priorArtResults">
+            <div class="form-card" style="text-align: center; padding: 3rem 1.5rem; color: var(--text-muted);">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌿</div>
+                <h4>Awaiting Formulation Submission</h4>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                    Submit a botanical formulation to identify classical textual disclosures, IPC classes, and statutory patentability barriers.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}

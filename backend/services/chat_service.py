@@ -1,10 +1,10 @@
 import os
 import logging
 from typing import List
-from dotenv import load_dotenv
 
 from ..models import ChatMessageRequest, ChatResponse, SuggestedAction
 from .query_service import query_service
+from ..pipeline.config import GROQ_API_KEY, MODEL_NAME, load_environment
 
 logger = logging.getLogger(__name__)
 
@@ -20,20 +20,10 @@ class ChatService:
         lang = requested_lang if requested_lang in ["hi", "hindi", "or", "odia", "en"] else detected_lang
         
         # 1. Try real LLM if GROQ_API_KEY is present
-        load_dotenv(override=True)
-        groq_key = os.getenv("GROQ_API_KEY")
+        load_environment()
+        groq_key = os.getenv("GROQ_API_KEY") or GROQ_API_KEY
         if groq_key:
             try:
-                from langchain_groq import ChatGroq
-                from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
-
-                llm = ChatGroq(
-                    api_key=groq_key,
-                    model="llama-3.3-70b-versatile",
-                    temperature=0.3,
-                    max_tokens=800
-                )
-
                 lang_instruction = multilingual_manager.get_system_prompt_instruction(lang)
                 persona_instruction = self._get_persona_prompt_adjustment(request.persona or "startup")
                 system_prompt = (
@@ -47,17 +37,43 @@ class ChatService:
                     f"\n\nPersona Register: {persona_instruction}"
                 )
 
-                messages = [SystemMessage(content=system_prompt)]
-                # Add past 4 messages from history
-                for h in request.history[-4:]:
-                    if h.sender == "user":
-                        messages.append(HumanMessage(content=h.text))
-                    else:
-                        messages.append(AIMessage(content=h.text))
+                reply_text = ""
+                try:
+                    from langchain_groq import ChatGroq
+                    from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
-                messages.append(HumanMessage(content=message))
-                ai_resp = llm.invoke(messages)
-                reply_text = ai_resp.content if hasattr(ai_resp, "content") else str(ai_resp)
+                    llm = ChatGroq(
+                        api_key=groq_key,
+                        model=os.getenv("MODEL_NAME", MODEL_NAME),
+                        temperature=0.3,
+                        max_tokens=700
+                    )
+
+                    messages = [SystemMessage(content=system_prompt)]
+                    for h in request.history[-4:]:
+                        if h.sender == "user":
+                            messages.append(HumanMessage(content=h.text))
+                        else:
+                            messages.append(AIMessage(content=h.text))
+
+                    messages.append(HumanMessage(content=message))
+                    ai_resp = llm.invoke(messages)
+                    reply_text = ai_resp.content if hasattr(ai_resp, "content") else str(ai_resp)
+                except Exception as e_groq:
+                    logger.info(f"ChatGroq note ({e_groq}), trying OpenAI client...")
+                    from openai import OpenAI
+                    client = OpenAI(base_url="https://api.groq.com/openai/v1", api_key=groq_key)
+                    history_msgs = [{"role": "system", "content": system_prompt}]
+                    for h in request.history[-4:]:
+                        history_msgs.append({"role": "user" if h.sender == "user" else "assistant", "content": h.text})
+                    history_msgs.append({"role": "user", "content": message})
+                    comp = client.chat.completions.create(
+                        model=os.getenv("MODEL_NAME", MODEL_NAME),
+                        messages=history_msgs,
+                        max_tokens=700,
+                        temperature=0.3
+                    )
+                    reply_text = comp.choices[0].message.content
 
                 actions = self._generate_suggested_actions(message, lang)
                 from ..pipeline.domain_classifier import domain_classifier

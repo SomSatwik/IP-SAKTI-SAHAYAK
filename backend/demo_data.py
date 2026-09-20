@@ -29,7 +29,7 @@ demo_source_2 = SourceItem(
     page="18",
     version="Amended 2005",
     effective_date="1970-09-19",
-    source_url="https://ipindia.gov.in/patents-act-1970.htm",
+    source_url="https://ipindia.gov.in/patents-act-1970.html",
     content="An invention which in effect, is traditional knowledge or which is an aggregation or duplication of known properties of traditionally known component or components is not patentable."
 )
 

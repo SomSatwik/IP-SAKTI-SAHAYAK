@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}IP-SAKTI SAHAYAK — AI Intellectual Property & Traditional Knowledge Assistant{% endblock %}</title>
+    <meta name="description" content="SIH 2026 (PS26045): AI-powered regulatory and patent assistant specialized in Ayurveda, Traditional Knowledge, Indian and International IP frameworks.">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/" class="nav-brand">
+            <div class="brand-icon">⚖️</div>
+            <div>
+                IP-SAKTI SAHAYAK
+                <span class="brand-badge">SIH 2026 • PS26045</span>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="/chat">Research Chat</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/prior-art">Prior-Art Search</a></li>
+            <li><a href="/compliance">ABS Compliance</a></li>
+            <li><a href="/knowledge-graph">Knowledge Graph</a></li>
+            <li><a href="/sources">Authoritative Sources</a></li>
+            <li><a href="/admin">System Health</a></li>
+        </ul>
+
+        <div class="nav-controls">
+            <!-- Jurisdiction Selector -->
+            <select id="jurisdictionSelect" class="select-clean" title="Jurisdiction Scope">
+                <option value="India">🇮🇳 India</option>
+                <option value="International">🌐 International</option>
+                <option value="Auto Detect">⚡ Auto Detect</option>
+            </select>
+
+            <!-- Language Selector -->
+            <select id="languageSelect" class="select-clean" title="Preferred Language">
+                <option value="en">English</option>
+                <option value="hi">हिन्दी</option>
+                <option value="or">ଓଡ଼ିଆ</option>
+            </select>
+
+            <!-- Theme Toggle -->
+            <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Dark/Light Mode">
+                <span id="themeToggleIcon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Block -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="footer">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <strong>IP-SAKTI SAHAYAK</strong> — Built for Smart India Hackathon 2026 (Problem Statement PS26045).
+            </div>
+            <div>
+                Powered by Groq LLM, FAISS, BM25 Hybrid Retrieval, and Official Government Registries.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

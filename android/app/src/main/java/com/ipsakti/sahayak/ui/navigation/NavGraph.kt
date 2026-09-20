@@ -42,7 +42,7 @@ fun NavGraph(navController: NavHostController) {
                     navController.navigate(Screen.DocumentUpload.route)
                 },
                 onOpenChat = {
-                    navController.navigate(Screen.Chat.route)
+                    navController.navigate(Screen.Chat.createRoute())
                 },
                 onOpenPriorArt = {
                     navController.navigate(Screen.PriorArtSearch.route)
@@ -206,6 +206,8 @@ fun NavGraph(navController: NavHostController) {
                 } catch (e: Exception) {
                     it
                 }
+            }?.trim()?.takeIf {
+                it.isNotEmpty() && !it.equals("{initialQuery}", ignoreCase = true) && !it.equals("{initial query}", ignoreCase = true)
             }
             val autoSend = backStackEntry.arguments?.getBoolean("autoSend") ?: false
 
@@ -265,8 +267,11 @@ fun NavGraph(navController: NavHostController) {
                 onTestInInvestigation = { _ ->
                     navController.navigate(Screen.Investigate.route)
                 },
-                onConsultAssistant = { _ ->
-                    navController.navigate(Screen.Chat.route)
+                onConsultAssistant = { formulation ->
+                    val clean = formulation.trim().takeIf {
+                        it.isNotEmpty() && !it.equals("{initialQuery}", ignoreCase = true) && !it.equals("{initial query}", ignoreCase = true)
+                    }
+                    navController.navigate(Screen.Chat.createRoute(clean))
                 }
             )
         }

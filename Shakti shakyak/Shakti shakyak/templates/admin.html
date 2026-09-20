@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Administrative & Diagnostics Control</h1>
+        <p class="page-description">
+            Monitor system health, vector database state, FAISS index status, and embedding telemetry.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div class="form-card">
+            <h3 style="margin-bottom: 1.25rem; font-size: 1.15rem;">Live System Health Check</h3>
+            <div id="healthStatus" style="padding: 1rem; border-radius: var(--radius-sm); background: var(--bg-base); border: 1px solid var(--border-subtle); margin-bottom: 1rem;">
+                Checking system health...
+            </div>
+            <button id="refreshHealthBtn" class="btn btn-secondary btn-sm" onclick="checkHealth()">
+                🔄 Refresh Health Diagnostics
+            </button>
+        </div>
+
+        <div class="form-card">
+            <h3 style="margin-bottom: 1rem; font-size: 1.15rem;">Active LLM & Vector Store Parameters</h3>
+            <div style="font-size: 0.9rem; line-height: 2;">
+                <div><strong>Active LLM Model:</strong> Groq / llama-3.3-70b-versatile</div>
+                <div><strong>Embedding Model:</strong> BAAI/bge-m3 (Normalized Multilingual)</div>
+                <div><strong>Vector DB Engine:</strong> FAISS (IndexFlatIP Cosine Similarity)</div>
+                <div><strong>Keyword Engine:</strong> BM25Okapi with Legal Term Boosting</div>
+                <div><strong>RAG Grounding:</strong> Strict Grounded Generation</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function checkHealth() {
+    const container = document.getElementById("healthStatus");
+    container.innerHTML = "Querying /api/health...";
+    try {
+        const res = await fetch("/api/health");
+        const data = await res.json();
+        container.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+                <div><strong>Status:</strong> <span class="badge ${data.status === 'healthy' ? 'badge-accent' : 'badge-warning'}">${data.status.toUpperCase()}</span></div>
+                <div><strong>Groq LLM Client:</strong> ${data.llm ? '✅ Connected' : '❌ Unavailable'}</div>
+                <div><strong>Vector Store:</strong> ${data.vector_store ? '✅ Active' : '❌ Inactive'}</div>
+                <div><strong>Indexed Chunks:</strong> ${data.chunks_indexed} chunks ready</div>
+                <div><strong>SQLite Database:</strong> ${data.database ? '✅ Connected' : '❌ Error'}</div>
+            </div>
+        `;
+    } catch (e) {
+        container.innerHTML = `<span style="color: var(--danger);">Failed to query health endpoint.</span>`;
+    }
+}
+document.addEventListener("DOMContentLoaded", checkHealth);
+</script>
+{% endblock %}

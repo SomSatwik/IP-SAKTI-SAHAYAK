@@ -1,0 +1,24 @@
+# Core Web & API
+flask>=3.0.0
+flask-cors>=4.0.0
+werkzeug>=3.0.0
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+python-dotenv>=1.0.0
+
+# Database & ORM
+sqlalchemy>=2.0.0
+
+# AI & LLM
+groq>=0.11.0
+
+# Hybrid Retrieval & NLP
+rank-bm25>=0.2.2
+numpy>=1.24.0
+faiss-cpu>=1.7.4
+
+# PDF & Document Processing
+pypdf>=3.17.0
+
+# Testing
+pytest>=7.4.0

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Research & Regulatory Dashboard</h1>
+        <p class="page-description">Real-time status of indexed legal statutes, authoritative source registries, and regulatory updates.</p>
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="dashboard-metrics-grid">
+        <div class="metric-card">
+            <div class="metric-label">Official Sources Registered</div>
+            <div class="metric-value">{{ source_count }}</div>
+            <div class="metric-sub">IP India, AYUSH, NBA, WIPO, India Code</div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-label">Indexed Statutory Provisions</div>
+            <div class="metric-value">18</div>
+            <div class="metric-sub">Patents Act, Biodiversity Act, TKDL</div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-label">Embedding Dimensions</div>
+            <div class="metric-value">1024</div>
+            <div class="metric-sub">Multilingual Normalized Vectors</div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-label">Grounding Mode</div>
+            <div class="metric-value" style="font-size: 1.3rem; color: var(--accent);">Strict Anti-Hallucination</div>
+            <div class="metric-sub">Safe Abstention Enabled</div>
+        </div>
+    </div>
+
+    <!-- Quick Action Launchers -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; flex-wrap: wrap;">
+        <a href="/chat" class="btn btn-primary">⚖️ New Research Inquiry</a>
+        <a href="/prior-art" class="btn btn-secondary">🌿 Scan Formulation Prior-Art</a>
+        <a href="/compliance" class="btn btn-accent">📋 NBA Section 6 Checklist</a>
+        <a href="/knowledge-graph" class="btn btn-secondary">🕸️ Explore Knowledge Graph</a>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <!-- Recent Queries -->
+        <div class="form-card">
+            <h3 style="margin-bottom: 1rem; font-size: 1.15rem;">Recent Research Inquiries</h3>
+            {% if recent_queries %}
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    {% for q in recent_queries %}
+                        <div style="border: 1px solid var(--border-subtle); padding: 0.75rem; border-radius: var(--radius-sm); background: var(--bg-base);">
+                            <div style="font-weight: 600; font-size: 0.9rem; color: var(--text-primary);">{{ q.query }}</div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;">
+                                <span>{{ q.domain }} • {{ q.jurisdiction }}</span>
+                                <span class="badge badge-accent">Confidence: {{ q.confidence_pct }}%</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="color: var(--text-muted); font-size: 0.85rem;">No recent queries logged in this session.</p>
+            {% endif %}
+        </div>
+
+        <!-- Recent Regulatory Notifications -->
+        <div class="form-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="font-size: 1.15rem;">Regulatory Notifications</h3>
+                <span class="badge badge-primary">Live Feeds</span>
+            </div>
+            <div class="updates-list">
+                <div class="update-card">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.85rem;">ASU Drugs Pharmacopoeial Standards Revision</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Ministry of Ayush • Nov 2025</div>
+                    </div>
+                    <span class="badge badge-accent">Ayurveda</span>
+                </div>
+
+                <div class="update-card">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.85rem;">Expedited Form III Online Processing for Patents</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">National Biodiversity Authority • Jan 2026</div>
+                    </div>
+                    <span class="badge badge-warning">ABS Form III</span>
+                </div>
+
+                <div class="update-card">
+                    <div>
+                        <div style="font-weight: 600; font-size: 0.85rem;">Updated Guidelines for Examination of TK Patents</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Indian Patent Office (CGPDTM) • Sep 2025</div>
+                    </div>
+                    <span class="badge badge-primary">Section 3(p)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

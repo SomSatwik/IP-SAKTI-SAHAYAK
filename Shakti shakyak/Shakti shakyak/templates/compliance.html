@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Biological Diversity Act & ABS Compliance Navigator</h1>
+        <p class="page-description">
+            Determine your mandatory regulatory obligations, National Biodiversity Authority (NBA) approvals,
+            and Form III clearance requirements under the Biological Diversity Act, 2002.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <!-- Input Form -->
+        <div class="form-card">
+            <h3 style="margin-bottom: 1.25rem; font-size: 1.15rem;">Project Parameters</h3>
+            <form id="complianceForm">
+                <div class="form-group">
+                    <label class="form-label" for="applicantType">Applicant Legal Status</label>
+                    <select id="applicantType" class="form-control">
+                        <option value="indian_citizen">Indian Citizen / Local Community</option>
+                        <option value="nri">Non-Resident Indian (NRI)</option>
+                        <option value="foreign_entity">Foreign Entity / Multinational Corporation</option>
+                        <option value="indian_company_foreign_share">Indian Company with Foreign Shareholding/Management</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" id="usesBio" checked style="width: 18px; height: 18px;">
+                    <label for="usesBio" class="form-label" style="margin: 0; cursor: pointer;">
+                        Uses Biological Resources obtained from India (Plants, Microbes, Animal derivatives)
+                    </label>
+                </div>
+
+                <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" id="commercialIntent" checked style="width: 18px; height: 18px;">
+                    <label for="commercialIntent" class="form-label" style="margin: 0; cursor: pointer;">
+                        Commercial Utilization or Manufacturing Intended
+                    </label>
+                </div>
+
+                <div class="form-group" style="flex-direction: row; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" id="ipFiling" checked style="width: 18px; height: 18px;">
+                    <label for="ipFiling" class="form-label" style="margin: 0; cursor: pointer;">
+                        Applying for Patent or Intellectual Property Rights (in India or Abroad)
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="resourceDetails">Biological Resource / Botanical Details</label>
+                    <input type="text" id="resourceDetails" class="form-control" placeholder="e.g. Curcuma longa sourced from Western Ghats">
+                </div>
+
+                <button type="submit" class="btn btn-accent" style="width: 100%;">
+                    📋 Assess Statutory Clearance Requirements
+                </button>
+            </form>
+        </div>
+
+        <!-- Output Guidance Container -->
+        <div id="complianceResults">
+            <div class="form-card" style="text-align: center; padding: 3rem 1.5rem; color: var(--text-muted);">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">⚖️</div>
+                <h4>Awaiting Assessment Parameters</h4>
+                <p style="font-size: 0.85rem; margin-top: 0.5rem;">
+                    Select applicant parameters to determine required NBA forms (Form I, Form II, Form III) and Benefit Sharing liabilities.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}
