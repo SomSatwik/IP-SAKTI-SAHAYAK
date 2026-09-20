@@ -19,6 +19,10 @@ import com.ipsakti.sahayak.ui.screens.timemachine.RegulationTimelineScreen
 import com.ipsakti.sahayak.ui.screens.upload.UploadScreen
 import com.ipsakti.sahayak.ui.screens.export.ExportReadinessScreen
 import com.ipsakti.sahayak.ui.screens.wizard.ClassificationWizardScreen
+import com.ipsakti.sahayak.ui.screens.regulatory.RegulatoryGuidanceScreen
+import com.ipsakti.sahayak.ui.screens.claims.ClaimRiskScreen
+import com.ipsakti.sahayak.ui.screens.label.LabelComplianceScreen
+import com.ipsakti.sahayak.ui.screens.international.InternationalComparisonScreen
 
 @Composable
 fun NavGraph(navController: NavHostController) {
@@ -55,6 +59,18 @@ fun NavGraph(navController: NavHostController) {
                 },
                 onOpenCraft = {
                     navController.navigate(Screen.FormulationCraft.route)
+                },
+                onOpenRegulatoryGuidance = {
+                    navController.navigate(Screen.RegulatoryGuidance.route)
+                },
+                onOpenClaimRisk = {
+                    navController.navigate(Screen.ClaimRisk.route)
+                },
+                onOpenLabelCompliance = {
+                    navController.navigate(Screen.LabelCompliance.route)
+                },
+                onOpenInternationalComparison = {
+                    navController.navigate(Screen.InternationalComparison.route)
                 },
                 onOpenChatWithQuery = { query, autoSend ->
                     navController.navigate(Screen.Chat.createRoute(query, autoSend = autoSend))
@@ -273,6 +289,33 @@ fun NavGraph(navController: NavHostController) {
                     }
                     navController.navigate(Screen.Chat.createRoute(clean))
                 }
+            )
+        }
+
+        composable(Screen.RegulatoryGuidance.route) {
+            RegulatoryGuidanceScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onNavigateToClaims = { navController.navigate(Screen.ClaimRisk.route) },
+                onNavigateToLabel = { navController.navigate(Screen.LabelCompliance.route) },
+                onNavigateToInternational = { navController.navigate(Screen.InternationalComparison.route) }
+            )
+        }
+
+        composable(Screen.ClaimRisk.route) {
+            ClaimRiskScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.LabelCompliance.route) {
+            LabelComplianceScreen(
+                onNavigateBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.InternationalComparison.route) {
+            InternationalComparisonScreen(
+                onNavigateBack = { navController.popBackStack() }
             )
         }
     }

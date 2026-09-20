@@ -42,6 +42,10 @@ fun HomeScreen(
     onOpenWizard: () -> Unit = {},
     onOpenExportReadiness: () -> Unit = {},
     onOpenCraft: () -> Unit = {},
+    onOpenRegulatoryGuidance: () -> Unit = {},
+    onOpenClaimRisk: () -> Unit = {},
+    onOpenLabelCompliance: () -> Unit = {},
+    onOpenInternationalComparison: () -> Unit = {},
     onOpenChatWithQuery: (String, Boolean) -> Unit = { _, _ -> onOpenChat() },
     viewModel: HomeViewModel = viewModel()
 ) {
@@ -208,6 +212,84 @@ fun HomeScreen(
                         onOpenInvestigation = onOpenInvestigation,
                         onOpenChatWithQuery = onOpenChatWithQuery
                     )
+                }
+            }
+
+            // REGULATORY & STATUTORY INTELLIGENCE SUITE
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "REGULATORY & STATUTORY INTELLIGENCE",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = Slate500,
+                                letterSpacing = 1.sp
+                            )
+                        )
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = Gold600.copy(alpha = 0.2f)
+                        ) {
+                            Text(
+                                text = "SIH PS26045 READY",
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.labelSmall.copy(
+                                    color = Gold800,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 9.sp
+                                )
+                            )
+                        }
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        ModuleLaunchCard(
+                            title = "Regulatory Engine",
+                            tagline = "Formulation triage & checklist",
+                            icon = Icons.Default.Balance,
+                            color = RoyalBlue800,
+                            modifier = Modifier.weight(1f),
+                            onClick = onOpenRegulatoryGuidance
+                        )
+                        ModuleLaunchCard(
+                            title = "Claims Scanner",
+                            tagline = "DMR Act & Rule 170 audit",
+                            icon = Icons.Default.Security,
+                            color = Color(0xFFDC2626),
+                            modifier = Modifier.weight(1f),
+                            onClick = onOpenClaimRisk
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        ModuleLaunchCard(
+                            title = "Label Auditor",
+                            tagline = "Rule 161 mandatory pack audit",
+                            icon = Icons.Default.FactCheck,
+                            color = Color(0xFF0D9488),
+                            modifier = Modifier.weight(1f),
+                            onClick = onOpenLabelCompliance
+                        )
+                        ModuleLaunchCard(
+                            title = "Global Matrix",
+                            tagline = "India vs US FDA vs EU EMA",
+                            icon = Icons.Default.Public,
+                            color = Gold700,
+                            modifier = Modifier.weight(1f),
+                            onClick = onOpenInternationalComparison
+                        )
+                    }
                 }
             }
 
@@ -665,3 +747,64 @@ fun PersonaSelectionModal(
         }
     )
 }
+
+@Composable
+fun ModuleLaunchCard(
+    title: String,
+    tagline: String,
+    icon: ImageVector,
+    color: Color,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = modifier.clickable { onClick() },
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(containerColor = CardBackground),
+        border = BorderStroke(1.dp, CardBorder)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(34.dp)
+                        .clip(CircleShape)
+                        .background(color.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(imageVector = icon, contentDescription = null, tint = color, modifier = Modifier.size(18.dp))
+                }
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = null,
+                    tint = Slate400,
+                    modifier = Modifier.size(14.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Navy900,
+                    fontSize = 13.sp
+                )
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = tagline,
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = Slate500,
+                    fontSize = 10.sp,
+                    lineHeight = 13.sp
+                ),
+                maxLines = 2
+            )
+        }
+    }
+}
+

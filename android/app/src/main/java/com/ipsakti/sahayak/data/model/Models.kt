@@ -246,3 +246,142 @@ data class CraftCombineResponse(
     @SerializedName("statutory_requirements") val statutoryRequirements: List<String> = emptyList(),
     @SerializedName("suggested_queries") val suggestedQueries: List<String> = emptyList()
 )
+
+// ==========================================================
+// REGULATORY GUIDANCE & CLASSIFICATION MODELS
+// ==========================================================
+
+data class RegulatoryGuidanceInput(
+    val productName: String = "",
+    val productType: String = "Ayurvedic Herbal Formulation",
+    val ingredients: List<String> = emptyList(),
+    val dosageForm: String = "Tablet / Vati",
+    val intendedUse: String = "",
+    val claims: String = "",
+    val manufacturingCountry: String = "India",
+    val targetMarkets: List<String> = listOf("India"),
+    val manufacturerType: String = "AYUSH Startup",
+    val existingLicences: String = "",
+    val supportingDocuments: String = ""
+)
+
+data class ProductClassification(
+    @SerializedName("potential_category") val potentialCategory: String = "Ayurvedic Medicine",
+    @SerializedName("confidence_score") val confidenceScore: Float = 0.88f,
+    @SerializedName("legal_reasoning") val legalReasoning: String = "",
+    @SerializedName("statutory_basis") val statutoryBasis: String = "",
+    @SerializedName("authority") val authority: String = "State Ayush Licensing Authority (SLA)",
+    @SerializedName("governing_rules") val governingRules: String = "Drugs & Cosmetics Act, 1940 (Rule 158B)",
+    @SerializedName("unresolved_questions") val unresolvedQuestions: List<String> = emptyList(),
+    @SerializedName("requires_expert_verification") val requiresExpertVerification: Boolean = false
+)
+
+data class RegulatoryRequirement(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("category") val category: String = "Licensing", // Licensing, GMP, Safety, Labelling, Claims, Export/ABS
+    @SerializedName("title") val title: String = "",
+    @SerializedName("description") val description: String = "",
+    @SerializedName("status") val status: String = "needs_verification", // complete, needs_verification, missing, not_applicable, insufficient_evidence
+    @SerializedName("authority") val authority: String = "",
+    @SerializedName("source_document") val sourceDocument: String = "",
+    @SerializedName("section") val section: String? = null,
+    @SerializedName("publication_date") val publicationDate: String? = null,
+    @SerializedName("confidence") val confidence: Float = 0.92f,
+    @SerializedName("evidence_passage") val evidencePassage: String = "",
+    @SerializedName("what_user_should_do_next") val whatUserShouldDoNext: String = "",
+    @SerializedName("source_url") val sourceUrl: String? = null
+)
+
+data class TrustReliabilityReport(
+    @SerializedName("evidence_found") val evidenceFound: Boolean = true,
+    @SerializedName("authoritative_source_verified") val authoritativeSourceVerified: Boolean = true,
+    @SerializedName("source_freshness_verified") val sourceFreshnessVerified: Boolean = true,
+    @SerializedName("conflicting_sources_count") val conflictingSourcesCount: Int = 0,
+    @SerializedName("retrieval_confidence") val retrievalConfidence: Float = 0.94f,
+    @SerializedName("evidence_coverage") val evidenceCoverage: Float = 0.89f,
+    @SerializedName("answer_confidence") val answerConfidence: Float = 0.91f,
+    @SerializedName("safe_abstention_triggered") val safeAbstentionTriggered: Boolean = false,
+    @SerializedName("abstention_reason") val abstentionReason: String? = null,
+    @SerializedName("human_escalation_recommended") val humanEscalationRecommended: Boolean = false,
+    @SerializedName("escalation_notes") val escalationNotes: String? = null
+)
+
+data class RegulatoryGuidanceResponse(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("product_name") val productName: String = "",
+    @SerializedName("classification") val classification: ProductClassification = ProductClassification(),
+    @SerializedName("checklist_items") val checklistItems: List<RegulatoryRequirement> = emptyList(),
+    @SerializedName("checklist_completion_pct") val checklistCompletionPct: Int = 0,
+    @SerializedName("roadmap_steps") val roadmapSteps: List<RoadmapStep> = emptyList(),
+    @SerializedName("statutory_risks") val statutoryRisks: List<String> = emptyList(),
+    @SerializedName("missing_information") val missingInformation: List<String> = emptyList(),
+    @SerializedName("trust_report") val trustReport: TrustReliabilityReport = TrustReliabilityReport(),
+    @SerializedName("disclaimer") val disclaimer: String = "This information is evidence-backed regulatory intelligence and does not constitute formal legal approval or legal advice."
+)
+
+// ==========================================================
+// CLAIM RISK DETECTOR MODELS
+// ==========================================================
+
+data class ClaimRiskItem(
+    @SerializedName("claim_text") val claimText: String = "",
+    @SerializedName("detected_category") val detectedCategory: String = "Therapeutic Claim",
+    @SerializedName("risk_level") val riskLevel: String = "HIGH", // CRITICAL, HIGH, MODERATE, LOW
+    @SerializedName("flagged_phrases") val flaggedPhrases: List<String> = emptyList(),
+    @SerializedName("statutory_bar") val statutoryBar: String = "",
+    @SerializedName("governing_authority") val governingAuthority: String = "",
+    @SerializedName("evidence_reasoning") val evidenceReasoning: String = "",
+    @SerializedName("evidence_needed_to_support") val evidenceNeededToSupport: String = "",
+    @SerializedName("recommended_next_action") val recommendedNextAction: String = ""
+)
+
+data class ClaimRiskResponse(
+    @SerializedName("overall_risk_level") val overallRiskLevel: String = "HIGH",
+    @SerializedName("total_claims_analyzed") val totalClaimsAnalyzed: Int = 0,
+    @SerializedName("items") val items: List<ClaimRiskItem> = emptyList(),
+    @SerializedName("general_advisory") val generalAdvisory: String = "",
+    @SerializedName("statutory_sources") val statutorySources: List<SourceItem> = emptyList()
+)
+
+// ==========================================================
+// LABEL COMPLIANCE MODELS
+// ==========================================================
+
+data class LabelItem(
+    @SerializedName("field_name") val fieldName: String = "",
+    @SerializedName("status") val status: String = "needs_verification", // detected, needs_verification, missing, unable_to_determine
+    @SerializedName("detected_value") val detectedValue: String? = null,
+    @SerializedName("statutory_requirement") val statutoryRequirement: String = "",
+    @SerializedName("authority") val authority: String = "Ministry of Ayush / State Licensing Authority",
+    @SerializedName("governing_rule") val governingRule: String = "Drugs & Cosmetics Rules, 1945 — Rule 161",
+    @SerializedName("corrective_action") val correctiveAction: String = ""
+)
+
+data class LabelComplianceResponse(
+    @SerializedName("product_label_name") val productLabelName: String = "",
+    @SerializedName("fields") val fields: List<LabelItem> = emptyList(),
+    @SerializedName("compliance_readiness_pct") val complianceReadinessPct: Int = 0,
+    @SerializedName("critical_deficiencies") val criticalDeficiencies: List<String> = emptyList(),
+    @SerializedName("governing_standards") val governingStandards: List<String> = emptyList()
+)
+
+// ==========================================================
+// INTERNATIONAL REGULATORY COMPARISON MODELS
+// ==========================================================
+
+data class InternationalComparisonDimension(
+    @SerializedName("dimension") val dimension: String = "",
+    @SerializedName("india_details") val indiaDetails: String = "",
+    @SerializedName("usa_details") val usaDetails: String = "",
+    @SerializedName("eu_details") val euDetails: String = "",
+    @SerializedName("key_differences") val keyDifferences: String = ""
+)
+
+data class InternationalComparisonResponse(
+    @SerializedName("product_title") val productTitle: String = "",
+    @SerializedName("target_category") val targetCategory: String = "",
+    @SerializedName("dimensions") val dimensions: List<InternationalComparisonDimension> = emptyList(),
+    @SerializedName("export_readiness_alerts") val exportReadinessAlerts: List<String> = emptyList(),
+    @SerializedName("country_specific_cautions") val countrySpecificCautions: Map<String, String> = emptyMap()
+)
+

@@ -53,6 +53,10 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector?
     object ClassificationWizard : Screen("classification_wizard", "Classification Wizard", Icons.Default.AltRoute)
     object ExportReadiness : Screen("export_readiness", "Export Readiness", Icons.Default.Public)
     object FormulationCraft : Screen("formulation_craft", "Formulation Novelty Lab", Icons.Default.Science)
+    object RegulatoryGuidance : Screen("regulatory_guidance", "Regulatory Guidance", Icons.Default.Balance)
+    object ClaimRisk : Screen("claim_risk", "Claim Risk Detector", Icons.Default.Warning)
+    object LabelCompliance : Screen("label_compliance", "Label Compliance", Icons.Default.FactCheck)
+    object InternationalComparison : Screen("international_comparison", "Global Comparison", Icons.Default.Public)
 }
 
 val bottomNavItems = listOf(
