@@ -218,7 +218,10 @@ fun ExportReadinessScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = Navy900),
+                colors = CardDefaults.cardColors(
+                    containerColor = Navy900,
+                    contentColor = Color.White
+                ),
                 border = BorderStroke(1.dp, Navy700)
             ) {
                 Column(modifier = Modifier.padding(18.dp)) {
@@ -519,11 +522,14 @@ fun ExportReadinessScreen(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = RoyalBlue800,
+                    contentColor = Color.White
+                )
             ) {
-                Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp), tint = Color.White)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Share Export Readiness Dossier", fontWeight = FontWeight.Bold)
+                Text("Share Export Readiness Dossier", fontWeight = FontWeight.Bold, color = Color.White)
             }
         }
     }

@@ -207,7 +207,10 @@ fun FormulationCraftScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = CardDefaults.cardColors(containerColor = Navy900),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Navy900,
+                        contentColor = Color.White
+                    ),
                     border = BorderStroke(1.5.dp, if (crucibleHerbs.size >= 2) Gold600.copy(alpha = glowAlpha) else Navy700)
                 ) {
                     Column(
@@ -573,12 +576,25 @@ fun FormulationCraftScreen(
                                         onTestInInvestigation(outcome.title)
                                     },
                                     modifier = Modifier.weight(1f),
-                                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = RoyalBlue800,
+                                        contentColor = Color.White
+                                    ),
                                     shape = RoundedCornerShape(8.dp)
                                 ) {
-                                    Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(16.dp))
+                                    Icon(
+                                        Icons.Default.Search,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp),
+                                        tint = Color.White
+                                    )
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Test in Investigate", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                    Text(
+                                        "Test in Investigate",
+                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
                                 }
 
                                 OutlinedButton(

@@ -91,7 +91,10 @@ fun RegulationTimelineScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Navy900),
+                            colors = CardDefaults.cardColors(
+                                containerColor = Navy900,
+                                contentColor = Color.White
+                            ),
                             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
                         ) {
                             Column(modifier = Modifier.padding(18.dp)) {

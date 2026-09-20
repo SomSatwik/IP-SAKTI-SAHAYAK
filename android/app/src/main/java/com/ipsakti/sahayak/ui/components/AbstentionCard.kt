@@ -173,17 +173,22 @@ fun AbstentionCard(
                     onClick = { showDraftDialog = true },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RoyalBlue800,
+                        contentColor = Color.White
+                    )
                 ) {
                     Icon(
                         imageVector = Icons.Default.Description,
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp),
+                        tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
                         text = "Draft Letter",
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                        color = Color.White
                     )
                 }
             }
@@ -329,11 +334,14 @@ fun StatutoryQueryLetterModal(
                         context.startActivity(Intent.createChooser(shareIntent, "Send Query Letter to Authority"))
                     },
                     shape = RoundedCornerShape(6.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RoyalBlue800,
+                        contentColor = Color.White
+                    )
                 ) {
-                    Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(14.dp))
+                    Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(14.dp), tint = Color.White)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text("Share / Email", fontSize = 12.sp)
+                    Text("Share / Email", fontSize = 12.sp, color = Color.White)
                 }
             }
         },

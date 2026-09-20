@@ -99,7 +99,10 @@ fun ResultScreen(
                         Card(
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(10.dp),
-                            colors = CardDefaults.cardColors(containerColor = Navy900)
+                            colors = CardDefaults.cardColors(
+                                containerColor = Navy900,
+                                contentColor = Color.White
+                            )
                         ) {
                             Column(modifier = Modifier.padding(16.dp)) {
                                 Text(
@@ -330,30 +333,48 @@ fun ResultScreen(
                             Button(
                                 onClick = { onViewGraph(investigationId) },
                                 modifier = Modifier.weight(1f),
-                                colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = RoyalBlue800,
+                                    contentColor = Color.White
+                                ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.AccountTree,
                                     contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
+                                    modifier = Modifier.size(18.dp),
+                                    tint = Color.White
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text(com.ipsakti.sahayak.data.manager.LanguageManager.getString("view_graph"), fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(
+                                    com.ipsakti.sahayak.data.manager.LanguageManager.getString("view_graph"),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp,
+                                    color = Color.White
+                                )
                             }
                             Button(
                                 onClick = { onViewRoadmap(investigationId) },
                                 modifier = Modifier.weight(1f),
-                                colors = ButtonDefaults.buttonColors(containerColor = Gold700),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Gold700,
+                                    contentColor = Color.White
+                                ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Map,
                                     contentDescription = null,
-                                    modifier = Modifier.size(18.dp)
+                                    modifier = Modifier.size(18.dp),
+                                    tint = Color.White
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text(com.ipsakti.sahayak.data.manager.LanguageManager.getString("view_roadmap"), fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                                Text(
+                                    com.ipsakti.sahayak.data.manager.LanguageManager.getString("view_roadmap"),
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp,
+                                    color = Color.White
+                                )
                             }
                         }
                     }

@@ -1,4 +1,4 @@
-﻿package com.ipsakti.sahayak.ui.screens.home.personas
+package com.ipsakti.sahayak.ui.screens.home.personas
 
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
@@ -54,7 +54,10 @@ fun ResearcherDashboard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Navy900),
+            colors = CardDefaults.cardColors(
+                containerColor = Navy900,
+                contentColor = Color.White
+            ),
             border = BorderStroke(1.dp, Navy700)
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
@@ -89,21 +92,41 @@ fun ResearcherDashboard(
                     Button(
                         onClick = onOpenPriorArt,
                         modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = RoyalBlue800,
+                            contentColor = Color.White
+                        ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(imageVector = Icons.Default.Policy, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(
+                            imageVector = Icons.Default.Policy,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = Color.White
+                        )
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Search Prior Art", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(
+                            text = "Search Prior Art",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = Color.White
+                        )
                     }
                     OutlinedButton(
                         onClick = onOpenCraft,
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(8.dp),
-                        border = BorderStroke(1.dp, Gold600),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Gold600)
+                        border = BorderStroke(1.dp, Color.White),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White
+                        )
                     ) {
-                        Text(text = "⚗️ Novelty Lab", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(
+                            text = "⚗️ Novelty Lab",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = Color.White
+                        )
                     }
                 }
             }
@@ -383,12 +406,24 @@ fun ResearcherDashboard(
                         context.startActivity(Intent.createChooser(shareIntent, "Share Academic Research Brief"))
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RoyalBlue800,
+                        contentColor = Color.White
+                    ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = Color.White
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Export & Share Research Brief (Markdown/Text)", style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
+                    Text(
+                        text = "Export & Share Research Brief (Markdown/Text)",
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                    )
                 }
             }
         }

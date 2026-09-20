@@ -1,4 +1,4 @@
-﻿package com.ipsakti.sahayak.ui.screens.home.personas
+package com.ipsakti.sahayak.ui.screens.home.personas
 
 import android.content.Intent
 import android.net.Uri
@@ -61,7 +61,10 @@ fun MsmeDashboard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Navy900),
+            colors = CardDefaults.cardColors(
+                containerColor = Navy900,
+                contentColor = Color.White
+            ),
             border = BorderStroke(1.dp, Navy700)
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
@@ -96,19 +99,34 @@ fun MsmeDashboard(
                     Button(
                         onClick = onOpenExportReadiness,
                         modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = RoyalBlue800,
+                            contentColor = Color.White
+                        ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Text(text = "🌐 Export & GMP Audit", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(
+                            text = "🌐 Export & GMP Audit",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = Color.White
+                        )
                     }
                     OutlinedButton(
                         onClick = onOpenUpload,
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(8.dp),
-                        border = BorderStroke(1.dp, Gold600),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Gold600)
+                        border = BorderStroke(1.dp, Color.White),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White
+                        )
                     ) {
-                        Text(text = "📄 Ingest CoA / Batch", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(
+                            text = "📄 Ingest CoA / Batch",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = Color.White
+                        )
                     }
                 }
             }

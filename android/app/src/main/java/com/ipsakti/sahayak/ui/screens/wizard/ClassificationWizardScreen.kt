@@ -306,7 +306,10 @@ fun ClassificationWizardScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Navy900),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Navy900,
+                        contentColor = Color.White
+                    ),
                     border = BorderStroke(1.dp, Navy700)
                 ) {
                     Column(modifier = Modifier.padding(18.dp)) {
@@ -321,85 +324,97 @@ fun ClassificationWizardScreen(
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
                             text = currentQ.title,
-                            style = MaterialTheme.typography.titleLarge.copy(
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Bold,
                                 color = Color.White,
-                                fontWeight = FontWeight.Bold
+                                lineHeight = 22.sp
                             )
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = currentQ.subtitle,
-                            style = MaterialTheme.typography.bodyMedium.copy(color = Slate300)
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = Slate400,
+                                lineHeight = 16.sp
+                            )
                         )
                     }
                 }
 
-                // Options list
-                currentQ.options.forEach { option ->
-                    val isSelected = currentSelected?.id == option.id
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { selectedOptions[currentStepIndex] = option },
-                        shape = RoundedCornerShape(10.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = if (isSelected) RoyalBlue800.copy(alpha = 0.08f) else CardBackground
-                        ),
-                        border = BorderStroke(
-                            if (isSelected) 2.dp else 1.dp,
-                            if (isSelected) RoyalBlue800 else CardBorder
-                        )
-                    ) {
-                        Row(
+                // Options List
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    currentQ.options.forEach { option ->
+                        val isSelected = currentSelected?.id == option.id
+                        Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = option.emoji,
-                                fontSize = 26.sp
+                                .clickable {
+                                    selectedOptions[currentStepIndex] = option
+                                },
+                            shape = RoundedCornerShape(10.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = if (isSelected) RoyalBlue800.copy(alpha = 0.08f) else CardBackground
+                            ),
+                            border = BorderStroke(
+                                1.5.dp,
+                                if (isSelected) RoyalBlue800 else CardBorder
                             )
-                            Spacer(modifier = Modifier.width(14.dp))
-                            Column(modifier = Modifier.weight(1f)) {
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(14.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
-                                    text = option.title,
-                                    style = MaterialTheme.typography.titleMedium.copy(
-                                        fontWeight = FontWeight.Bold,
-                                        color = if (isSelected) RoyalBlue800 else Navy900
-                                    )
+                                    text = option.emoji,
+                                    fontSize = 24.sp
                                 )
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                    text = option.description,
-                                    style = MaterialTheme.typography.bodySmall.copy(
-                                        color = Slate600,
-                                        lineHeight = 16.sp
+                                Spacer(modifier = Modifier.width(12.dp))
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = option.title,
+                                        style = MaterialTheme.typography.bodyMedium.copy(
+                                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                            color = if (isSelected) RoyalBlue800 else Navy900
+                                        )
+                                    )
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Text(
+                                        text = option.description,
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = Slate500,
+                                            fontSize = 11.sp
+                                        )
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(8.dp))
+                                RadioButton(
+                                    selected = isSelected,
+                                    onClick = {
+                                        selectedOptions[currentStepIndex] = option
+                                    },
+                                    colors = RadioButtonDefaults.colors(
+                                        selectedColor = RoyalBlue800,
+                                        unselectedColor = Slate400
                                     )
                                 )
                             }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            RadioButton(
-                                selected = isSelected,
-                                onClick = { selectedOptions[currentStepIndex] = option },
-                                colors = RadioButtonDefaults.colors(
-                                    selectedColor = RoyalBlue800,
-                                    unselectedColor = Slate400
-                                )
-                            )
                         }
                     }
                 }
 
-                // Navigation Controls
+                // Nav Buttons
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (currentStepIndex > 0) {
                         OutlinedButton(
                             onClick = { currentStepIndex-- },
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(8.dp),
+                            border = BorderStroke(1.dp, CardBorder)
                         ) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
@@ -413,11 +428,22 @@ fun ClassificationWizardScreen(
                         onClick = { currentStepIndex++ },
                         enabled = currentSelected != null,
                         shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = RoyalBlue800,
+                            contentColor = Color.White
+                        )
                     ) {
-                        Text(if (currentStepIndex == questions.size - 1) "Compute Classification" else "Next Step")
+                        Text(
+                            text = if (currentStepIndex == questions.size - 1) "Compute Classification" else "Next Step",
+                            color = Color.White
+                        )
                         Spacer(modifier = Modifier.width(6.dp))
-                        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = Color.White
+                        )
                     }
                 }
             } else {
@@ -490,7 +516,10 @@ fun ClassificationWizardScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Navy900),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Navy900,
+                        contentColor = Color.White
+                    ),
                     border = BorderStroke(1.dp, Navy700)
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
@@ -701,11 +730,14 @@ fun ClassificationWizardScreen(
                         },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = RoyalBlue800,
+                            contentColor = Color.White
+                        )
                     ) {
-                        Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Search, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color.White)
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Analyze in App")
+                        Text("Analyze in App", color = Color.White)
                     }
                 }
             }

@@ -89,7 +89,10 @@ fun ClaimRiskScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Navy900),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Navy900,
+                        contentColor = Color.White
+                    ),
                     border = BorderStroke(1.dp, Navy700)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -190,18 +193,21 @@ fun ClaimRiskScreen(
                                 }
                             },
                             modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = RoyalBlue800,
+                                contentColor = Color.White
+                            ),
                             shape = RoundedCornerShape(8.dp),
                             enabled = !isLoading && claimsInput.isNotBlank()
                         ) {
                             if (isLoading) {
                                 CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("Screening Claims Against DMR Act...")
+                                Text("Screening Claims Against DMR Act...", color = Color.White)
                             } else {
-                                Icon(Icons.Default.Security, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Icon(Icons.Default.Security, contentDescription = null, modifier = Modifier.size(18.dp), tint = Color.White)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text("Scan Claims for Legal Risk", fontWeight = FontWeight.Bold)
+                                Text("Scan Claims for Legal Risk", fontWeight = FontWeight.Bold, color = Color.White)
                             }
                         }
                     }
@@ -316,11 +322,14 @@ fun ClaimRiskScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = RoyalBlue800,
+                            contentColor = Color.White
+                        )
                     ) {
-                        Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp), tint = Color.White)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Export Claim Risk Report", fontWeight = FontWeight.Bold)
+                        Text("Export Claim Risk Report", fontWeight = FontWeight.Bold, color = Color.White)
                     }
                 }
             }

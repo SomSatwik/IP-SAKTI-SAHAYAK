@@ -1,4 +1,4 @@
-﻿package com.ipsakti.sahayak.ui.screens.home.personas
+package com.ipsakti.sahayak.ui.screens.home.personas
 
 import android.content.Intent
 import androidx.compose.foundation.BorderStroke
@@ -55,7 +55,10 @@ fun StartupDashboard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Navy900),
+            colors = CardDefaults.cardColors(
+                containerColor = Navy900,
+                contentColor = Color.White
+            ),
             border = BorderStroke(1.dp, Navy700)
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
@@ -102,7 +105,7 @@ fun StartupDashboard(
                         border = BorderStroke(1.dp, Color.White),
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
                     ) {
-                        Text(text = "🗺️ Compliance Plan", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(text = "🗺️ Compliance Plan", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                     }
                 }
             }
@@ -300,12 +303,24 @@ fun StartupDashboard(
                         context.startActivity(Intent.createChooser(shareIntent, "Share Investor IP Summary"))
                     },
                     modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RoyalBlue800,
+                        contentColor = Color.White
+                    ),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = Color.White
+                    )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Export & Share Investor IP Summary", style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold))
+                    Text(
+                        text = "Export & Share Investor IP Summary",
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
+                    )
                 }
             }
         }

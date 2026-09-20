@@ -109,7 +109,10 @@ fun ComplianceRoadmapScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
-                    colors = CardDefaults.cardColors(containerColor = Navy900)
+                    colors = CardDefaults.cardColors(
+                        containerColor = Navy900,
+                        contentColor = Color.White
+                    )
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
@@ -313,11 +316,14 @@ fun ComplianceRoadmapScreen(
                         }
                         context.startActivity(Intent.createChooser(sendIntent, "Share Compliance Dossier"))
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = RoyalBlue800,
+                        contentColor = Color.White
+                    )
                 ) {
-                    Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp), tint = Color.White)
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("Share Dossier")
+                    Text("Share Dossier", color = Color.White)
                 }
             },
             dismissButton = {

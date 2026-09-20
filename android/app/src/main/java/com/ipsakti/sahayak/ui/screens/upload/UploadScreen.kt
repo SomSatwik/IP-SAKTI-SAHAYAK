@@ -188,11 +188,17 @@ fun UploadScreen(
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
-                            Icon(Icons.Default.AttachFile, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Icon(
+                                Icons.Default.AttachFile,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = if (selectedUri != null) Navy900 else Color.White
+                            )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                if (selectedUri != null) "Change File" else "Browse Files",
-                                fontWeight = FontWeight.Bold
+                                text = if (selectedUri != null) "Change File" else "Browse Files",
+                                fontWeight = FontWeight.Bold,
+                                color = if (selectedUri != null) Navy900 else Color.White
                             )
                         }
 
@@ -231,7 +237,10 @@ fun UploadScreen(
                                     }
                                 },
                                 enabled = !isProcessing,
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF16A34A)),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFF16A34A),
+                                    contentColor = Color.White
+                                ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
                                 if (isProcessing) {
@@ -241,11 +250,16 @@ fun UploadScreen(
                                         strokeWidth = 2.dp
                                     )
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Processing...")
+                                    Text("Processing...", color = Color.White)
                                 } else {
-                                    Icon(Icons.Default.CloudSync, contentDescription = null, modifier = Modifier.size(16.dp))
+                                    Icon(
+                                        Icons.Default.CloudSync,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(16.dp),
+                                        tint = Color.White
+                                    )
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Index into RAG", fontWeight = FontWeight.Bold)
+                                    Text("Index into RAG", fontWeight = FontWeight.Bold, color = Color.White)
                                 }
                             }
                         }

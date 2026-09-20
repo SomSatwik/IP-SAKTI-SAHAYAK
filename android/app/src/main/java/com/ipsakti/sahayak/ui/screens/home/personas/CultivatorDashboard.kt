@@ -1,4 +1,4 @@
-﻿package com.ipsakti.sahayak.ui.screens.home.personas
+package com.ipsakti.sahayak.ui.screens.home.personas
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -64,7 +64,10 @@ fun CultivatorDashboard(
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Navy900),
+            colors = CardDefaults.cardColors(
+                containerColor = Navy900,
+                contentColor = Color.White
+            ),
             border = BorderStroke(1.dp, Navy700)
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
@@ -99,12 +102,25 @@ fun CultivatorDashboard(
                     Button(
                         onClick = onStartInvestigation,
                         modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF16A34A)),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF16A34A),
+                            contentColor = Color.White
+                        ),
                         shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = Color.White
+                        )
                         Spacer(modifier = Modifier.width(6.dp))
-                        Text("Sourcing Check", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(
+                            text = "Sourcing Check",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = Color.White
+                        )
                     }
                     OutlinedButton(
                         onClick = {
@@ -113,10 +129,17 @@ fun CultivatorDashboard(
                         },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(8.dp),
-                        border = BorderStroke(1.dp, Gold600),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Gold600)
+                        border = BorderStroke(1.dp, Color.White),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = Color.White
+                        )
                     ) {
-                        Text(text = "Ask AyurBot on ABS", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(
+                            text = "Ask AyurBot on ABS",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 12.sp,
+                            color = Color.White
+                        )
                     }
                 }
             }

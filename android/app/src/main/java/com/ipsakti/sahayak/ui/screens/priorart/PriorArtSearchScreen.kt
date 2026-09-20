@@ -144,7 +144,10 @@ fun PriorArtSearchScreen(
                             Button(
                                 onClick = { performSearch(queryText) },
                                 enabled = queryText.trim().isNotEmpty() && !isLoading,
-                                colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = RoyalBlue800,
+                                    contentColor = Color.White
+                                ),
                                 shape = RoundedCornerShape(8.dp)
                             ) {
                                 if (isLoading) {
@@ -157,10 +160,15 @@ fun PriorArtSearchScreen(
                                     Icon(
                                         imageVector = Icons.Default.Search,
                                         contentDescription = null,
-                                        modifier = Modifier.size(16.dp)
+                                        modifier = Modifier.size(16.dp),
+                                        tint = Color.White
                                     )
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text("Search Prior Art")
+                                    Text(
+                                        text = "Search Prior Art",
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold
+                                    )
                                 }
                             }
                         }

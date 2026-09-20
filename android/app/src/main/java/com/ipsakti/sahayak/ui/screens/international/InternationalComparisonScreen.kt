@@ -79,7 +79,10 @@ fun InternationalComparisonScreen(
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
-                    colors = CardDefaults.cardColors(containerColor = Navy900),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Navy900,
+                        contentColor = Color.White
+                    ),
                     border = BorderStroke(1.dp, Navy700)
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
@@ -315,11 +318,14 @@ fun InternationalComparisonScreen(
                         },
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = RoyalBlue800)
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = RoyalBlue800,
+                            contentColor = Color.White
+                        )
                     ) {
-                        Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp), tint = Color.White)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Export Cross-Border Matrix Dossier", fontWeight = FontWeight.Bold)
+                        Text("Export Cross-Border Matrix Dossier", fontWeight = FontWeight.Bold, color = Color.White)
                     }
                 }
             }
