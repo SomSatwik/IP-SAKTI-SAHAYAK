@@ -15,7 +15,10 @@ from .models import (
     HealthResponse, DashboardStats, DocumentInfo,
     ChatMessageRequest, ChatResponse,
     PriorArtSearchRequest, PriorArtSearchResponse,
-    CraftCombineRequest, CraftCombineResponse
+    CraftCombineRequest, CraftCombineResponse,
+    ProductDetails, RegulatoryEvaluateRequest,
+    InternationalCompareRequest, RegulatoryAnalysisResult,
+    InternationalAnalysisResult
 )
 
 from .demo_data import (
@@ -27,6 +30,10 @@ from .services.investigation_service import investigation_service
 from .services.chat_service import chat_service
 from .services.prior_art_service import prior_art_service
 from .services.craft_service import craft_service
+from .services.regulatory_service import regulatory_service
+from .services.graph_service import graph_service
+from .services.roadmap_service import roadmap_service
+from .services.router_service import router_service
 
 logger = logging.getLogger(__name__)
 
@@ -124,24 +131,52 @@ async def process_query(request: QueryRequest):
 
 @app.post("/api/analyze", response_model=InvestigationDetail)
 async def analyze_case(request: QueryRequest):
-    # Process query
+    # Process query through unified multi-domain orchestrator
     response = query_service.process_query(request)
     
-    # If in demo mode and query matches demo or pipeline not ready, return rich localized investigation
-    if not query_service.is_ready:
-        return get_demo_investigation(language=request.language)
-        
-    # In pipeline mode, construct investigation detail with real response
+    # Extract product details and routing for dynamic Evidence Graph and Compliance Roadmap
+    product = None
+    if response.shared_context and "product" in response.shared_context:
+        p_data = response.shared_context["product"]
+        if isinstance(p_data, dict):
+            product = ProductDetails(**p_data)
+        elif isinstance(p_data, ProductDetails):
+            product = p_data
+            
+    routing = router_service.route_intent(request.question, request.product_details)
+    if not product:
+        product = router_service.extract_entities(request.question, request.product_details)
+
+    ip_findings = response.ip_findings or []
+    if response.shared_context and "ip_findings" in response.shared_context:
+        ip_findings = response.shared_context["ip_findings"]
+
+    graph = graph_service.build_unified_graph(
+        query=request.question,
+        product=product,
+        ip_findings=ip_findings,
+        regulatory_result=response.regulatory_analysis,
+        jurisdictions=routing.detected_jurisdictions
+    )
+    
+    roadmap = roadmap_service.build_unified_roadmap(
+        product=product,
+        regulatory_result=response.regulatory_analysis,
+        ip_required=routing.ip_required,
+        regulatory_required=routing.regulatory_required,
+        international_required=routing.international_required
+    )
+    
     new_id = f"inv_{uuid.uuid4().hex[:8]}"
     detail = InvestigationDetail(
         id=new_id,
         query=request.question,
         timestamp=datetime.now(),
-        domain="Patent & Biodiversity",
+        domain=response.primary_domain or (response.domains[0] if response.domains else "Ayurveda & Patents"),
         status="Completed",
         response=response,
-        graph=demo_investigation.graph,
-        roadmap=demo_investigation.roadmap
+        graph=graph,
+        roadmap=roadmap
     )
     investigation_service.add_investigation(detail)
     return detail
@@ -149,6 +184,20 @@ async def analyze_case(request: QueryRequest):
 @app.post("/api/deep-analysis", response_model=InvestigationDetail)
 async def deep_analysis(request: QueryRequest):
     return await analyze_case(request)
+
+@app.post("/api/regulatory/evaluate", response_model=RegulatoryAnalysisResult)
+async def evaluate_regulatory_endpoint(request: RegulatoryEvaluateRequest):
+    product = request.product
+    if not product:
+        product = router_service.extract_entities(request.query or "")
+    return regulatory_service.evaluate_regulatory_guidance(product, request.jurisdictions)
+
+@app.post("/api/international/compare", response_model=InternationalAnalysisResult)
+async def compare_international_endpoint(request: InternationalCompareRequest):
+    product = request.product
+    if not product:
+        product = router_service.extract_entities(request.query or "")
+    return regulatory_service.evaluate_international_regulations(product, request.target_countries)
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatMessageRequest):

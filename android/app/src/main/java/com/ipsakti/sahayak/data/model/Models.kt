@@ -145,7 +145,9 @@ data class ChatMessage(
     @SerializedName("actions") val actions: List<SuggestedAction> = emptyList(),
     @SerializedName("domain") val domain: String? = null,
     @SerializedName("domains") val domains: List<String> = emptyList()
-)
+) {
+    val isUser: Boolean get() = sender == "user"
+}
 
 data class ChatMessageRequest(
     @SerializedName("message") val message: String,
