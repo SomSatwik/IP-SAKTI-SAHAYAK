@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import com.ipsakti.sahayak.data.api.RetrofitClient
+import com.ipsakti.sahayak.data.api.GroqApiClient
 import com.ipsakti.sahayak.data.manager.LanguageManager
 import com.ipsakti.sahayak.data.manager.PersonaManager
 import com.ipsakti.sahayak.data.model.*
@@ -47,15 +48,25 @@ class IpSaktiRepository {
             val response = apiService.query(
                 QueryRequest(question = question, mode = mode, language = language, persona = persona)
             )
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.failure(Exception("Query failed: ${response.message()}"))
+            if (response.isSuccessful && response.body() != null && response.body()!!.answer.isNotBlank() && !response.body()!!.abstained) {
+                return@withContext Result.success(response.body()!!)
             }
         } catch (e: Exception) {
-            // Fallback for offline demo mode
-            Result.success(getFallbackDemoInvestigation(language).response)
+            // API connection failed or server unavailable
         }
+
+        // If backend does not find the answer, Groq AI provides the answer!
+        try {
+            val groqResponse = GroqApiClient.generateAnswerForQuery(question, language, persona)
+            if (groqResponse.answer.isNotBlank()) {
+                return@withContext Result.success(groqResponse)
+            }
+        } catch (e: Exception) {
+            // Groq AI call failed
+        }
+
+        // Final local fallback
+        Result.success(getFallbackDemoInvestigation(language).response)
     }
 
     suspend fun analyzeCase(
@@ -72,21 +83,29 @@ class IpSaktiRepository {
                 apiService.analyzeCase(request)
             }
 
-            if (response.isSuccessful && response.body() != null) {
+            if (response.isSuccessful && response.body() != null && response.body()!!.response.answer.isNotBlank()) {
                 val detail = response.body()!!
                 savedInvestigations.removeAll { it.id == detail.id }
                 savedInvestigations.add(0, detail)
-                Result.success(detail)
-            } else {
-                val fallback = getFallbackDemoInvestigation(language).copy(query = question)
-                savedInvestigations.add(0, fallback)
-                Result.success(fallback)
+                return@withContext Result.success(detail)
             }
         } catch (e: Exception) {
-            val fallback = getFallbackDemoInvestigation(language).copy(query = question)
-            savedInvestigations.add(0, fallback)
-            Result.success(fallback)
+            // Backend offline or error
         }
+
+        // If backend does not find the answer, Groq AI generates the full investigation!
+        try {
+            val groqDetail = GroqApiClient.generateInvestigation(question, language, persona)
+            savedInvestigations.removeAll { it.id == groqDetail.id }
+            savedInvestigations.add(0, groqDetail)
+            return@withContext Result.success(groqDetail)
+        } catch (e: Exception) {
+            // Groq AI call failed
+        }
+
+        val fallback = getFallbackDemoInvestigation(language).copy(query = question)
+        savedInvestigations.add(0, fallback)
+        Result.success(fallback)
     }
 
     suspend fun getInvestigations(): Result<List<InvestigationSummary>> = withContext(Dispatchers.IO) {
@@ -258,14 +277,24 @@ class IpSaktiRepository {
                     persona = persona
                 )
             )
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.success(getFallbackChatResponse(message, language))
+            if (response.isSuccessful && response.body() != null && response.body()!!.reply.isNotBlank()) {
+                return@withContext Result.success(response.body()!!)
             }
         } catch (e: Exception) {
-            Result.success(getFallbackChatResponse(message, language))
+            // Backend offline or error
         }
+
+        // If backend does not find the answer, Groq AI provides the answer!
+        try {
+            val groqChat = GroqApiClient.generateChatReply(message, history, language, persona)
+            if (groqChat.reply.isNotBlank()) {
+                return@withContext Result.success(groqChat)
+            }
+        } catch (e: Exception) {
+            // Groq fallback failed
+        }
+
+        Result.success(getFallbackChatResponse(message, language))
     }
 
     fun getFallbackChatResponse(message: String, language: String): ChatResponse {
@@ -722,14 +751,24 @@ class IpSaktiRepository {
     suspend fun searchPriorArt(query: String): Result<PriorArtSearchResponse> = withContext(Dispatchers.IO) {
         try {
             val response = apiService.searchPriorArt(PriorArtSearchRequest(query = query))
-            if (response.isSuccessful && response.body() != null) {
-                Result.success(response.body()!!)
-            } else {
-                Result.success(getFallbackPriorArtResponse(query))
+            if (response.isSuccessful && response.body() != null && response.body()!!.patents.isNotEmpty()) {
+                return@withContext Result.success(response.body()!!)
             }
         } catch (e: Exception) {
-            Result.success(getFallbackPriorArtResponse(query))
+            // Backend offline or error
         }
+
+        // If backend does not find prior art or fails, Groq AI provides the answer!
+        try {
+            val groqPriorArt = GroqApiClient.generatePriorArtSearch(query)
+            if (groqPriorArt.patents.isNotEmpty() || groqPriorArt.detectedBotanicals.isNotEmpty()) {
+                return@withContext Result.success(groqPriorArt)
+            }
+        } catch (e: Exception) {
+            // Groq AI call failed
+        }
+
+        Result.success(getFallbackPriorArtResponse(query))
     }
 
     fun getFallbackPriorArtResponse(query: String): PriorArtSearchResponse {
